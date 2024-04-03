@@ -11,6 +11,10 @@ struct AddTeacherClass: View {
     @EnvironmentObject var routerView: ServiceRoute
     @State private var listTeacherName: [String] = []
     @State private var listTeacherID: [String] = []
+//    
+//    @State private var listSelectedID: [String]
+//    @State private var listSelectedName: [String]
+    
     @State private var selectedTeacherIndex = 0
     @State private var selectedTeacherIDS: [[String: Any]] = []
     @Binding var isPresented: Bool
@@ -21,19 +25,11 @@ struct AddTeacherClass: View {
     let apiManager = APIManager()
     
     var filteredTeacherNames: [String] {
-        return listTeacherName.filter { teacherName in
-            // Check if the teacher's user ID is not associated with the given class ID
-            let teacherID = listTeacherID[listTeacherName.firstIndex(of: teacherName)!]
-            return !selectedTeacherIDS.contains(where: { $0["UserID"] as? String == teacherID && $0["ClassID"] as? Int == classID })
+            return listTeacherName.filter { !teacherName.contains($0) }
         }
-    }
-    
-    var filteredTeacherIDs: [String] {
-        return listTeacherID.filter { teacherID in
-            // Check if the teacher's user ID is not associated with the given class ID
-            !selectedTeacherIDS.contains(where: { $0["UserID"] as? String == teacherID && $0["ClassID"] as? Int == classID })
+        var filteredTeacherIDs: [String] {
+            return listTeacherID.filter { !teacherID.contains($0) }
         }
-    }
     
     var body: some View {
         VStack {
@@ -69,6 +65,7 @@ struct AddTeacherClass: View {
             }
         }
         .onAppear {
+//            resetData()
             fetchTeacherName()
         }
     }
@@ -87,5 +84,9 @@ struct AddTeacherClass: View {
             }
         }
     }
+//    func resetData(){
+//        self.listSelectedID.append(listTeacherID[selectedTeacherIndex])
+//        self.listSelectedName.append(listTeacherName[selectedTeacherIndex])
+//    }
 }
 
