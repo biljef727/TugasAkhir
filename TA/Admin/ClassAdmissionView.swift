@@ -92,7 +92,6 @@ struct ClassAdmissionView: View {
                 }
             }
             Button(action:{
-                //save ke database
                 for studentID in listStudentID{
                         apiManager.admissionStudent(classID: classID, userID: Int(studentID) ?? 0) { result in
                             switch result {

@@ -9,15 +9,16 @@ import SwiftUI
 
 struct TabBarTeacherView: View {
     @EnvironmentObject var routerView : ServiceRoute
-    @State var userName : String = "Tanti"
-    
+    @Binding var userName : String
+    @Binding var userID: String
+
     var body: some View {
         VStack{
             TabView{
-                TeacherView().tabItem {
+                TeacherView(userID: $userID).tabItem {
                     Label("New Exam",systemImage: "doc.badge.plus")
                 }
-                ScheduleView().tabItem {
+                ScheduleView(userID: $userID).tabItem {
                     Label("Schedule Exam",systemImage: "doc.badge.clock")
                 }
             }
@@ -38,7 +39,3 @@ struct TabBarTeacherView: View {
         }
     }
 }
-
-//#Preview {
-//    TabBarTeacherView()
-//}

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScheduleExamView: View {
     @EnvironmentObject var routerView : ServiceRoute
-    @State var listGrade: [String] = ["Class 4-A", "Class 4-B", "Class 4-C","Class 4-A", "Class 4-B", "Class 4-C"]
+    @State var listGrade: [String] = []
     
     @State var listExamName: [String] = ["Exam 1", "Exam 2", "Exam 3", "Exam 4","Exam 5","Exam 6"]
     
@@ -17,20 +17,27 @@ struct ScheduleExamView: View {
     @State var selectedGradeIndex = 0
     @State var selectedExamIndex = 0
     @State var selectedDate = Date()
+    @State var formattedDate: TimeInterval?
     @State var selectedTime = Date()
+    @State var formattedTimeStart: TimeInterval?
+    @State var formattedTimeEnd: TimeInterval?
+    @State var examName: [String] = []
+    @State var examCounter :[String] = []
     
     @Binding var isPresented: Bool
     @Binding var scheduleGrade : [String]
     @Binding var scheduleExam : [String]
-    @Binding var scheduleStartDate : [Date]
-    @Binding var scheduleStartExamTime : [Date]
-    @Binding var scheduleEndExamTime: [Date]
+    @Binding var scheduleStartDate : [TimeInterval]
+    @Binding var scheduleStartExamTime : [TimeInterval]
+    @Binding var scheduleEndExamTime: [TimeInterval]
+    @Binding var userID: String
     
+    let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
             Picker("Select Exam:", selection: $selectedExamIndex) {
-                ForEach(0..<listExamName.count) { index in
-                    Text("\(listExamName[index])").tag(index)
+                ForEach(0..<examName.count, id: \.self) { index in
+                    Text("\(examName[index])").tag(index)
                 }
             }
             .frame(width: UIScreen.main.bounds.width/2,height:50)
@@ -58,7 +65,7 @@ struct ScheduleExamView: View {
                 .border(Color.black)
             
             Picker("Select Grade:", selection: $selectedGradeIndex) {
-                ForEach(0..<listGrade.count) { index in
+                ForEach(0..<listGrade.count , id: \.self) { index in
                     Text("\(listGrade[index])").tag(index)
                 }
             }
@@ -72,9 +79,14 @@ struct ScheduleExamView: View {
                 
                 scheduleGrade.append(listGrade[selectedGradeIndex])
                 scheduleExam.append(listExamName[selectedExamIndex])
-                scheduleStartDate.append(selectedDate)
-                scheduleStartExamTime.append(selectedTime)
-                scheduleEndExamTime.append(examEndDate)
+                
+                self.formattedDate = selectedDate.timeIntervalSince1970
+                self.formattedTimeStart = selectedTime.timeIntervalSince1970
+                self.formattedTimeEnd = examEndDate.timeIntervalSince1970
+                
+                scheduleStartDate.append(formattedDate!)
+                scheduleStartExamTime.append(formattedTimeStart!)
+                scheduleEndExamTime.append(formattedTimeEnd!)
                 
                 self.isPresented = false
             }, label:{
@@ -87,6 +99,36 @@ struct ScheduleExamView: View {
             .frame(width: UIScreen.main.bounds.width/3,height: 50)
             .background(Color.accentColor)
             .cornerRadius(15)
+        }
+        .onAppear{
+            fetchExamNames()
+            fecthClassTeacher()
+        }
+    }
+    func fetchExamNames() {
+        apiManager.fetchClassID(userID: self.userID) { result in
+            switch result {
+            case .success(let (examNames, examSectionCounter)):
+                DispatchQueue.main.async {
+                    self.examName = examNames
+                    self.examCounter = examSectionCounter
+                }
+            case .failure(let error):
+                print("Error fetching class names: \(error)")
+            }
+        }
+    }
+    func fecthClassTeacher(){
+        apiManager.fetchClassTeacher(userID : self.userID) { result in
+            switch result {
+            case .success(let teacherClassID):
+                DispatchQueue.main.async {
+                    self.listGrade = teacherClassID
+                }
+            case .failure(let error):
+                // Handle error, maybe show an alert
+                print("Error fetching teacher names: \(error)")
+            }
         }
     }
 }

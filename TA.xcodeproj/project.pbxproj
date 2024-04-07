@@ -26,6 +26,7 @@
 		219E81752BBBE3D2002DC459 /* LastSeenResultView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */; };
 		219E81772BBBE436002DC459 /* StudentExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81762BBBE436002DC459 /* StudentExamView.swift */; };
 		219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81782BBBE454002DC459 /* YourTakenExamView.swift */; };
+		219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */; };
 		21FCED1F2B8D84880049C6D3 /* NewTeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */; };
 		21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED202B8D8C220049C6D3 /* NewStudentView.swift */; };
 		21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED232B8D91450049C6D3 /* TeacherView.swift */; };
@@ -55,6 +56,7 @@
 		219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LastSeenResultView.swift; sourceTree = "<group>"; };
 		219E81762BBBE436002DC459 /* StudentExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentExamView.swift; sourceTree = "<group>"; };
 		219E81782BBBE454002DC459 /* YourTakenExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourTakenExamView.swift; sourceTree = "<group>"; };
+		219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerTeacher.swift; sourceTree = "<group>"; };
 		21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTeacherView.swift; sourceTree = "<group>"; };
 		21FCED202B8D8C220049C6D3 /* NewStudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStudentView.swift; sourceTree = "<group>"; };
 		21FCED232B8D91450049C6D3 /* TeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherView.swift; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 			isa = PBXGroup;
 			children = (
 				219E81712BB3360B002DC459 /* ApiManager.swift */,
+				219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -259,6 +262,7 @@
 				219E81752BBBE3D2002DC459 /* LastSeenResultView.swift in Sources */,
 				21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */,
 				219E81552BA95969002DC459 /* ScheduleExamView.swift in Sources */,
+				219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */,
 				219E81572BAD37D2002DC459 /* StudentView.swift in Sources */,
 				219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */,
 				21FCED2B2B915CB00049C6D3 /* NewExamView.swift in Sources */,

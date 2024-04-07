@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct Item:Codable {
-//    let UserRole:String
     let userRole:String
     
     enum CodingKeys:String,CodingKey{
@@ -22,6 +21,8 @@ struct LoginView: View {
     @State var checkPassword: Bool = false
     @State var loginError: String = ""
     @State var userPassRole: String = ""
+    @State var userFullName: String = ""
+    @State var userID: String = ""
     
     var body: some View {
         NavigationStack(path: $routerView.path) {
@@ -88,7 +89,7 @@ struct LoginView: View {
                 }else if val == "newStudent"{
                     NewStudentView().environmentObject(routerView)
                 }else if val == "teacher"{
-                    TabBarTeacherView().environmentObject(routerView)
+                    TabBarTeacherView(userName: $userFullName, userID: $userID).environmentObject(routerView)
                 }else if val == "student"{
                     StudentView().environmentObject(routerView)
                 }
@@ -144,7 +145,7 @@ struct LoginView: View {
                 
                 do {
                     let jsonResponse = try JSONSerialization.jsonObject(with: data, options: [])
-                    if let jsonDict = jsonResponse as? [String: Any], let userRole = jsonDict["UserRole"] as? String {
+                    if let jsonDict = jsonResponse as? [String: Any], let userRole = jsonDict["UserRole"] as? String, let userFullname = jsonDict["UserFullname"] as? String , let userID = jsonDict["UserID"] as? String {
                         switch userRole {
                         case "Admin":
                             DispatchQueue.main.async {
@@ -152,6 +153,8 @@ struct LoginView: View {
                             }
                         case "Teacher":
                             DispatchQueue.main.async {
+                                self.userFullName = userFullname
+                                self.userID = userID
                                 self.routerView.navigate(to: "teacher")
                             }
                         case "Student":

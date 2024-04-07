@@ -11,14 +11,14 @@ struct ScheduleView: View {
     @EnvironmentObject var routerView : ServiceRoute
     @State var selectedGradeIndex = 0
     @State var selectedGradeIndex2 = 0
-    
+    @Binding var userID: String
     @State private var isAddScheduleExam = false
     
     @State var scheduleExam : [String] = []
     @State var scheduleGrade : [String] =  []
-    @State var scheduleStartDate :[Date] = []
-    @State var scheduleStartExamTime :[Date] = []
-    @State var scheduleEndExamTime : [Date] = []
+    @State var scheduleStartDate :[TimeInterval] = []
+    @State var scheduleStartExamTime :[TimeInterval] = []
+    @State var scheduleEndExamTime : [TimeInterval] = []
     
     var body: some View {
         VStack{
@@ -41,7 +41,7 @@ struct ScheduleView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isAddScheduleExam) {
-                    ScheduleExamView(isPresented: $isAddScheduleExam, scheduleGrade: $scheduleGrade,scheduleExam: $scheduleExam,scheduleStartDate: $scheduleStartDate,scheduleStartExamTime: $scheduleStartExamTime,scheduleEndExamTime: $scheduleEndExamTime)
+                    ScheduleExamView(isPresented: $isAddScheduleExam, scheduleGrade: $scheduleGrade,scheduleExam: $scheduleExam,scheduleStartDate: $scheduleStartDate,scheduleStartExamTime: $scheduleStartExamTime,scheduleEndExamTime: $scheduleEndExamTime, userID: $userID)
                 }
             }
             ScrollView{
@@ -49,7 +49,7 @@ struct ScheduleView: View {
                     VStack(alignment: .leading){
                         ForEach(0..<scheduleExam.count, id: \.self) { index in
                             HStack{
-                                Text("\(scheduleExam[index]) | \(dateFormatter.string(from: scheduleStartDate[index])) | \(timeFormatter.string(from: scheduleStartExamTime[index])) - \(timeFormatter.string(from: scheduleEndExamTime[index])) | \(scheduleGrade[index])")
+                                Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])) | \(scheduleGrade[index])")
                                     .padding()
                                 Button(action: {
                                     routerView.path.append("resultExam")
@@ -68,17 +68,29 @@ struct ScheduleView: View {
             }
         }
     }
+    func formatDate(from timeInterval: TimeInterval) -> String {
+        let date = Date(timeIntervalSince1970: timeInterval)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM dd, yyyy"
+        return formatter.string(from: date)
+    }
+    func formatScheduleStartTime(from timeInterval: TimeInterval) -> String {
+        let startDate = Date(timeIntervalSince1970: timeInterval)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        return formatter.string(from: startDate)
+    }
     
-    var dateFormatter: DateFormatter {
-           let formatter = DateFormatter()
-           formatter.dateFormat = "EEEE, MMMM dd, yyyy"
-           return formatter
-       }
-    var timeFormatter: DateFormatter {
-           let formatter = DateFormatter()
-            formatter.dateFormat = "h:mm a"
-           return formatter
-       }
+    //    var dateFormatter: DateFormatter {
+    //           let formatter = DateFormatter()
+    //           formatter.dateFormat = "EEEE, MMMM dd, yyyy"
+    //           return formatter
+    //       }
+    //    var timeFormatter: DateFormatter {
+    //           let formatter = DateFormatter()
+    //            formatter.dateFormat = "h:mm a"
+    //           return formatter
+    //       }
 }
 
 //#Preview {

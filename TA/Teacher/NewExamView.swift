@@ -10,6 +10,7 @@ import UniformTypeIdentifiers
 
 struct NewExamView: View {
     @EnvironmentObject var routerView: ServiceRoute
+    
     @State var textFieldExamName: String = ""
     @State var sectionCounter: Int = 1
     @State var sectionChoices: [String] = ["Multiple Choice", "Short Answer", "Essay"]
@@ -19,12 +20,15 @@ struct NewExamView: View {
     @Binding var isPresented: Bool
     @Binding var examName: [String]
     @Binding var sectionExamCounter: [Int]
+    @Binding var userID: String
     
-    // Document picker states
+    let apiManager = ApiManagerTeacher()
+    @State private var documentData: Data? // Declaration of documentData
+    
     @State private var documentURL: URL?
     @State private var isShowingDocumentPicker = false
     @State private var isDocumentUploaded = false
-
+    
     var body: some View {
         VStack {
             Text("Exam Name")
@@ -44,14 +48,15 @@ struct NewExamView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isShowingDocumentPicker) {
-                    DocumentPicker(documentURL: $documentURL, isDocumentUploaded: $isDocumentUploaded)
+                    DocumentPicker(documentData: $documentData)
                 }
                 
-                TextField("Document: \(isDocumentUploaded ? "Done" : "Not Uploaded")", text: .constant(""))
-                    .foregroundColor(isDocumentUploaded ? Color.red : Color.black)
+                Text("Document: \(documentData != nil ? "PDF selected" : "No PDF selected")")
+                    .foregroundColor(documentData != nil ? Color.black : Color.red)
                     .padding()
                     .disabled(true)
             }
+            
             
             HStack {
                 Text("Exam Section ( Max 3 )")
@@ -95,12 +100,26 @@ struct NewExamView: View {
                 Image(systemName: "percent")
             }
             .padding(.horizontal)
-            .frame(width: UIScreen.main.bounds.width / 8)
+            .frame(width: UIScreen.main.bounds.width / 4)
             .border(Color.black)
             
             Button(action: {
+                apiManager.addNewExam(examName: textFieldExamName,
+                                      section1: Int(scores[selectedChoicesSectionIndexes[0]])!,
+                                      section2: sectionCounter > 1 ? Int(scores[selectedChoicesSectionIndexes[1]])! : 0,
+                                      section3: sectionCounter > 2 ? Int(scores[selectedChoicesSectionIndexes[2]])! : 0,
+                                      file: documentData,
+                                      userId: userID)
+                { error in
+                    if let error = error {
+                        print("Error occurred: \(error)")
+                    } else {
+                        print("Exam added successfully")
+                    }
+                }
                 examName.append(textFieldExamName)
                 sectionExamCounter.append(sectionCounter)
+                
                 self.isPresented = false
             }) {
                 Text("Submit")
@@ -113,6 +132,7 @@ struct NewExamView: View {
             .background(Color.accentColor)
             .cornerRadius(15)
         }
+        .padding()
     }
 }
 
@@ -158,11 +178,10 @@ struct SectionView: View {
 }
 
 struct DocumentPicker: UIViewControllerRepresentable {
-    @Binding var documentURL: URL?
-    @Binding var isDocumentUploaded: Bool
+    @Binding var documentData: Data?
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(documentURL: $documentURL, isDocumentUploaded: $isDocumentUploaded)
+        return Coordinator(documentData: $documentData)
     }
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
@@ -174,22 +193,19 @@ struct DocumentPicker: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
     
     class Coordinator: NSObject, UIDocumentPickerDelegate {
-        @Binding var documentURL: URL?
-        @Binding var isDocumentUploaded: Bool
+        @Binding var documentData: Data?
         
-        init(documentURL: Binding<URL?>, isDocumentUploaded: Binding<Bool>) {
-            _documentURL = documentURL
-            _isDocumentUploaded = isDocumentUploaded
+        init(documentData: Binding<Data?>) {
+            _documentData = documentData
         }
         
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
-            documentURL = url
-            isDocumentUploaded = true
+            do {
+                documentData = try Data(contentsOf: url)
+            } catch {
+                print("Error converting file to data: \(error)")
+            }
         }
     }
 }
-
-//#Preview {
-//    NewExamView()
-//}

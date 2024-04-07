@@ -9,13 +9,21 @@ import SwiftUI
 
 struct TeacherView: View {
     @EnvironmentObject var routerView : ServiceRoute
+    
+    @Binding var userID: String
+    
     @State private var isAddNewExam = false
     
     @State var selectedGradeIndex = 0
     @State var selectedGradeIndex2 = 0
     
     @State var examName: [String] = []
+    @State var examCounter :[String] = []
     @State var sectionExamCounter :[Int] = []
+    let apiManager = ApiManagerTeacher()
+    
+
+    
     var body: some View {
         VStack{
             Text("Bank Soal")
@@ -37,14 +45,14 @@ struct TeacherView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isAddNewExam) {
-                    NewExamView(isPresented: $isAddNewExam,examName: $examName,sectionExamCounter: $sectionExamCounter)
+                    NewExamView(isPresented: $isAddNewExam,examName: $examName,sectionExamCounter: $sectionExamCounter,userID: $userID) 
                 }
             }
             ScrollView{
                 HStack{
                     VStack(alignment: .leading){
                         ForEach(0..<examName.count, id: \.self) { index in
-                            Text("\(examName[index]) | Total Section : \(sectionExamCounter[index])")
+                            Text("\(examName[index]) | Total Section : \(examCounter[index])")
                                 .padding()
                         }
                     }
@@ -52,9 +60,24 @@ struct TeacherView: View {
                 }
             }
         }
+        .onAppear{
+            let _ = print(userID)
+            fetchExamNames()
+        }
     }
+    func fetchExamNames() {
+        apiManager.fetchClassID(userID: self.userID) { result in
+            switch result {
+            case .success(let (examNames, examSectionCounter)):
+                DispatchQueue.main.async {
+                    self.examName = examNames
+                    self.examCounter = examSectionCounter
+                }
+            case .failure(let error):
+                print("Error fetching class names: \(error)")
+            }
+        }
+    }
+    
+
 }
-//
-//#Preview {
-//    TeacherView()
-//}
