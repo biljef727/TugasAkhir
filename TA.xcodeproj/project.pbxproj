@@ -13,6 +13,9 @@
 		212132FF2B86F13300772654 /* LoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212132FE2B86F13300772654 /* LoginView.swift */; };
 		212133012B86F9CE00772654 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212133002B86F9CE00772654 /* AdminView.swift */; };
 		212133032B87035100772654 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212133022B87035100772654 /* Service.swift */; };
+		212273EB2BC41576006C4040 /* three-pages.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 212273EA2BC41576006C4040 /* three-pages.pdf */; };
+		212273F12BC42BBC006C4040 /* ExamStudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212273F02BC42BBC006C4040 /* ExamStudentView.swift */; };
+		212273F32BC42D89006C4040 /* PDFDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212273F22BC42D89006C4040 /* PDFDrawingView.swift */; };
 		219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814D2B91AF20002DC459 /* EditStatusExam.swift */; };
 		219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814F2BA9481C002DC459 /* AddTeacherClass.swift */; };
 		219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81512BA9482B002DC459 /* AddStudentClass.swift */; };
@@ -27,6 +30,8 @@
 		219E81772BBBE436002DC459 /* StudentExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81762BBBE436002DC459 /* StudentExamView.swift */; };
 		219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81782BBBE454002DC459 /* YourTakenExamView.swift */; };
 		219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */; };
+		219E817D2BC40771002DC459 /* ApiManagerStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E817C2BC40771002DC459 /* ApiManagerStudent.swift */; };
+		219E817F2BC409AD002DC459 /* dummy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 219E817E2BC409AD002DC459 /* dummy.pdf */; };
 		21FCED1F2B8D84880049C6D3 /* NewTeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */; };
 		21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED202B8D8C220049C6D3 /* NewStudentView.swift */; };
 		21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED232B8D91450049C6D3 /* TeacherView.swift */; };
@@ -43,6 +48,9 @@
 		212132FE2B86F13300772654 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		212133002B86F9CE00772654 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
 		212133022B87035100772654 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		212273EA2BC41576006C4040 /* three-pages.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "three-pages.pdf"; sourceTree = "<group>"; };
+		212273F02BC42BBC006C4040 /* ExamStudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamStudentView.swift; sourceTree = "<group>"; };
+		212273F22BC42D89006C4040 /* PDFDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDrawingView.swift; sourceTree = "<group>"; };
 		219E814D2B91AF20002DC459 /* EditStatusExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatusExam.swift; sourceTree = "<group>"; };
 		219E814F2BA9481C002DC459 /* AddTeacherClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeacherClass.swift; sourceTree = "<group>"; };
 		219E81512BA9482B002DC459 /* AddStudentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStudentClass.swift; sourceTree = "<group>"; };
@@ -57,6 +65,8 @@
 		219E81762BBBE436002DC459 /* StudentExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentExamView.swift; sourceTree = "<group>"; };
 		219E81782BBBE454002DC459 /* YourTakenExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourTakenExamView.swift; sourceTree = "<group>"; };
 		219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerTeacher.swift; sourceTree = "<group>"; };
+		219E817C2BC40771002DC459 /* ApiManagerStudent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerStudent.swift; sourceTree = "<group>"; };
+		219E817E2BC409AD002DC459 /* dummy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = dummy.pdf; sourceTree = "<group>"; };
 		21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTeacherView.swift; sourceTree = "<group>"; };
 		21FCED202B8D8C220049C6D3 /* NewStudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStudentView.swift; sourceTree = "<group>"; };
 		21FCED232B8D91450049C6D3 /* TeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherView.swift; sourceTree = "<group>"; };
@@ -103,6 +113,8 @@
 				21FCED252B8D9A860049C6D3 /* Teacher */,
 				21FCED2D2B916B260049C6D3 /* Student */,
 				212132F22B86EFC500772654 /* Assets.xcassets */,
+				212273EA2BC41576006C4040 /* three-pages.pdf */,
+				219E817E2BC409AD002DC459 /* dummy.pdf */,
 				212132F42B86EFC500772654 /* Preview Content */,
 				212133022B87035100772654 /* Service.swift */,
 			);
@@ -130,6 +142,7 @@
 			children = (
 				219E81712BB3360B002DC459 /* ApiManager.swift */,
 				219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */,
+				219E817C2BC40771002DC459 /* ApiManagerStudent.swift */,
 			);
 			path = Api;
 			sourceTree = "<group>";
@@ -166,9 +179,11 @@
 			isa = PBXGroup;
 			children = (
 				219E81562BAD37D2002DC459 /* StudentView.swift */,
-				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
+				212273F02BC42BBC006C4040 /* ExamStudentView.swift */,
 				219E81762BBBE436002DC459 /* StudentExamView.swift */,
+				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
 				219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */,
+				212273F22BC42D89006C4040 /* PDFDrawingView.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
@@ -217,6 +232,9 @@
 				Base,
 			);
 			mainGroup = 212132E02B86EFC200772654;
+			packageReferences = (
+				219E81802BC40B3A002DC459 /* XCRemoteSwiftPackageReference "PSPDFKit-SP" */,
+			);
 			productRefGroup = 212132EA2B86EFC200772654 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -231,7 +249,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				212273EB2BC41576006C4040 /* three-pages.pdf in Resources */,
 				212132F62B86EFC500772654 /* Preview Assets.xcassets in Resources */,
+				219E817F2BC409AD002DC459 /* dummy.pdf in Resources */,
 				212132F32B86EFC500772654 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -247,6 +267,7 @@
 				219E81772BBBE436002DC459 /* StudentExamView.swift in Sources */,
 				212132ED2B86EFC200772654 /* TAApp.swift in Sources */,
 				212133032B87035100772654 /* Service.swift in Sources */,
+				212273F12BC42BBC006C4040 /* ExamStudentView.swift in Sources */,
 				219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */,
 				21FCED272B8DBA320049C6D3 /* ClassAdmissionView.swift in Sources */,
 				219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */,
@@ -256,7 +277,9 @@
 				219E81622BAD871A002DC459 /* NewClassView.swift in Sources */,
 				219E81592BAD56F1002DC459 /* FixAdminView.swift in Sources */,
 				212133012B86F9CE00772654 /* AdminView.swift in Sources */,
+				219E817D2BC40771002DC459 /* ApiManagerStudent.swift in Sources */,
 				21FCED2F2B916BB50049C6D3 /* ResultExamView.swift in Sources */,
+				212273F32BC42D89006C4040 /* PDFDrawingView.swift in Sources */,
 				21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */,
 				219E81662BAE95FB002DC459 /* TabBarTeacherView.swift in Sources */,
 				219E81752BBBE3D2002DC459 /* LastSeenResultView.swift in Sources */,
@@ -474,6 +497,17 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		219E81802BC40B3A002DC459 /* XCRemoteSwiftPackageReference "PSPDFKit-SP" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/PSPDFKit/PSPDFKit-SP";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 13.4.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 212132E12B86EFC200772654 /* Project object */;
 }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ScheduleView: View {
     @EnvironmentObject var routerView : ServiceRoute
@@ -14,12 +15,15 @@ struct ScheduleView: View {
     @Binding var userID: String
     @State private var isAddScheduleExam = false
     
+    @State var examIDs : [String] = []
     @State var scheduleExam : [String] = []
     @State var scheduleGrade : [String] =  []
-    @State var scheduleStartDate :[TimeInterval] = []
-    @State var scheduleStartExamTime :[TimeInterval] = []
-    @State var scheduleEndExamTime : [TimeInterval] = []
+    @State var scheduleStartDate :[String] = []
+    @State var scheduleStartExamTime :[String] = []
+    @State var scheduleEndExamTime : [String] = []
     
+    let refreshSubject = PassthroughSubject<Void, Never>()
+    let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
             Text("Bank Soal")
@@ -41,7 +45,7 @@ struct ScheduleView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isAddScheduleExam) {
-                    ScheduleExamView(isPresented: $isAddScheduleExam, scheduleGrade: $scheduleGrade,scheduleExam: $scheduleExam,scheduleStartDate: $scheduleStartDate,scheduleStartExamTime: $scheduleStartExamTime,scheduleEndExamTime: $scheduleEndExamTime, userID: $userID)
+                    ScheduleExamView(isPresented: $isAddScheduleExam, userID: $userID,refreshSubject: refreshSubject)
                 }
             }
             ScrollView{
@@ -49,7 +53,7 @@ struct ScheduleView: View {
                     VStack(alignment: .leading){
                         ForEach(0..<scheduleExam.count, id: \.self) { index in
                             HStack{
-                                Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])) | \(scheduleGrade[index])")
+                                Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])!) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])!) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])!) | \(scheduleGrade[index])")
                                     .padding()
                                 Button(action: {
                                     routerView.path.append("resultExam")
@@ -67,30 +71,52 @@ struct ScheduleView: View {
                 }
             }
         }
+        .onAppear{
+            fetchScheduleData()
+        }
+        .onReceive(refreshSubject) { _ in
+            fetchScheduleData()
+        }
     }
-    func formatDate(from timeInterval: TimeInterval) -> String {
-        let date = Date(timeIntervalSince1970: timeInterval)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMMM dd, yyyy"
-        return formatter.string(from: date)
-    }
-    func formatScheduleStartTime(from timeInterval: TimeInterval) -> String {
-        let startDate = Date(timeIntervalSince1970: timeInterval)
-        let formatter = DateFormatter()
-        formatter.dateFormat = "h:mm a"
-        return formatter.string(from: startDate)
+    func fetchScheduleData() {
+        apiManager.getScheduleExamName(userID: self.userID) { result in
+            DispatchQueue.main.async {
+                switch result {
+                case .success(let (examNames, examDates,startExamTimes,endExamTimes,classNames)):
+                    self.scheduleExam = examNames
+                    self.scheduleStartDate = examDates
+                    self.scheduleStartExamTime = startExamTimes
+                    self.scheduleEndExamTime = endExamTimes
+                    self.scheduleGrade = classNames
+                case .failure(let error):
+                    print("Error fetching Scheduled names: \(error)")
+                }
+            }
+        }
     }
     
-    //    var dateFormatter: DateFormatter {
-    //           let formatter = DateFormatter()
-    //           formatter.dateFormat = "EEEE, MMMM dd, yyyy"
-    //           return formatter
-    //       }
-    //    var timeFormatter: DateFormatter {
-    //           let formatter = DateFormatter()
-    //            formatter.dateFormat = "h:mm a"
-    //           return formatter
-    //       }
+    func formatDate(from timeIntervalString: String) -> String? {
+        guard let timeInterval = TimeInterval(timeIntervalString) else {
+            return nil
+        }
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMMM dd, yyyy"
+        
+        return formatter.string(from: date)
+    }
+    func formatScheduleStartTime(from timeInterval: String) -> String? {
+        guard let timeInterval = TimeInterval(timeInterval) else {
+            return nil
+        }
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        
+        return formatter.string(from: date)
+    }
 }
 
 //#Preview {

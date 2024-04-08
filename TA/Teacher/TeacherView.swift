@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct TeacherView: View {
     @EnvironmentObject var routerView : ServiceRoute
@@ -20,10 +21,9 @@ struct TeacherView: View {
     @State var examName: [String] = []
     @State var examCounter :[String] = []
     @State var sectionExamCounter :[Int] = []
+    
+    let refreshSubject = PassthroughSubject<Void, Never>()
     let apiManager = ApiManagerTeacher()
-    
-
-    
     var body: some View {
         VStack{
             Text("Bank Soal")
@@ -45,7 +45,7 @@ struct TeacherView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isAddNewExam) {
-                    NewExamView(isPresented: $isAddNewExam,examName: $examName,sectionExamCounter: $sectionExamCounter,userID: $userID) 
+                    NewExamView(isPresented: $isAddNewExam,examName: $examName,sectionExamCounter: $sectionExamCounter,userID: $userID,refreshSubject: refreshSubject)
                 }
             }
             ScrollView{
@@ -61,7 +61,9 @@ struct TeacherView: View {
             }
         }
         .onAppear{
-            let _ = print(userID)
+            fetchExamNames()
+        }
+        .onReceive(refreshSubject) { _ in
             fetchExamNames()
         }
     }

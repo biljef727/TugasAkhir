@@ -7,6 +7,7 @@
 
 import SwiftUI
 import UniformTypeIdentifiers
+import Combine
 
 struct NewExamView: View {
     @EnvironmentObject var routerView: ServiceRoute
@@ -21,6 +22,7 @@ struct NewExamView: View {
     @Binding var examName: [String]
     @Binding var sectionExamCounter: [Int]
     @Binding var userID: String
+    var refreshSubject: PassthroughSubject<Void, Never>
     
     let apiManager = ApiManagerTeacher()
     @State private var documentData: Data? // Declaration of documentData
@@ -117,10 +119,11 @@ struct NewExamView: View {
                         print("Exam added successfully")
                     }
                 }
-                examName.append(textFieldExamName)
-                sectionExamCounter.append(sectionCounter)
+//                examName.append(textFieldExamName)
+//                sectionExamCounter.append(sectionCounter)
                 
                 self.isPresented = false
+                self.refreshSubject.send()
             }) {
                 Text("Submit")
                     .padding(.vertical, 5)

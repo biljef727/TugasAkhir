@@ -54,7 +54,7 @@ struct StudentView: View {
                     Text("coding")
                     Spacer()
                     Button(action:{
-                        
+                        routerView.path.append("startExam")
                     }, label:{
                         Text("Start")
                             .foregroundColor(Color.white)

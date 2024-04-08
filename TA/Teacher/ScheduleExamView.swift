@@ -6,12 +6,13 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ScheduleExamView: View {
     @EnvironmentObject var routerView : ServiceRoute
     @State var listGrade: [String] = []
-    
-    @State var listExamName: [String] = ["Exam 1", "Exam 2", "Exam 3", "Exam 4","Exam 5","Exam 6"]
+    @State var listGradeID: [String] = []
+//    @State var listExamName: [String] = []
     
     @State var examDuration: String = ""
     @State var selectedGradeIndex = 0
@@ -22,15 +23,11 @@ struct ScheduleExamView: View {
     @State var formattedTimeStart: TimeInterval?
     @State var formattedTimeEnd: TimeInterval?
     @State var examName: [String] = []
-    @State var examCounter :[String] = []
+    @State var examID :[String] = []
     
     @Binding var isPresented: Bool
-    @Binding var scheduleGrade : [String]
-    @Binding var scheduleExam : [String]
-    @Binding var scheduleStartDate : [TimeInterval]
-    @Binding var scheduleStartExamTime : [TimeInterval]
-    @Binding var scheduleEndExamTime: [TimeInterval]
     @Binding var userID: String
+    var refreshSubject: PassthroughSubject<Void, Never>
     
     let apiManager = ApiManagerTeacher()
     var body: some View {
@@ -75,20 +72,25 @@ struct ScheduleExamView: View {
             Button(action:{
                 let calendar = Calendar.current
                 let examDurationMinutes = Int(examDuration) ?? 0
-                var examEndDate = calendar.date(byAdding: .minute, value: examDurationMinutes, to: selectedTime) ?? selectedTime
-                
-                scheduleGrade.append(listGrade[selectedGradeIndex])
-                scheduleExam.append(listExamName[selectedExamIndex])
-                
+                let examEndDate = calendar.date(byAdding: .minute, value: examDurationMinutes, to: selectedTime) ?? selectedTime
                 self.formattedDate = selectedDate.timeIntervalSince1970
                 self.formattedTimeStart = selectedTime.timeIntervalSince1970
                 self.formattedTimeEnd = examEndDate.timeIntervalSince1970
                 
-                scheduleStartDate.append(formattedDate!)
-                scheduleStartExamTime.append(formattedTimeStart!)
-                scheduleEndExamTime.append(formattedTimeEnd!)
-                
+                apiManager.addNewScheduleExam(examID: examID[selectedExamIndex],
+                                              classID: listGradeID[selectedGradeIndex],
+                                              examDate: formattedDate!,
+                                              startExamTime: formattedTimeStart!,
+                                              endExamTime: formattedTimeEnd!)
+                { error  in
+                    if let error = error {
+                        print("Error occurred: \(error)")
+                    } else {
+                        print("Exam added successfully")
+                    }
+                }
                 self.isPresented = false
+                self.refreshSubject.send()
             }, label:{
                 Text("Done")
                     .padding(.vertical,5)
@@ -96,6 +98,7 @@ struct ScheduleExamView: View {
                     .foregroundColor(Color.white)
                     .font(.title)
             })
+
             .frame(width: UIScreen.main.bounds.width/3,height: 50)
             .background(Color.accentColor)
             .cornerRadius(15)
@@ -106,12 +109,12 @@ struct ScheduleExamView: View {
         }
     }
     func fetchExamNames() {
-        apiManager.fetchClassID(userID: self.userID) { result in
+        apiManager.fetchClassIDandNames(userID: self.userID) { result in
             switch result {
-            case .success(let (examNames, examSectionCounter)):
+            case .success(let (examNames, examID)):
                 DispatchQueue.main.async {
                     self.examName = examNames
-                    self.examCounter = examSectionCounter
+                    self.examID = examID
                 }
             case .failure(let error):
                 print("Error fetching class names: \(error)")
@@ -121,9 +124,10 @@ struct ScheduleExamView: View {
     func fecthClassTeacher(){
         apiManager.fetchClassTeacher(userID : self.userID) { result in
             switch result {
-            case .success(let teacherClassID):
+            case .success(let (teacherClassID,classID)):
                 DispatchQueue.main.async {
                     self.listGrade = teacherClassID
+                    self.listGradeID = classID
                 }
             case .failure(let error):
                 // Handle error, maybe show an alert
