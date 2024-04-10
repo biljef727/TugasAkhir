@@ -12,11 +12,12 @@ import SwiftData
 @main
 struct TAApp: App {
     @StateObject var routerView = ServiceRoute()
-
+    let persistenceController = PersistenceController.shared
     var body: some Scene {
         WindowGroup {
             LoginView(routerView: routerView)
                 .environmentObject(routerView)
+                .environment(\.managedObjectContext, persistenceController.container.viewContext)
         }
     }
 }

@@ -18,6 +18,9 @@ struct ResultExamView: View {
     @State var studentScore : [Int] = [100, 85, 100, 100, 100, 100, 100, 100, 75, 100, 100, 40]
     @State var studentStatusExam : [String] = ["Done","Wait","Done","Wait","Done","Wait","Done","Wait","Done","Wait","Done","Wait"]
     
+    var examNames : String?
+    var examDates : String?
+    var examIDs : String?
     var body: some View {
         VStack{
             ScrollView {
@@ -34,19 +37,24 @@ struct ResultExamView: View {
                     Text("Name").font(.headline)
                     Text("ID").font(.headline)
                     Text("Exam Name").font(.headline)
-                    Text("Start Date").font(.headline)
-                    Text("End Date").font(.headline)
+                    Text("Exam Date").font(.headline)
                     Text("Score").font(.headline)
+                    Text("File").font(.headline)
                     Text("Status").font(.headline)
                     Text("Edit").font(.headline)
                     
                     ForEach(0..<listStudentName.count, id:\.self) { index in
                         Text(listStudentName[index])
                         Text(listStudentID[index])
-                        Text(examName)
-                        Text(dateStartExam)
-                        Text(dateDoneExam)
+                        Text(examNames ?? "")
+                        Text(examDates ?? "")
                         Text(String(studentScore[index]))
+                        
+                        Button(action: {
+                            //downloadsoal
+                        }) {
+                            Text("File Soal")
+                        }
                         Text(studentStatusExam[index])
                         Button(action: {
                             self.isEditExamStatus.toggle()

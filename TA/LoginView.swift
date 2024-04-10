@@ -90,6 +90,22 @@ struct LoginView: View {
                     NewStudentView().environmentObject(routerView)
                 }else if val == "teacher"{
                     TabBarTeacherView(userName: $userFullName, userID: $userID).environmentObject(routerView)
+                } else if val.hasPrefix("resultExam/") {
+                    let components = val.components(separatedBy: "/")
+                    if components.count > 1 {
+                        let examInfo = components[1]
+                        let examInfoComponents = examInfo.components(separatedBy: "-")
+                        if examInfoComponents.count == 3 {
+                            let examName = examInfoComponents[0]
+                            let examDate = examInfoComponents[1]
+                            let examIDs = examInfoComponents[2]
+                            ResultExamView(examNames: examName, examDates: examDate, examIDs: examIDs).environmentObject(routerView)
+                        } else {
+                            ResultExamView().environmentObject(routerView)
+                        }
+                    } else {
+                        ResultExamView().environmentObject(routerView)
+                    }
                 }else if val == "student"{
                     StudentView().environmentObject(routerView)
                 }else if val == "startExam"{

@@ -10,7 +10,7 @@ struct NewClassView: View {
     var refreshSubject: PassthroughSubject<Void, Never>
     @Binding var className: [String]
 
-    let listGrade: [String] = ["4-A", "4-B", "4-C","4-A", "4-B", "4-C"]
+    let listGrade: [String] = ["4-A", "4-B", "5-A","5-B", "6-A", "6-B"]
     let listSemester: [String] = ["1", "2"]
     
     let apiManager = APIManager()

@@ -14,8 +14,11 @@
 		212133012B86F9CE00772654 /* AdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212133002B86F9CE00772654 /* AdminView.swift */; };
 		212133032B87035100772654 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212133022B87035100772654 /* Service.swift */; };
 		212273EB2BC41576006C4040 /* three-pages.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 212273EA2BC41576006C4040 /* three-pages.pdf */; };
-		212273F12BC42BBC006C4040 /* ExamStudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212273F02BC42BBC006C4040 /* ExamStudentView.swift */; };
-		212273F32BC42D89006C4040 /* PDFDrawingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212273F22BC42D89006C4040 /* PDFDrawingView.swift */; };
+		212274062BC5A08C006C4040 /* DrawingCanvasView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212274052BC5A08C006C4040 /* DrawingCanvasView.swift */; };
+		212274082BC5A0C8006C4040 /* DrawingCanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */; };
+		2122740B2BC5A129006C4040 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 212274092BC5A129006C4040 /* Model.xcdatamodeld */; };
+		2122740D2BC5A192006C4040 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740C2BC5A192006C4040 /* Persistence.swift */; };
+		2122740F2BC67CE1006C4040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740E2BC67CE1006C4040 /* ContentView.swift */; };
 		219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814D2B91AF20002DC459 /* EditStatusExam.swift */; };
 		219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814F2BA9481C002DC459 /* AddTeacherClass.swift */; };
 		219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81512BA9482B002DC459 /* AddStudentClass.swift */; };
@@ -49,8 +52,11 @@
 		212133002B86F9CE00772654 /* AdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AdminView.swift; sourceTree = "<group>"; };
 		212133022B87035100772654 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		212273EA2BC41576006C4040 /* three-pages.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = "three-pages.pdf"; sourceTree = "<group>"; };
-		212273F02BC42BBC006C4040 /* ExamStudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExamStudentView.swift; sourceTree = "<group>"; };
-		212273F22BC42D89006C4040 /* PDFDrawingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFDrawingView.swift; sourceTree = "<group>"; };
+		212274052BC5A08C006C4040 /* DrawingCanvasView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasView.swift; sourceTree = "<group>"; };
+		212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasViewController.swift; sourceTree = "<group>"; };
+		2122740A2BC5A129006C4040 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
+		2122740C2BC5A192006C4040 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
+		2122740E2BC67CE1006C4040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		219E814D2B91AF20002DC459 /* EditStatusExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatusExam.swift; sourceTree = "<group>"; };
 		219E814F2BA9481C002DC459 /* AddTeacherClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeacherClass.swift; sourceTree = "<group>"; };
 		219E81512BA9482B002DC459 /* AddStudentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStudentClass.swift; sourceTree = "<group>"; };
@@ -89,6 +95,8 @@
 		212132E02B86EFC200772654 = {
 			isa = PBXGroup;
 			children = (
+				212274092BC5A129006C4040 /* Model.xcdatamodeld */,
+				2122740C2BC5A192006C4040 /* Persistence.swift */,
 				212132EB2B86EFC200772654 /* TA */,
 				219E815B2BAD5F40002DC459 /* Unused */,
 				212132EA2B86EFC200772654 /* Products */,
@@ -179,11 +187,12 @@
 			isa = PBXGroup;
 			children = (
 				219E81562BAD37D2002DC459 /* StudentView.swift */,
-				212273F02BC42BBC006C4040 /* ExamStudentView.swift */,
 				219E81762BBBE436002DC459 /* StudentExamView.swift */,
+				2122740E2BC67CE1006C4040 /* ContentView.swift */,
+				212274052BC5A08C006C4040 /* DrawingCanvasView.swift */,
+				212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */,
 				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
 				219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */,
-				212273F22BC42D89006C4040 /* PDFDrawingView.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
@@ -265,9 +274,10 @@
 			files = (
 				21FCED1F2B8D84880049C6D3 /* NewTeacherView.swift in Sources */,
 				219E81772BBBE436002DC459 /* StudentExamView.swift in Sources */,
+				212274062BC5A08C006C4040 /* DrawingCanvasView.swift in Sources */,
+				2122740B2BC5A129006C4040 /* Model.xcdatamodeld in Sources */,
 				212132ED2B86EFC200772654 /* TAApp.swift in Sources */,
 				212133032B87035100772654 /* Service.swift in Sources */,
-				212273F12BC42BBC006C4040 /* ExamStudentView.swift in Sources */,
 				219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */,
 				21FCED272B8DBA320049C6D3 /* ClassAdmissionView.swift in Sources */,
 				219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */,
@@ -279,17 +289,19 @@
 				212133012B86F9CE00772654 /* AdminView.swift in Sources */,
 				219E817D2BC40771002DC459 /* ApiManagerStudent.swift in Sources */,
 				21FCED2F2B916BB50049C6D3 /* ResultExamView.swift in Sources */,
-				212273F32BC42D89006C4040 /* PDFDrawingView.swift in Sources */,
 				21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */,
 				219E81662BAE95FB002DC459 /* TabBarTeacherView.swift in Sources */,
+				212274082BC5A0C8006C4040 /* DrawingCanvasViewController.swift in Sources */,
 				219E81752BBBE3D2002DC459 /* LastSeenResultView.swift in Sources */,
 				21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */,
 				219E81552BA95969002DC459 /* ScheduleExamView.swift in Sources */,
 				219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */,
 				219E81572BAD37D2002DC459 /* StudentView.swift in Sources */,
 				219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */,
+				2122740F2BC67CE1006C4040 /* ContentView.swift in Sources */,
 				21FCED2B2B915CB00049C6D3 /* NewExamView.swift in Sources */,
 				219E81692BAE9647002DC459 /* ScheduleView.swift in Sources */,
+				2122740D2BC5A192006C4040 /* Persistence.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -508,6 +520,19 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCVersionGroup section */
+		212274092BC5A129006C4040 /* Model.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				2122740A2BC5A129006C4040 /* Model.xcdatamodel */,
+			);
+			currentVersion = 2122740A2BC5A129006C4040 /* Model.xcdatamodel */;
+			path = Model.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 212132E12B86EFC200772654 /* Project object */;
 }

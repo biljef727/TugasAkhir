@@ -10,6 +10,7 @@ import PDFKit
 struct PDFViewWrapper: UIViewRepresentable {
     let pdfURL: URL
     @Binding var currentPage: Int
+    @Binding var isDrawing: Bool // Add binding for drawing mode
 
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
@@ -18,11 +19,11 @@ struct PDFViewWrapper: UIViewRepresentable {
         pdfView.displayMode = .singlePageContinuous
         pdfView.displayDirection = .horizontal
         pdfView.usePageViewController(true, withViewOptions: nil)
-        pdfView.isUserInteractionEnabled = false // Disable user interaction
         if let initialPage = pdfView.document?.page(at: currentPage - 1) {
             pdfView.go(to: initialPage)
         }
         pdfView.delegate = context.coordinator
+        
         return pdfView
     }
 
@@ -30,6 +31,13 @@ struct PDFViewWrapper: UIViewRepresentable {
         // Update the current page only if the new value differs from the previous one
         if uiView.currentPage?.pageRef?.pageNumber != currentPage - 1 {
             uiView.go(to: uiView.document?.page(at: currentPage - 1) ?? PDFPage())
+        }
+        
+        // Toggle drawing mode
+        if isDrawing {
+            uiView.isUserInteractionEnabled = true // Enable user interaction
+        } else {
+            uiView.isUserInteractionEnabled = false // Disable user interaction
         }
     }
 
@@ -53,19 +61,33 @@ struct PDFViewWrapper: UIViewRepresentable {
 }
 
 struct StudentExamView: View {
-    @State private var currentPage = 1 // Initialize current page to 1
+    @Environment(\.managedObjectContext) var viewContext
+    @State private var currentPage = 1
+    @State private var isDrawing = false
+    @State var id: UUID?
+    @State var data: Data?
+    @State var title: String?
     let pdfURL = Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!
 
     var body: some View {
         VStack {
             HStack{
-                Image(systemName: "pencil")
-                Image(systemName: "eraser")
+                Spacer()
+                Button(action: {
+            
+                }) {
+                    Image(systemName: "arrow.right")
+                }
+                .padding(.trailing,50)
             }
-            .font(.title)
-            .padding()
-            PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
-                .aspectRatio(contentMode: .fit)
+            ZStack{
+                PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage, isDrawing: $isDrawing)
+                    .aspectRatio(contentMode: .fit)
+                
+                DrawingCanvasView(data: data ?? Data(), id: id ?? UUID())
+                .frame(width: 520, height: 720)
+                    .environment(\.managedObjectContext, viewContext)
+            }
             HStack{
                 Button(action: {
                     if self.currentPage > 1 {
@@ -75,9 +97,9 @@ struct StudentExamView: View {
                     Image(systemName: "arrow.left")
                 }
                 .padding()
-
+                
                 Text("Page: \(currentPage)")
-
+                
                 Button(action: {
                     if let pdfDocument = PDFDocument(url: pdfURL) {
                         let totalPages = pdfDocument.pageCount
@@ -90,8 +112,8 @@ struct StudentExamView: View {
                 }
                 .padding()
             }
+            
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity) // Ensure the view takes up entire space
     }
 }
 

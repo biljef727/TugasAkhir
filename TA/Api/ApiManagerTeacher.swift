@@ -197,7 +197,7 @@ class ApiManagerTeacher {
         }
     }
     
-    func getScheduleExamName(userID:String, completion: @escaping (Result<(examNames: [String], examDates: [String],startExamTimes: [String], endExamTimes: [String], classNames:[String]), Error>) -> Void) {
+    func getScheduleExamName(userID:String, completion: @escaping (Result<(examIDs:[String],examNames: [String], examDates: [String],startExamTimes: [String], endExamTimes: [String], classNames:[String]), Error>) -> Void) {
         let urlString = "http://localhost:8000/api/scheduleExamData?UserID=\(userID)"
         
         guard let url = URL(string: urlString) else {
@@ -218,10 +218,10 @@ class ApiManagerTeacher {
             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                 do {
                     let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
-                    guard let examNames = decodedData["ExamName"], let examDates = decodedData["ExamDate"],let startExamTimes = decodedData["StartExamTime"], let endExamTimes = decodedData["EndExamTime"],let classNames = decodedData["ClassName"]else {
+                    guard let examIDs = decodedData["ExamID"],let examNames = decodedData["ExamName"], let examDates = decodedData["ExamDate"],let startExamTimes = decodedData["StartExamTime"], let endExamTimes = decodedData["EndExamTime"],let classNames = decodedData["ClassName"]else {
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-                    completion(.success((examNames, examDates,startExamTimes,endExamTimes,classNames)))
+                    completion(.success((examIDs,examNames, examDates,startExamTimes,endExamTimes,classNames)))
                 } catch {
                     print("Error parsing JSON: \(error)")
                     completion(.failure(error))

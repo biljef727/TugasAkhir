@@ -56,7 +56,8 @@ struct ScheduleView: View {
                                 Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])!) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])!) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])!) | \(scheduleGrade[index])")
                                     .padding()
                                 Button(action: {
-                                    routerView.path.append("resultExam")
+                                    let examInfo = "\(scheduleExam[index])-\(passingFormatDate(from: scheduleStartDate[index])!)"
+                                    routerView.navigate(to: "resultExam/\(examInfo)-\(examIDs[index])")
                                 }) {
                                     Text("View Results")
                                         .padding()
@@ -82,7 +83,8 @@ struct ScheduleView: View {
         apiManager.getScheduleExamName(userID: self.userID) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let (examNames, examDates,startExamTimes,endExamTimes,classNames)):
+                case .success(let (examIDs,examNames, examDates,startExamTimes,endExamTimes,classNames)):
+                    self.examIDs = examIDs
                     self.scheduleExam = examNames
                     self.scheduleStartDate = examDates
                     self.scheduleStartExamTime = startExamTimes
@@ -103,6 +105,17 @@ struct ScheduleView: View {
         
         let formatter = DateFormatter()
         formatter.dateFormat = "EEEE, MMMM dd, yyyy"
+        
+        return formatter.string(from: date)
+    }
+    func passingFormatDate(from timeIntervalString: String) -> String? {
+        guard let timeInterval = TimeInterval(timeIntervalString) else {
+            return nil
+        }
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMMM dd, yyyy"
         
         return formatter.string(from: date)
     }
