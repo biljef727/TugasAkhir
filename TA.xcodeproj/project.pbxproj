@@ -18,7 +18,7 @@
 		212274082BC5A0C8006C4040 /* DrawingCanvasViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */; };
 		2122740B2BC5A129006C4040 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 212274092BC5A129006C4040 /* Model.xcdatamodeld */; };
 		2122740D2BC5A192006C4040 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740C2BC5A192006C4040 /* Persistence.swift */; };
-		2122740F2BC67CE1006C4040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740E2BC67CE1006C4040 /* ContentView.swift */; };
+		2122742E2BC6C1CC006C4040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122742D2BC6C1CC006C4040 /* ContentView.swift */; };
 		219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814D2B91AF20002DC459 /* EditStatusExam.swift */; };
 		219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814F2BA9481C002DC459 /* AddTeacherClass.swift */; };
 		219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81512BA9482B002DC459 /* AddStudentClass.swift */; };
@@ -56,7 +56,8 @@
 		212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingCanvasViewController.swift; sourceTree = "<group>"; };
 		2122740A2BC5A129006C4040 /* Model.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = Model.xcdatamodel; sourceTree = "<group>"; };
 		2122740C2BC5A192006C4040 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
-		2122740E2BC67CE1006C4040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		212274262BC6AF4D006C4040 /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = System/Library/Frameworks/PDFKit.framework; sourceTree = SDKROOT; };
+		2122742D2BC6C1CC006C4040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		219E814D2B91AF20002DC459 /* EditStatusExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatusExam.swift; sourceTree = "<group>"; };
 		219E814F2BA9481C002DC459 /* AddTeacherClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeacherClass.swift; sourceTree = "<group>"; };
 		219E81512BA9482B002DC459 /* AddStudentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStudentClass.swift; sourceTree = "<group>"; };
@@ -100,6 +101,7 @@
 				212132EB2B86EFC200772654 /* TA */,
 				219E815B2BAD5F40002DC459 /* Unused */,
 				212132EA2B86EFC200772654 /* Products */,
+				212274252BC6AF4D006C4040 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -135,6 +137,23 @@
 				212132F52B86EFC500772654 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		212274252BC6AF4D006C4040 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				212274262BC6AF4D006C4040 /* PDFKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		2122742F2BC9123D006C4040 /* Drawing */ = {
+			isa = PBXGroup;
+			children = (
+				212274052BC5A08C006C4040 /* DrawingCanvasView.swift */,
+				212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */,
+			);
+			path = Drawing;
 			sourceTree = "<group>";
 		};
 		219E815B2BAD5F40002DC459 /* Unused */ = {
@@ -188,11 +207,10 @@
 			children = (
 				219E81562BAD37D2002DC459 /* StudentView.swift */,
 				219E81762BBBE436002DC459 /* StudentExamView.swift */,
-				2122740E2BC67CE1006C4040 /* ContentView.swift */,
-				212274052BC5A08C006C4040 /* DrawingCanvasView.swift */,
-				212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */,
+				2122742F2BC9123D006C4040 /* Drawing */,
 				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
 				219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */,
+				2122742D2BC6C1CC006C4040 /* ContentView.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
@@ -298,7 +316,7 @@
 				219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */,
 				219E81572BAD37D2002DC459 /* StudentView.swift in Sources */,
 				219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */,
-				2122740F2BC67CE1006C4040 /* ContentView.swift in Sources */,
+				2122742E2BC6C1CC006C4040 /* ContentView.swift in Sources */,
 				21FCED2B2B915CB00049C6D3 /* NewExamView.swift in Sources */,
 				219E81692BAE9647002DC459 /* ScheduleView.swift in Sources */,
 				2122740D2BC5A192006C4040 /* Persistence.swift in Sources */,

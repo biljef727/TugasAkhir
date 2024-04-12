@@ -8,8 +8,6 @@
 import SwiftUI
 import PencilKit
 
-
-
 class DrawingCanvasViewController: UIViewController {
     
     static var shared = DrawingCanvasViewController()

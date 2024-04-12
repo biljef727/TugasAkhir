@@ -108,7 +108,8 @@ struct LoginView: View {
                     }
                 }else if val == "student"{
                     StudentView().environmentObject(routerView)
-                }else if val == "startExam"{
+                }
+                else if val == "startExam"{
                     StudentExamView().environmentObject(routerView)
                 }
             }

@@ -1,137 +1,152 @@
 //import SwiftUI
+//import PencilKit
 //import PDFKit
 //
 //struct ContentView: View {
+//    @State private var currentPageIndex = 0
+//    @State private var pdfDocument: PDFDocument?
+//    @State private var pdfImages: [UIImage] = []
+//
 //    var body: some View {
-//        NavigationView {
-//            VStack {
-//                PDFKitView(url: Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!)
-//                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-//                
-//                DrawingOverlay()
+//        ZStack {
+//            if let pdfDocument = pdfDocument {
+//                PDFViewer(pdfDocument: pdfDocument, currentPageIndex: $currentPageIndex)
+//                    .onAppear {
+//                        loadPDF()
+//                    }
 //            }
-//            .navigationTitle("PDF Viewer")
+//
+//            if !pdfImages.isEmpty {
+//                PKCanvasStack(pdfImages: pdfImages)
+//            }
+//        }
+//    }
+//
+//    func loadPDF() {
+//        if let path = Bundle.main.path(forResource: "three-pages", ofType: "pdf") {
+//            if let document = PDFDocument(url: URL(fileURLWithPath: path)) {
+//                pdfDocument = document
+//                generatePDFImages()
+//            }
+//        }
+//    }
+//
+//    func generatePDFImages() {
+//        guard let pdfDocument = pdfDocument else { return }
+//
+//        var images: [UIImage] = []
+//        for i in 0..<pdfDocument.pageCount {
+//            if let page = pdfDocument.page(at: i) {
+//                let pageSize = page.bounds(for: .mediaBox).size
+//                UIGraphicsBeginImageContextWithOptions(pageSize, false, 0.0)
+//                let context = UIGraphicsGetCurrentContext()!
+//                context.setFillColor(UIColor.white.cgColor)
+//                context.fill(CGRect(origin: .zero, size: pageSize))
+//                context.translateBy(x: 0.0, y: pageSize.height)
+//                context.scaleBy(x: 1.0, y: -1.0)
+//                page.draw(with: .mediaBox, to: context)
+//                let image = UIGraphicsGetImageFromCurrentImageContext()!
+//                UIGraphicsEndImageContext()
+//                images.append(image)
+//            }
+//        }
+//
+//        pdfImages = images
+//    }
+//}
+//
+//struct PDFViewer: View {
+//    var pdfDocument: PDFDocument
+//    @Binding var currentPageIndex: Int
+//
+//    var body: some View {
+//        VStack {
+//            PDFViewRepresented(pdfDocument: pdfDocument, currentPageIndex: $currentPageIndex)
+//            Spacer()
 //        }
 //    }
 //}
 //
-//struct DrawingOverlay: View {
-//    @State private var drawingPaths: [Int: Path] = [:]
-//    @State private var isDrawing = false
-//    @State private var currentPath = Path()
-//    @State private var currentPage: Int = 1
-//
-//    var body: some View {
-//        GeometryReader { geometry in
-//            ZStack {
-//                PDFPageView(pageNumber: currentPage, drawingPath: drawingPaths[currentPage])
-//                    .onTapGesture {
-//                        self.isDrawing = true
-//                    }
-//                    .onDisappear {
-//                        self.isDrawing = false
-//                    }
-//                
-//                if let drawingPath = drawingPaths[currentPage] {
-//                    drawingPath
-//                        .stroke(Color.red, lineWidth: 2)
-//                }
-//                
-//                if isDrawing {
-//                    currentPath
-//                        .stroke(Color.red, lineWidth: 2)
-//                        .gesture(
-//                            DragGesture(minimumDistance: 0)
-//                                .onChanged { value in
-//                                    let point = value.location
-//                                    self.addPoint(point, to: currentPage)
-//                                }
-//                                .onEnded { _ in
-//                                    self.saveDrawingPath(for: currentPage)
-//                                    self.currentPath = Path()
-//                                }
-//                        )
-//                }
-//            }
-//        }
-//        .onAppear {
-//            if self.drawingPaths[currentPage] == nil {
-//                self.drawingPaths[currentPage] = Path()
-//            }
-//        }
-//    }
-//    
-//    private func addPoint(_ point: CGPoint, to page: Int) {
-//        currentPath.addLine(to: point)
-//    }
-//    
-//    private func saveDrawingPath(for page: Int) {
-//        drawingPaths[page] = currentPath
-//    }
-//}
-//
-//struct PDFPageView: UIViewRepresentable {
-//    let pageNumber: Int
-//    let drawingPath: Path?
+//struct PDFViewRepresented: UIViewRepresentable {
+//    var pdfDocument: PDFDocument
+//    @Binding var currentPageIndex: Int
 //
 //    func makeUIView(context: Context) -> PDFView {
 //        let pdfView = PDFView()
-//        pdfView.displayMode = .singlePageContinuous
+//        pdfView.document = pdfDocument
 //        pdfView.autoScales = true
+//        pdfView.displayMode = .singlePageContinuous
+//        pdfView.usePageViewController(true, withViewOptions: nil)
+//        pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        pdfView.backgroundColor = UIColor.white
+//        pdfView.delegate = context.coordinator
 //        return pdfView
 //    }
-//    
+//
 //    func updateUIView(_ pdfView: PDFView, context: Context) {
-//        if let url = Bundle.main.url(forResource: "three-pages", withExtension: "pdf"),
-//           let document = PDFDocument(url: url) {
-//            pdfView.document = document
-//            if let page = document.page(at: pageNumber - 1) {
-//                pdfView.go(to: page)
+//        if let page = pdfDocument.page(at: currentPageIndex) {
+//            pdfView.go(to: page)
+//        }
+//    }
+//
+//    func makeCoordinator() -> Coordinator {
+//        Coordinator(self)
+//    }
+//
+//    class Coordinator: NSObject, PDFViewDelegate {
+//        var parent: PDFViewRepresented
+//
+//        init(_ parent: PDFViewRepresented) {
+//            self.parent = parent
+//        }
+//
+//        func pdfViewPageChanged(_ pdfView: PDFView) {
+//            if let currentPageIndex = pdfView.document?.index(for: pdfView.currentPage ?? PDFPage()) {
+//                parent.currentPageIndex = currentPageIndex
 //            }
 //        }
-//        if let path = drawingPath {
-//            let overlay = DrawingOverlayPath(path: path)
-//            pdfView.addSubview(overlay)
+//    }
+//}
+//
+//
+//struct PKCanvasStack: View {
+//    var pdfImages: [UIImage]
+//
+//    var body: some View {
+//        TabView {
+//            ForEach(0..<pdfImages.count, id: \.self) { index in
+//                PKCanvasViewWrapper(image: pdfImages[index])
+//                    .tabItem {
+//                        Text("Page \(index + 1)")
+//                    }
+//            }
 //        }
+//        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .automatic))
 //    }
 //}
 //
-//struct DrawingOverlayPath: UIViewRepresentable {
-//    let path: Path
-//    
-//    func makeUIView(context: Context) -> UIView {
-//        let overlayView = UIView()
-//        overlayView.backgroundColor = .clear
-//        return overlayView
-//    }
+//struct PKCanvasViewWrapper: UIViewRepresentable {
+//    var image: UIImage
 //
-//    func updateUIView(_ uiView: UIView, context: Context) {
-//        let shapeLayer = CAShapeLayer()
-//        shapeLayer.path = path.cgPath
-//        shapeLayer.strokeColor = UIColor.red.cgColor
-//        shapeLayer.fillColor = UIColor.clear.cgColor
-//        shapeLayer.lineWidth = 2
+//    func makeUIView(context: Context) -> PKCanvasView {
+//        let canvasView = PKCanvasView()
+//        canvasView.tool = PKInkingTool(.pen, color: .black, width: 15)
 //        
-//        uiView.layer.addSublayer(shapeLayer)
+//        do {
+//            canvasView.drawing = try PKDrawing(data: image.pngData() ?? Data())
+//        } catch {
+//            // Handle error here
+//            print("Error creating PKDrawing from image data: \(error)")
+//        }
+//        
+//        return canvasView
+//    }
+//
+//    func updateUIView(_ uiView: PKCanvasView, context: Context) {
+//        // Update canvas view if needed
 //    }
 //}
 //
-//struct PDFKitView: UIViewRepresentable {
-//    let url: URL
-//
-//    func makeUIView(context: Context) -> PDFView {
-//        let pdfView = PDFView()
-//        pdfView.document = PDFDocument(url: url)
-//        return pdfView
-//    }
-//
-//    func updateUIView(_ pdfView: PDFView, context: Context) {
-//        // Update the PDFView if needed
-//    }
-//}
-//
-//struct ContentView_Previews: PreviewProvider {
-//    static var previews: some View {
-//        ContentView()
-//    }
+//#Preview {
+//    ContentView()
 //}
