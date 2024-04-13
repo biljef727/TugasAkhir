@@ -12,9 +12,6 @@ class DrawingCanvasViewController: UIViewController {
     
     static var shared = DrawingCanvasViewController()
     
-    private let trainedImageSize = CGSize(width: 28, height: 28)
-    @State var predictednumber: Int?
-    
     lazy var canvas: PKCanvasView = {
         let view = PKCanvasView()
         view.backgroundColor = .clear

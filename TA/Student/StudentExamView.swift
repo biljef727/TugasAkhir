@@ -103,8 +103,6 @@ struct StudentExamView: View {
     }
 }
 
-
-
 #Preview {
     StudentExamView()
 }
