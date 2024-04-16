@@ -8,7 +8,7 @@
 import Foundation
 
 func fetchPDF(classID: String, completion: @escaping (Result<String, Error>) -> Void) {
-    let urlString = "http://indramaryati.xyz/iph_exam/public/api/getFile?ClassID=\(classID)"
+    let urlString = "https://indramaryati.xyz/iph_exam/public/api/getFile?ClassID=\(classID)"
     
     guard let url = URL(string: urlString) else {
         completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))

@@ -124,7 +124,7 @@ struct LoginView: View {
             "UserPassword": passwordFieldText
         ]
         
-        guard let url = URL(string: "http://localhost:8000/api/login") else {
+        guard let url = URL(string: "https://indramaryati.xyz/iph_exam/public/api/login") else {
             print("Invalid URL")
             return
         }

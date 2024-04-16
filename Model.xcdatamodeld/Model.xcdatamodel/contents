@@ -3,12 +3,13 @@
     <entity name="DataDrawing" representedClassName="DataDrawing" syncable="YES" codeGenerationType="class">
         <attribute name="canvasData" optional="YES" attributeType="Binary"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="pageNumber" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pageNumber" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="dataFor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Drawing" inverseName="canvasFor" inverseEntity="Drawing"/>
     </entity>
     <entity name="Drawing" representedClassName="Drawing" syncable="YES" codeGenerationType="class">
+        <attribute name="canvasData" optional="YES" attributeType="Binary"/>
         <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
-        <attribute name="pdfPage" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="pdfPage" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
         <relationship name="canvasFor" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="DataDrawing" inverseName="dataFor" inverseEntity="DataDrawing"/>
     </entity>
 </model>

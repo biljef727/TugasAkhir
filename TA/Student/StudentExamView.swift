@@ -9,6 +9,7 @@ import PDFKit
 
 struct PDFViewWrapper: UIViewRepresentable {
     let pdfURL: URL
+    
     @Binding var currentPage: Int
     
     func makeUIView(context: Context) -> PDFView {
@@ -47,6 +48,7 @@ struct PDFViewWrapper: UIViewRepresentable {
         func currentPageChanged(_ sender: PDFView) {
             if let currentPageIndex = sender.currentPage?.pageRef?.pageNumber {
                 parent.currentPage = Int(currentPageIndex) + 1
+                parent.clearCanvasDataOnNewPage(newPage: parent.currentPage)
             }
         }
     }
@@ -56,8 +58,7 @@ struct StudentExamView: View {
     @Environment(\.managedObjectContext) var viewContext
     @State private var currentPage = 1
     @State var id: UUID?
-    @State var data: Data?
-    @State var title: String?
+    @Binding var data: Data
     let pdfURL = Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!
     
     var body: some View {
@@ -75,7 +76,7 @@ struct StudentExamView: View {
                 PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
                     .aspectRatio(contentMode: .fit)
                 
-                DrawingCanvasView(data: data ?? Data(), id: id ?? UUID(), currentPage:$currentPage)
+                DrawingCanvasView(data: $data, id: id ?? UUID(), currentPage:$currentPage)
                     .frame(width: 520, height: 720)
                     .environment(\.managedObjectContext, viewContext)
             }
@@ -102,8 +103,8 @@ struct StudentExamView: View {
         return pdf.pageCount
     }
 }
-
-#Preview {
-    StudentExamView()
-}
+//
+//#Preview {
+//    StudentExamView()
+//}
 

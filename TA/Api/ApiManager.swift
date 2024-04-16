@@ -2,7 +2,7 @@ import Foundation
 
 class APIManager {
     func addTeacher(userEmail: String, userPassword: String, userFullname: String, userNoInduk: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/addTeacher"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/addTeacher"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -42,7 +42,7 @@ class APIManager {
     }
     
     func addStudent(userEmail: String, userPassword: String, userFullname: String, userNoInduk: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/addStudent"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/addStudent"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -82,7 +82,7 @@ class APIManager {
     }
     
     func addClass(className: String, classSemester: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/addClass"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/addClass"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -120,7 +120,7 @@ class APIManager {
     }
     
     func getClassNames(completion: @escaping (Result<(classNames: [String], classSemester: [String]), Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/getClassNames"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/getClassNames"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -149,7 +149,7 @@ class APIManager {
         }.resume()
     }
     func fetchClassID(className: String, classSemester: String, completion: @escaping (Int?) -> Void) {
-        guard let url = URL(string: "http://indramaryati.xyz/iph_exam/public/api/getClassChoosen") else {
+        guard let url = URL(string: "https://indramaryati.xyz/iph_exam/public/api/getClassChoosen") else {
             print("Invalid URL")
             return
         }
@@ -185,14 +185,14 @@ class APIManager {
                     completion(nil)
                 }
             } else {
-                print("HTTP Error: \(response.debugDescription)")
+                print("https Error: \(response.debugDescription)")
                 completion(nil)
             }
         }.resume()
     }
     
     func getTeacherNames(ClassID: String,completion: @escaping(Result<(teacherNames: [String], teacherIds: [String]), Error>) -> Void){
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/getTeacherNames?ClassID=\(ClassID)"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/getTeacherNames?ClassID=\(ClassID)"
 //        let _ = print("1")
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -238,7 +238,7 @@ class APIManager {
     }
     
     func getStudentNames(completion: @escaping(Result<(studentNames: [String], studentIds: [String]), Error>) -> Void){
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/getStudentNames"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/getStudentNames"
         //           let _ = print("1")
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -270,7 +270,7 @@ class APIManager {
     }
     
     func admissionTeacher(classID: Int, userID: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/admissionTeacher"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/admissionTeacher"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -308,7 +308,7 @@ class APIManager {
     }
     
     func admissionStudent(classID: Int, userID: Int, completion: @escaping (Result<Void, Error>) -> Void) {
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/admissionStudent"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/admissionStudent"
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
@@ -345,7 +345,7 @@ class APIManager {
         }.resume()
     }
     func fetchAlreadyTeacher(ClassID: String,completion: @escaping(Result<(teacherNamesInsideClass:[String],teacherIDInsideClass:[String]), Error>) -> Void){
-        let urlString = "http://indramaryati.xyz/iph_exam/public/api/getTeacherInsideClass?ClassID=\(ClassID)"
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/getTeacherInsideClass?ClassID=\(ClassID)"
         let _ = print("1")
         guard let url = URL(string: urlString) else {
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
@@ -390,7 +390,7 @@ class APIManager {
         }.resume()
     }
     func fetchAlreadyStudent(ClassID: String,completion: @escaping(Result<(StudentNamesInsideClass:[String],StudentIDInsideClass:[String]), Error>) -> Void){
-            let urlString = "http://indramaryati.xyz/iph_exam/public/api/getStudentInsideClass?ClassID=\(ClassID)"
+            let urlString = "https://indramaryati.xyz/iph_exam/public/api/getStudentInsideClass?ClassID=\(ClassID)"
             let _ = print("1")
             guard let url = URL(string: urlString) else {
                 completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
