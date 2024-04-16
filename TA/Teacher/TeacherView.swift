@@ -14,15 +14,12 @@ struct TeacherView: View {
     @Binding var userID: String
     
     @State private var isAddNewExam = false
-    
-    @State var selectedGradeIndex = 0
-    @State var selectedGradeIndex2 = 0
-    
+
     @State var examName: [String] = []
     @State var examCounter :[String] = []
     @State var sectionExamCounter :[Int] = []
     
-    let refreshSubject = PassthroughSubject<Void, Never>()
+    let refreshSubject = PassthroughSubject<UUID, Never>() // Changed type to PassthroughSubject<UUID, Never>
     let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
@@ -45,7 +42,13 @@ struct TeacherView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isAddNewExam) {
-                    NewExamView(isPresented: $isAddNewExam,examName: $examName,sectionExamCounter: $sectionExamCounter,userID: $userID,refreshSubject: refreshSubject)
+                    NewExamView(
+                        isPresented: $isAddNewExam,
+                        examName: $examName,
+                        sectionExamCounter: $sectionExamCounter,
+                        userID: $userID,
+                        refreshSubject: refreshSubject // Pass the refreshSubject
+                    )
                 }
             }
             ScrollView{
@@ -63,7 +66,7 @@ struct TeacherView: View {
         .onAppear{
             fetchExamNames()
         }
-        .onReceive(refreshSubject) { _ in
+        .onReceive(refreshSubject) { _ in // Receive UUID from refreshSubject
             fetchExamNames()
         }
     }
@@ -80,6 +83,4 @@ struct TeacherView: View {
             }
         }
     }
-    
-
 }

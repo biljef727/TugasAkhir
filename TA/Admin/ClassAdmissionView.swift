@@ -128,6 +128,7 @@ struct ClassAdmissionView: View {
         }
         .onAppear {
             fetchTeacherInsideClass()
+            fetchStudentInsideClass()
         }
     }
     func fetchTeacherInsideClass(){
@@ -144,5 +145,19 @@ struct ClassAdmissionView: View {
             }
         }
     }
+    func fetchStudentInsideClass(){
+            apiManager.fetchAlreadyStudent(ClassID: String(classID)) { result in
+                switch result {
+                case .success(let (StudentNamesInsideClass,StudentIDInsideClass)):
+                    DispatchQueue.main.async {
+                        self.listStudentName = StudentNamesInsideClass
+                        self.listStudentID = StudentIDInsideClass
+                    }
+                case .failure(let error):
+                    // Handle error, maybe show an alert
+                    print("Error fetching Student names: \(error)")
+                }
+            }
+        }
     
 }

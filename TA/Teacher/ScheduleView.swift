@@ -18,11 +18,11 @@ struct ScheduleView: View {
     @State var examIDs : [String] = []
     @State var scheduleExam : [String] = []
     @State var scheduleGrade : [String] =  []
+    @State var scheduleGradeID : [String] =  []
     @State var scheduleStartDate :[String] = []
     @State var scheduleStartExamTime :[String] = []
     @State var scheduleEndExamTime : [String] = []
-    
-    let refreshSubject = PassthroughSubject<Void, Never>()
+    let refreshSubject = PassthroughSubject<UUID, Never>()
     let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
@@ -56,8 +56,8 @@ struct ScheduleView: View {
                                 Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])!) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])!) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])!) | \(scheduleGrade[index])")
                                     .padding()
                                 Button(action: {
-                                    let examInfo = "\(scheduleExam[index])-\(passingFormatDate(from: scheduleStartDate[index])!)"
-                                    routerView.navigate(to: "resultExam/\(examInfo)-\(examIDs[index])")
+                                    let examInfo = "\(scheduleExam[index])-\(examIDs[index])-\(passingFormatDate(from: scheduleStartDate[index])!)-\(scheduleGradeID[index])"
+                                    routerView.navigate(to: "resultExam/\(examInfo)")
                                 }) {
                                     Text("View Results")
                                         .padding()
@@ -83,13 +83,14 @@ struct ScheduleView: View {
         apiManager.getScheduleExamName(userID: self.userID) { result in
             DispatchQueue.main.async {
                 switch result {
-                case .success(let (examIDs,examNames, examDates,startExamTimes,endExamTimes,classNames)):
+                case .success(let (examIDs,examNames, examDates,startExamTimes,endExamTimes,classNames,classID)):
                     self.examIDs = examIDs
                     self.scheduleExam = examNames
                     self.scheduleStartDate = examDates
                     self.scheduleStartExamTime = startExamTimes
                     self.scheduleEndExamTime = endExamTimes
                     self.scheduleGrade = classNames
+                    self.scheduleGradeID = classID
                 case .failure(let error):
                     print("Error fetching Scheduled names: \(error)")
                 }

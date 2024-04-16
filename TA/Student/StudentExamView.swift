@@ -75,7 +75,7 @@ struct StudentExamView: View {
                 PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
                     .aspectRatio(contentMode: .fit)
                 
-                DrawingCanvasView(data: data ?? Data(), id: id ?? UUID())
+                DrawingCanvasView(data: data ?? Data(), id: id ?? UUID(), currentPage:$currentPage)
                     .frame(width: 520, height: 720)
                     .environment(\.managedObjectContext, viewContext)
             }

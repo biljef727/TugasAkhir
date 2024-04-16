@@ -27,7 +27,7 @@ struct ScheduleExamView: View {
     
     @Binding var isPresented: Bool
     @Binding var userID: String
-    var refreshSubject: PassthroughSubject<Void, Never>
+    var refreshSubject: PassthroughSubject<UUID, Never>
     
     let apiManager = ApiManagerTeacher()
     var body: some View {
@@ -87,10 +87,12 @@ struct ScheduleExamView: View {
                         print("Error occurred: \(error)")
                     } else {
                         print("Exam added successfully")
+                        DispatchQueue.main.async {
+                            refreshSubject.send(UUID())
+                        }
                     }
                 }
                 self.isPresented = false
-                self.refreshSubject.send()
             }, label:{
                 Text("Done")
                     .padding(.vertical,5)

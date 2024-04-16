@@ -95,11 +95,12 @@ struct LoginView: View {
                     if components.count > 1 {
                         let examInfo = components[1]
                         let examInfoComponents = examInfo.components(separatedBy: "-")
-                        if examInfoComponents.count == 3 {
+                        if examInfoComponents.count == 4 {
                             let examName = examInfoComponents[0]
-                            let examDate = examInfoComponents[1]
-                            let examIDs = examInfoComponents[2]
-                            ResultExamView(examNames: examName, examDates: examDate, examIDs: examIDs).environmentObject(routerView)
+                            let examIDs = examInfoComponents[1]
+                            let examDate = examInfoComponents[2]
+                            let gradeIDS = examInfoComponents[3]
+                            ResultExamView(examNames: examName, examIDs: examIDs, examDates: examDate,gradeIDs : gradeIDS).environmentObject(routerView)
                         } else {
                             ResultExamView().environmentObject(routerView)
                         }

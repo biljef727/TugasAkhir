@@ -1,10 +1,3 @@
-//
-//  NewExamView.swift
-//  TA
-//
-//  Created by Billy Jefferson on 01/03/24.
-//
-
 import SwiftUI
 import UniformTypeIdentifiers
 import Combine
@@ -22,10 +15,10 @@ struct NewExamView: View {
     @Binding var examName: [String]
     @Binding var sectionExamCounter: [Int]
     @Binding var userID: String
-    var refreshSubject: PassthroughSubject<Void, Never>
+    var refreshSubject: PassthroughSubject<UUID, Never> // Changed type to PassthroughSubject<UUID, Never>
     
     let apiManager = ApiManagerTeacher()
-    @State private var documentData: Data? // Declaration of documentData
+    @State private var documentData: Data?
     
     @State private var documentURL: URL?
     @State private var isShowingDocumentPicker = false
@@ -117,13 +110,12 @@ struct NewExamView: View {
                         print("Error occurred: \(error)")
                     } else {
                         print("Exam added successfully")
+                        DispatchQueue.main.async {
+                            refreshSubject.send(UUID())
+                        }// Sending UUID to trigger refresh
                     }
                 }
-//                examName.append(textFieldExamName)
-//                sectionExamCounter.append(sectionCounter)
-                
                 self.isPresented = false
-                self.refreshSubject.send()
             }) {
                 Text("Submit")
                     .padding(.vertical, 5)
