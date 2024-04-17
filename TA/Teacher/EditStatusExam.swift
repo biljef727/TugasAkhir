@@ -12,7 +12,7 @@ struct EditStatusExam: View {
     @Binding var isPresented: Bool
     @State var scores: [String] = ["0", "0", "0"]
 
-    @State var userID: String = ""
+    @State var userID: String
     @State var studentName: String = ""
     @State var studentID:  String = ""
     @State var examCounter : Int = 0
@@ -23,7 +23,6 @@ struct EditStatusExam: View {
     }
     
     let apiManager = ApiManagerTeacher()
-    
     var body: some View {
         VStack {
 //            ForEach(0..<studentName.count, id: \.self) { index in
@@ -44,8 +43,23 @@ struct EditStatusExam: View {
             .border(Color.black)
             
             Button(action: {
-                
-                self.isPresented = false
+                apiManager.editStatusScore(
+                    userID: "7",
+                    NilaiSection1: scores[0],
+                    NilaiSection2: scores[1],
+                    NilaiSection3: scores[2],
+                    NilaiTotal: String(Int(totalScore))
+                )
+                { error  in
+                    if let error = error {
+                        print("Error occurred: \(error)")
+                    } else {
+                        print("Exam added successfully")
+                        DispatchQueue.main.async {
+                            self.isPresented = false
+                        }
+                    }
+                }
             }, label: {
                 Text("Submit")
                     .padding()
@@ -61,7 +75,7 @@ struct EditStatusExam: View {
         }
     }
     
-    func getData() {
+    func getData(){
         apiManager.fetchNilaiStudent(userID: self.userID) { result in
             switch result {
             case .success(let (studentName,studentID,examName,examCounter)):
@@ -94,12 +108,6 @@ struct SectionsView: View {
             .border(Color.black)
         }
         .padding(.top)
-    }
-}
-
-struct EditStatusExam_Previews: PreviewProvider {
-    static var previews: some View {
-        EditStatusExam(isPresented: .constant(true))
     }
 }
 

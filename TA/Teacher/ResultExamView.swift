@@ -21,6 +21,8 @@ struct ResultExamView: View {
     var gradeIDs : String?
     let apiManager = ApiManagerTeacher()
     var body: some View {
+        let _ = print("ResultExamView redrawn") // Print when the view is redrawn
+        let _ = print("listStudentName count:", listStudentName.count)
         VStack{
             ScrollView {
                 LazyVGrid(columns: [
@@ -43,6 +45,7 @@ struct ResultExamView: View {
                     Text("Edit Stauts").font(.headline)
                     
                     ForEach(0..<listStudentName.count, id:\.self) { index in
+                        let _ = print(index)
                         Text(listStudentName[index])
                         Text(listStudentID[index])
                         Text(examNames ?? "")
@@ -56,8 +59,8 @@ struct ResultExamView: View {
                         }
                         Text(studentStatusExam[index])
 //                        Text("Done")
-                        
                         Button(action: {
+                            print("Selected userID:", listStudentID[index])
                             self.isEditExamStatus.toggle()
                         }) {
                             Text("Edit")

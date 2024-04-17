@@ -345,22 +345,61 @@ class ApiManagerTeacher {
                           let examCounter = decodedData["examCounter"]
                     else {
                         let _ = print("8")
-                                      throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
-                                      }
-                                      let _ = print("9")
-                                      completion(.success((studentName, studentID, examName, examCounter)))
-                                      } catch {
-                            let _ = print("10")
-                            completion(.failure(error))
-                        }
-                                      } else {
-                            if let errorMessage = String(data: data, encoding: .utf8) {
-                                // Handle error message
-                            } else {
-                                // Handle unknown error
-                            }
-                        }
-                                      }.resume()
-                                      }
-                                      }
-                                      
+                        throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+                    }
+                    let _ = print("9")
+                    completion(.success((studentName, studentID, examName, examCounter)))
+                } catch {
+                    let _ = print("10")
+                    completion(.failure(error))
+                }
+            } else {
+                if let errorMessage = String(data: data, encoding: .utf8) {
+                    // Handle error message
+                } else {
+                    // Handle unknown error
+                }
+            }
+        }.resume()
+    }
+    
+    func editStatusScore(userID: String, NilaiSection1: String, NilaiSection2: String, NilaiSection3: String,NilaiTotal:String,completion: @escaping (Error?) -> Void) {
+        let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/editStatusScore")!
+//                let _ = print("1")
+        var requestBody : [String : Any] = [
+            "UserID": userID,
+            "NilaiSection1": NilaiSection1,
+            "NilaiSection2": NilaiSection2,
+            "NilaiSection3": NilaiSection3,
+            "NilaiTotal": NilaiTotal
+        ]
+        let _ = print(NilaiSection1)
+        let _ = print(NilaiSection2)
+        let _ = print(NilaiSection3)
+        let _ = print(NilaiTotal)
+        //        let _ = print(requestBody)
+        var request = URLRequest(url: apiUrl)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        //        let _ = print("3")
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            request.httpBody = jsonData
+            //            let _ = print("4")
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                //                let _ = print("5")
+                if let error = error {
+                    //                    let _ = print("6")
+                    completion(error)
+                    return
+                }
+                //                let _ = print("7")
+                completion(nil)
+            }.resume()
+        } catch {
+            //            let _ = print("8")
+            completion(error)
+        }
+    }
+}
+
