@@ -8,6 +8,10 @@
 import SwiftUI
 import PencilKit
 
+protocol MyViewControllerDelegate: AnyObject {
+    func didUpdateState(newValue: Data)
+}
+
 class DrawingCanvasViewController: UIViewController {
     
     static var shared = DrawingCanvasViewController()
@@ -56,6 +60,40 @@ class DrawingCanvasViewController: UIViewController {
             }
         }
     }
+    
+    weak var delegate: MyViewControllerDelegate?
+        
+    func updateMyVariable(newValue: Data, currentPage: Binding<Int>, previousPage: Binding<Int>) {
+            // Perform any necessary logic when myVariable changes
+         //   print("data update di UIKIT")
+        //if(previousPage.wrappedValue != currentPage.wrappedValue){
+           // previousPage = currentPage.wrappedValue
+            canvas = PKCanvasView()
+            canvas.backgroundColor = .clear
+            canvas.drawingPolicy = .anyInput
+            canvas.minimumZoomScale = 1
+            canvas.maximumZoomScale = 1
+            canvas.translatesAutoresizingMaskIntoConstraints = false
+            drawingData = newValue
+        
+        //canvas.delegate = self
+        //canvas.becomeFirstResponder()
+            
+            if let drawing = try? PKDrawing(data: drawingData){
+                canvas.drawing = drawing
+                print("bisa drawing")
+            } else {
+                canvas.drawing = PKDrawing()
+                
+                print("gagal drawing")
+            }
+        
+            //print("data dibersihkan \(previousPage) : \(currentPage)")
+      //  }
+            
+            // Step 3: Communicate state changes back to SwiftUI
+            delegate?.didUpdateState(newValue: newValue)
+        }
 }
 
 extension DrawingCanvasViewController:PKToolPickerObserver, PKCanvasViewDelegate{
