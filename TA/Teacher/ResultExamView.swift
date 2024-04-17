@@ -62,7 +62,7 @@ struct ResultExamView: View {
                         }) {
                             Text("Edit")
                         }.sheet(isPresented: $isEditExamStatus) {
-                            EditStatusExam(isPresented: $isEditExamStatus)
+                            EditStatusExam(isPresented: $isEditExamStatus, userID: listStudentID[index])
                         }
                         
                     }

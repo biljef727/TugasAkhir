@@ -9,6 +9,7 @@ import PDFKit
 
 struct PDFViewWrapper: UIViewRepresentable {
     let pdfURL: URL
+    
     @Binding var currentPage: Int
     
     func makeUIView(context: Context) -> PDFView {
@@ -48,6 +49,7 @@ struct PDFViewWrapper: UIViewRepresentable {
             if let currentPageIndex = sender.currentPage?.pageRef?.pageNumber {
                 parent.currentPage = Int(currentPageIndex) + 1
                 
+                //parent.clearCanvasDataOnNewPage(newPage: parent.currentPage)
             }
         }
     }
@@ -56,8 +58,9 @@ struct PDFViewWrapper: UIViewRepresentable {
 struct StudentExamView: View {
     @Environment(\.managedObjectContext) var viewContext
     @State private var currentPage = 1
-    @State var id: UUID?
-    @State var data: Data
+    //@State var previousPage = 0
+    @State var id: UUID = UUID()
+    @State var data: Data = Data()
     let pdfURL = Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!
     
     var body: some View {
@@ -75,10 +78,9 @@ struct StudentExamView: View {
                 PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
                     .aspectRatio(contentMode: .fit)
                 
-                DrawingCanvasView(data: $data, id: id ?? UUID(), currentPage:$currentPage)
+                DrawingCanvasView(data: $data, id: id, currentPage:$currentPage)
                     .frame(width: 520, height: 720)
                     .environment(\.managedObjectContext, viewContext)
-                let _ = print(id,currentPage)
             }
             HStack{
                 HStack(spacing: 10) {
@@ -102,6 +104,12 @@ struct StudentExamView: View {
         guard let pdf = PDFDocument(url: pdfURL) else { return 0 }
         return pdf.pageCount
     }
+    
+    // Implement the delegate method to update state in SwiftUI
+        func didUpdateState(newValue: Data) {
+            data = newValue
+            print("data update di view")
+        }
 }
 //
 //#Preview {
