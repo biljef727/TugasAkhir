@@ -8,42 +8,110 @@
 import Foundation
 
 class ApiManagerTeacher {
-    func addNewExam(examName: String, section1: Int, section2: Int, section3: Int, file: Data?, userId: String, completion: @escaping (Error?) -> Void) {
-        let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/addNewExam")!
-        
-        var requestBody : [String : Any] = [
-            "ExamName": examName,
-            "ExamSection1": section1,
-            "ExamSection2": section2,
-            "ExamSection3": section3,
-            "UserID": userId
-        ]
-        
-        if let fileData = file {
-            // Convert file data to base64 string
-            let fileBase64String = fileData.base64EncodedString()
-            requestBody["ExamFile"] = fileBase64String
-        }
-        
-        var request = URLRequest(url: apiUrl)
-        request.httpMethod = "POST"
-        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-        
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
-            request.httpBody = jsonData
-            
-            URLSession.shared.dataTask(with: request) { (data, response, error) in
-                if let error = error {
+//    func addNewExam(examName: String, section1: Int, section2: Int, section3: Int, file: Data?, userId: String, completion: @escaping (Error?) -> Void) {
+//        let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/addNewExam")!
+//        
+//        var requestBody : [String : Any] = [
+//            "ExamName": examName,
+//            "ExamSection1": section1,
+//            "ExamSection2": section2,
+//            "ExamSection3": section3,
+//            "UserID": userId
+//        ]
+//        
+//        if let fileData = file {
+//            // Convert file data to base64 string
+//            let fileBase64String = fileData.base64EncodedString()
+//            requestBody["ExamFile"] = fileBase64String
+//        }
+//        
+//        var request = URLRequest(url: apiUrl)
+//        request.httpMethod = "POST"
+//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+//        
+//        do {
+//            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+//            request.httpBody = jsonData
+//            
+//            URLSession.shared.dataTask(with: request) { (data, response, error) in
+//                if let error = error {
+//                    completion(error)
+//                    return
+//                }
+//                completion(nil)
+//            }.resume()
+//        } catch {
+//            completion(error)
+//        }
+//    }
+    func addNewExam(examName: String, section1: Int, section2: Int, section3: Int, fileURL: URL?, userId: String, completion: @escaping (Error?) -> Void) {
+            let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/addNewExam")!
+            let _ = print("1")
+            var request = URLRequest(url: apiUrl)
+            request.httpMethod = "POST"
+            let _ = print("2")
+            // Create a boundary for multipart/form-data
+            let boundary = UUID().uuidString
+            request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+            let _ = print("3")
+            // Create the body of the request
+            var body = Data()
+            let _ = print("4")
+            // Add parameters to the body
+            let parameters = [
+                "ExamName": examName,
+                "ExamSection1": String(section1),
+                "ExamSection2": String(section2),
+                "ExamSection3": String(section3),
+                "UserID": userId
+            ]
+            let _ = print("5")
+            for (key, value) in parameters {
+                let _ = print("6")
+                body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                body.append("Content-Disposition: form-data; name=\"\(key)\"\r\n\r\n".data(using: .utf8)!)
+                body.append("\(value)\r\n".data(using: .utf8)!)
+            }
+            let _ = print("7")
+            // Add file data to the body if available
+            if let fileURL = fileURL {
+                let _ = print("8")
+                let fileName = fileURL.lastPathComponent
+                let mimeType = "application/pdf" // Adjust MIME type if necessary
+                
+                do {
+                    let _ = print("9")
+                    let fileData = try Data(contentsOf: fileURL)
+                    body.append("--\(boundary)\r\n".data(using: .utf8)!)
+                    body.append("Content-Disposition: form-data; name=\"ExamFile\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
+                    body.append("Content-Type: \(mimeType)\r\n\r\n".data(using: .utf8)!)
+                    body.append(fileData)
+                    body.append("\r\n".data(using: .utf8)!)
+                } catch {
+                    let _ = print("10")
                     completion(error)
                     return
                 }
-                completion(nil)
+            }
+            let _ = print("11")
+            body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+            let _ = print("12")
+            request.httpBody = body
+            
+            // Create URLSession task for the request
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                let _ = print(response)
+                let _ = print(data)
+                if let error = error {
+                    let _ = print("13")
+                    completion(error)
+                    return
+                }
+                    completion(nil)
             }.resume()
-        } catch {
-            completion(error)
         }
-    }
+        
+
     func fetchClassID(userID: String, completion: @escaping(Result<([String], [String]), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/fetchExamData?UserID=\(userID)"
         
@@ -315,42 +383,42 @@ class ApiManagerTeacher {
     
     func fetchNilaiStudent(userID: String, completion: @escaping(Result<(String,String,String,String), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/requestDataEdit?UserID=\(userID)"
-        let _ = print("1")
+//        let _ = print("1")
         guard let url = URL(string: urlString) else {
-            let _ = print("2")
+//            let _ = print("2")
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
-        let _ = print("3")
+//        let _ = print("3")
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        let _ = print("4")
+//        let _ = print("4")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-                let _ = print("5")
+//                let _ = print("5")
                 print("Error: \(error?.localizedDescription ?? "Unknown error")")
                 completion(.failure(error!))
                 return
             }
-            let _ = print("6")
+//            let _ = print("6")
             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                 do {
-                    let _ = print("7")
+//                    let _ = print("7")
                     let decodedData = try JSONDecoder().decode([String: String].self, from: data)
                     guard let studentName = decodedData["studentName"],
                           let studentID = decodedData["studentID"],
                           let examName = decodedData["examName"],
                           let examCounter = decodedData["examCounter"]
                     else {
-                        let _ = print("8")
+//                        let _ = print("8")
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-                    let _ = print("9")
+//                    let _ = print("9")
                     completion(.success((studentName, studentID, examName, examCounter)))
                 } catch {
-                    let _ = print("10")
+//                    let _ = print("10")
                     completion(.failure(error))
                 }
             } else {
@@ -363,7 +431,7 @@ class ApiManagerTeacher {
         }.resume()
     }
     
-    func editStatusScore(userID: String, NilaiSection1: String, NilaiSection2: String, NilaiSection3: String,NilaiTotal:String,completion: @escaping (Error?) -> Void) {
+    func editStatusScore(userID: String, NilaiSection1: Int, NilaiSection2: Int, NilaiSection3: Int,NilaiTotal:Int,completion: @escaping (Error?) -> Void) {
         let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/editStatusScore")!
 //                let _ = print("1")
         var requestBody : [String : Any] = [
@@ -373,6 +441,7 @@ class ApiManagerTeacher {
             "NilaiSection3": NilaiSection3,
             "NilaiTotal": NilaiTotal
         ]
+        let _ = print(userID)
         let _ = print(NilaiSection1)
         let _ = print(NilaiSection2)
         let _ = print(NilaiSection3)

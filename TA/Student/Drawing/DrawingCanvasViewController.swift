@@ -61,6 +61,10 @@ class DrawingCanvasViewController: UIViewController {
         }
     }
     
+    func clearCanvas() {
+            canvas.drawing = PKDrawing()
+        }
+    
     weak var delegate: MyViewControllerDelegate?
         
     func updateMyVariable(newValue: Data, currentPage: Binding<Int>, previousPage: Binding<Int>) {

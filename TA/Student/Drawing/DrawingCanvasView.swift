@@ -23,8 +23,6 @@ struct DrawingCanvasView: UIViewControllerRepresentable {
             return Coordinator(parent: self)
         }
     
-    
-    
     func updateUIViewController(_ uiViewController: DrawingCanvasViewController, context: Context) {
         //if(previousPage != currentPage){
            // previousPage = currentPage
@@ -77,9 +75,8 @@ struct DrawingCanvasView: UIViewControllerRepresentable {
                
                 // if data not exists, then create new
                 do {
-//                    viewController.updateMyVariable(newValue:  Data(),currentPage: $currentPage, previousPage: $previousPage)
+//                    viewController.updateMyVariable(newValue:  Data(),currentPage: $currentPage, previousPage: $previousPage) context?.viewController.clearCanvas()
                    print("data kosong")
-                    
                     
                     let drawn = Drawing(context: viewContext)
                     drawn.id = id

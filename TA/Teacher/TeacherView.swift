@@ -19,7 +19,7 @@ struct TeacherView: View {
     @State var examCounter :[String] = []
     @State var sectionExamCounter :[Int] = []
     
-    let refreshSubject = PassthroughSubject<UUID, Never>() // Changed type to PassthroughSubject<UUID, Never>
+    let refreshSubject = PassthroughSubject<UUID, Never>()
     let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{

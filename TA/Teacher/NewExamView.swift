@@ -43,11 +43,12 @@ struct NewExamView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isShowingDocumentPicker) {
-                    DocumentPicker(documentData: $documentData)
+//                    DocumentPicker(documentData: $documentData)
+                    DocumentPicker(documentURL:$documentURL)
                 }
                 
-                Text("Document: \(documentData != nil ? "PDF selected" : "No PDF selected")")
-                    .foregroundColor(documentData != nil ? Color.black : Color.red)
+                Text("Document: \(documentURL != nil ? "PDF selected" : "No PDF selected")")
+                    .foregroundColor(documentURL != nil ? Color.black : Color.red)
                     .padding()
                     .disabled(true)
             }
@@ -103,7 +104,7 @@ struct NewExamView: View {
                                       section1: Int(scores[selectedChoicesSectionIndexes[0]])!,
                                       section2: sectionCounter > 1 ? Int(scores[selectedChoicesSectionIndexes[1]])! : 0,
                                       section3: sectionCounter > 2 ? Int(scores[selectedChoicesSectionIndexes[2]])! : 0,
-                                      file: documentData,
+                                      fileURL: documentURL,
                                       userId: userID)
                 { error in
                     if let error = error {
@@ -173,10 +174,11 @@ struct SectionView: View {
 }
 
 struct DocumentPicker: UIViewControllerRepresentable {
-    @Binding var documentData: Data?
+//    @Binding var documentData: Data?
+    @Binding var documentURL: URL?
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(documentData: $documentData)
+        return Coordinator(documentURL: $documentURL)
     }
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
@@ -188,16 +190,18 @@ struct DocumentPicker: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: UIDocumentPickerViewController, context: Context) {}
     
     class Coordinator: NSObject, UIDocumentPickerDelegate {
-        @Binding var documentData: Data?
-        
-        init(documentData: Binding<Data?>) {
-            _documentData = documentData
+//        @Binding var documentData: Data?
+        @Binding var documentURL: URL?
+        init(documentURL: Binding<URL?>) {
+//            _documentData = documentData
+            _documentURL = documentURL
         }
         
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             do {
-                documentData = try Data(contentsOf: url)
+                documentURL = url
+//                documentData = try Data(contentsOf: url)
             } catch {
                 print("Error converting file to data: \(error)")
             }

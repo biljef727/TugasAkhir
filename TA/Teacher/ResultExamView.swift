@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct ResultExamView: View {
     @EnvironmentObject var routerView : ServiceRoute
@@ -13,16 +14,16 @@ struct ResultExamView: View {
     @State var listStudentName: [String] = []
     @State var listStudentID: [String] = []
     @State var studentScore : [String] = []
+    @State var selectedID: String? = nil
     @State var studentStatusExam : [String] = []
     
     var examNames : String?
     var examIDs : String?
     var examDates : String?
     var gradeIDs : String?
+    let refreshSubject = PassthroughSubject<UUID, Never>()
     let apiManager = ApiManagerTeacher()
     var body: some View {
-        let _ = print("ResultExamView redrawn") // Print when the view is redrawn
-        let _ = print("listStudentName count:", listStudentName.count)
         VStack{
             ScrollView {
                 LazyVGrid(columns: [
@@ -45,7 +46,7 @@ struct ResultExamView: View {
                     Text("Edit Stauts").font(.headline)
                     
                     ForEach(0..<listStudentName.count, id:\.self) { index in
-                        let _ = print(index)
+                        let selectedUserID = listStudentID[index]
                         Text(listStudentName[index])
                         Text(listStudentID[index])
                         Text(examNames ?? "")
@@ -57,21 +58,28 @@ struct ResultExamView: View {
                         }) {
                             Text("File Soal")
                         }
-                        Text(studentStatusExam[index])
-//                        Text("Done")
-                        Button(action: {
-                            print("Selected userID:", listStudentID[index])
-                            self.isEditExamStatus.toggle()
-                        }) {
-                            Text("Edit")
-                        }.sheet(isPresented: $isEditExamStatus) {
-                            EditStatusExam(isPresented: $isEditExamStatus, userID: listStudentID[index])
-                        }
                         
+                        Text(studentStatusExam[index])
+                        
+                        if (studentStatusExam[index] == "Wait"){
+                            Button(action: {
+                                print("Selected userID:", selectedUserID)
+                                self.selectedID = listStudentID[index]
+                                self.isEditExamStatus.toggle()
+                            }) {
+                                Text("Edit")
+                            }
+                        }
+                        else{
+                            Text("Already Edited")
+                        }
                     }
                 }
                 .border(Color.black)
                 .padding()
+                .sheet(isPresented: $isEditExamStatus) {
+                    EditStatusExam(isPresented: $isEditExamStatus, userID: $selectedID,refreshSubject: refreshSubject)
+                }
             }
             VStack(alignment: .leading){
                 Spacer()
@@ -90,6 +98,10 @@ struct ResultExamView: View {
         .onAppear{
             fetchStudentNameAndID()
         }
+        .onReceive(refreshSubject) { _ in
+            fetchStudentNameAndID()
+        }
+
     }
     func fetchStudentNameAndID(){
         apiManager.fetchStudentIDandNames(classID: self.gradeIDs!, examID: self.examIDs!) { result in
