@@ -9,21 +9,27 @@ import SwiftUI
 
 struct StudentView: View {
     @EnvironmentObject var routerView : ServiceRoute
-    @State var examName : String = "Coding"
+    @Binding var userID: String
+    @State var examName : String = ""
+    @State var examID : String = ""
+    @State var scheduleStartExamTime :String = ""
+    @State var scheduleEndExamTime : String = ""
     @State var codingTaken : [String] = ["Coding1","Coding2"]
     @State var codingTimeTaken : [String] = ["14 Maret 2024","17 Agustus 1945"]
+    let apiManager = ApiManagerStudent()
+    //    let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
             VStack(alignment:.leading){
                 Text("Last Seen Exam")
                 HStack{
                     Text("Exam Name :")
-                    Text("coding")
+                    Text("-")
                 }
                 .padding(.vertical)
                 HStack{
                     Text("Score Result :")
-                    Text("90")
+                    Text("-")
                     Spacer()
                     Button(action:{
                         
@@ -41,20 +47,21 @@ struct StudentView: View {
                 Text("New Exam")
                 HStack{
                     Text("Start Time :")
-                    Text("15 Maret 2020 14.00")
+                    Text("\(formatDate(from:scheduleStartExamTime) ?? "")")
                 }
                 .padding(.vertical)
                 HStack{
                     Text("End Time:")
-                    Text("15 Maret 2020 15.00")
+                    Text("\(formatDate(from:scheduleEndExamTime) ?? "")")
                 }
                 .padding(.vertical)
                 HStack{
                     Text("Exam Name :")
-                    Text("coding")
+                    Text("\(examName)")
                     Spacer()
                     Button(action:{
-                        routerView.path.append("startExam")
+                        let examInfo = "\(examID)"
+                        routerView.path.append("startExam/\(examInfo)")
                     }, label:{
                         Text("Start")
                             .foregroundColor(Color.white)
@@ -88,6 +95,9 @@ struct StudentView: View {
             }
             Divider()
         }
+        .onAppear{
+            fetchExamNow()
+        }
         .frame(maxWidth: UIScreen.main.bounds.width/2, maxHeight: UIScreen.main.bounds.height)
         //        .background(Color.red)
         .font(.title)
@@ -103,8 +113,34 @@ struct StudentView: View {
             }
         }
     }
+    func fetchExamNow() {
+        apiManager.fetchExamNow(userID: self.userID) { result in
+            switch result {
+            case .success(let (startExamTimes,endExamTimes,examNames,examIDs)):
+                DispatchQueue.main.async {
+                    self.scheduleStartExamTime = startExamTimes
+                    self.scheduleEndExamTime = endExamTimes
+                    self.examName = examNames
+                    self.examID = examIDs
+                }
+            case .failure(let error):
+                print("Error fetching class names: \(error)")
+            }
+        }
+    }
+    func formatDate(from timeIntervalString: String) -> String? {
+        guard let timeInterval = TimeInterval(timeIntervalString) else {
+            return nil
+        }
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd MMMM yyyy , h:mm a"
+        
+        return formatter.string(from: date)
+    }
 }
-
-#Preview {
-    StudentView()
-}
+//
+//#Preview {
+//    StudentView()
+//}

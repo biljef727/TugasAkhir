@@ -108,10 +108,17 @@ struct LoginView: View {
                         ResultExamView().environmentObject(routerView)
                     }
                 }else if val == "student"{
-                    StudentView().environmentObject(routerView)
+                    StudentView(userID:$userID).environmentObject(routerView)
                 }
-                else if val == "startExam"{
-                    StudentExamView().environmentObject(routerView)
+                else if val.hasPrefix("startExam/"){
+                    let components = val.components(separatedBy: "/")
+                    if components.count > 1 {
+                        let examInfo = components[1]
+                        let examIDs = examInfo.components(separatedBy: "-").first ?? ""
+                        StudentExamView(examID: examIDs, userID:userID).environmentObject(routerView)
+                    } else {
+                        StudentExamView().environmentObject(routerView)
+                    }
                 }
             }
         }
@@ -179,6 +186,8 @@ struct LoginView: View {
                             }
                         case "Student":
                             DispatchQueue.main.async {
+                                self.userFullName = userFullname
+                                self.userID = userID
                                 self.routerView.navigate(to: "student")
                             }
                         default:

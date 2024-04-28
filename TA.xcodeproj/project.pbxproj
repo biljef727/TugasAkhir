@@ -19,6 +19,7 @@
 		2122740B2BC5A129006C4040 /* Model.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 212274092BC5A129006C4040 /* Model.xcdatamodeld */; };
 		2122740D2BC5A192006C4040 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740C2BC5A192006C4040 /* Persistence.swift */; };
 		2122742E2BC6C1CC006C4040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122742D2BC6C1CC006C4040 /* ContentView.swift */; };
+		218F7E632BD9F97400ADA49C /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F7E622BD9F97400ADA49C /* Testing.swift */; };
 		219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814D2B91AF20002DC459 /* EditStatusExam.swift */; };
 		219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814F2BA9481C002DC459 /* AddTeacherClass.swift */; };
 		219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81512BA9482B002DC459 /* AddStudentClass.swift */; };
@@ -35,6 +36,9 @@
 		219E817B2BBE6260002DC459 /* ApiManagerTeacher.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */; };
 		219E817D2BC40771002DC459 /* ApiManagerStudent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E817C2BC40771002DC459 /* ApiManagerStudent.swift */; };
 		219E817F2BC409AD002DC459 /* dummy.pdf in Resources */ = {isa = PBXBuildFile; fileRef = 219E817E2BC409AD002DC459 /* dummy.pdf */; };
+		21B6FF602BD9221300DC5C98 /* PDFWithAnnotationsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B6FF5F2BD9221300DC5C98 /* PDFWithAnnotationsView.swift */; };
+		21B6FF922BD9F65900DC5C98 /* DocumentDrawingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21B6FF912BD9F65900DC5C98 /* DocumentDrawingViewController.swift */; };
+		21B6FF942BD9F68F00DC5C98 /* Storyboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 21B6FF932BD9F68F00DC5C98 /* Storyboard.storyboard */; };
 		21FCED1F2B8D84880049C6D3 /* NewTeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */; };
 		21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED202B8D8C220049C6D3 /* NewStudentView.swift */; };
 		21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21FCED232B8D91450049C6D3 /* TeacherView.swift */; };
@@ -58,6 +62,7 @@
 		2122740C2BC5A192006C4040 /* Persistence.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persistence.swift; sourceTree = "<group>"; };
 		212274262BC6AF4D006C4040 /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = System/Library/Frameworks/PDFKit.framework; sourceTree = SDKROOT; };
 		2122742D2BC6C1CC006C4040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		218F7E622BD9F97400ADA49C /* Testing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testing.swift; sourceTree = "<group>"; };
 		219E814D2B91AF20002DC459 /* EditStatusExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatusExam.swift; sourceTree = "<group>"; };
 		219E814F2BA9481C002DC459 /* AddTeacherClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeacherClass.swift; sourceTree = "<group>"; };
 		219E81512BA9482B002DC459 /* AddStudentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStudentClass.swift; sourceTree = "<group>"; };
@@ -74,6 +79,9 @@
 		219E817A2BBE6260002DC459 /* ApiManagerTeacher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerTeacher.swift; sourceTree = "<group>"; };
 		219E817C2BC40771002DC459 /* ApiManagerStudent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManagerStudent.swift; sourceTree = "<group>"; };
 		219E817E2BC409AD002DC459 /* dummy.pdf */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = dummy.pdf; sourceTree = "<group>"; };
+		21B6FF5F2BD9221300DC5C98 /* PDFWithAnnotationsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PDFWithAnnotationsView.swift; sourceTree = "<group>"; };
+		21B6FF912BD9F65900DC5C98 /* DocumentDrawingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DocumentDrawingViewController.swift; sourceTree = "<group>"; };
+		21B6FF932BD9F68F00DC5C98 /* Storyboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Storyboard.storyboard; sourceTree = "<group>"; };
 		21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewTeacherView.swift; sourceTree = "<group>"; };
 		21FCED202B8D8C220049C6D3 /* NewStudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewStudentView.swift; sourceTree = "<group>"; };
 		21FCED232B8D91450049C6D3 /* TeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TeacherView.swift; sourceTree = "<group>"; };
@@ -159,7 +167,11 @@
 		219E815B2BAD5F40002DC459 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				21B6FF912BD9F65900DC5C98 /* DocumentDrawingViewController.swift */,
+				21B6FF5F2BD9221300DC5C98 /* PDFWithAnnotationsView.swift */,
 				212133002B86F9CE00772654 /* AdminView.swift */,
+				21B6FF932BD9F68F00DC5C98 /* Storyboard.storyboard */,
+				2122742D2BC6C1CC006C4040 /* ContentView.swift */,
 			);
 			path = Unused;
 			sourceTree = "<group>";
@@ -207,10 +219,10 @@
 			children = (
 				219E81562BAD37D2002DC459 /* StudentView.swift */,
 				219E81762BBBE436002DC459 /* StudentExamView.swift */,
+				218F7E622BD9F97400ADA49C /* Testing.swift */,
 				2122742F2BC9123D006C4040 /* Drawing */,
 				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
 				219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */,
-				2122742D2BC6C1CC006C4040 /* ContentView.swift */,
 			);
 			path = Student;
 			sourceTree = "<group>";
@@ -280,6 +292,7 @@
 				212132F62B86EFC500772654 /* Preview Assets.xcassets in Resources */,
 				219E817F2BC409AD002DC459 /* dummy.pdf in Resources */,
 				212132F32B86EFC500772654 /* Assets.xcassets in Resources */,
+				21B6FF942BD9F68F00DC5C98 /* Storyboard.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -298,6 +311,7 @@
 				212133032B87035100772654 /* Service.swift in Sources */,
 				219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */,
 				21FCED272B8DBA320049C6D3 /* ClassAdmissionView.swift in Sources */,
+				21B6FF922BD9F65900DC5C98 /* DocumentDrawingViewController.swift in Sources */,
 				219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */,
 				219E81722BB3360B002DC459 /* ApiManager.swift in Sources */,
 				219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */,
@@ -306,6 +320,8 @@
 				219E81592BAD56F1002DC459 /* FixAdminView.swift in Sources */,
 				212133012B86F9CE00772654 /* AdminView.swift in Sources */,
 				219E817D2BC40771002DC459 /* ApiManagerStudent.swift in Sources */,
+				21B6FF602BD9221300DC5C98 /* PDFWithAnnotationsView.swift in Sources */,
+				218F7E632BD9F97400ADA49C /* Testing.swift in Sources */,
 				21FCED2F2B916BB50049C6D3 /* ResultExamView.swift in Sources */,
 				21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */,
 				219E81662BAE95FB002DC459 /* TabBarTeacherView.swift in Sources */,

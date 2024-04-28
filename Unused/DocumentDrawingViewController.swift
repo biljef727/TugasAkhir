@@ -1,0 +1,80 @@
+//import UIKit
+//import PDFKit
+//
+//class DocumentDrawingViewController: UIViewController {
+//    
+//    private var shouldUpdatePDFScrollPosition = true
+//    private let pdfDrawer = PDFDrawer()
+//    
+//    @IBOutlet weak var pdfView: PDFView!
+//    @IBOutlet weak var thumbnailView: PDFThumbnailView!
+//    @IBOutlet weak var thumbnailViewContainer: UIView!
+//    
+//    override func viewDidLoad() {
+//        super.viewDidLoad()
+//                
+//        setupPDFView()
+//        
+//        navigationController?.isToolbarHidden = false
+//        
+//        let pdfDrawingGestureRecognizer = DrawingGestureRecognizer()
+//        pdfView.addGestureRecognizer(pdfDrawingGestureRecognizer)
+//        pdfDrawingGestureRecognizer.drawingDelegate = pdfDrawer
+//        pdfDrawer.pdfView = pdfView
+//        
+//        let fileURL = Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!
+//        let pdfDocument = PDFDocument(url: fileURL)
+//        pdfView.document = pdfDocument
+//    }
+//    
+//    private func setupPDFView() {
+//        pdfView.displayDirection = .vertical
+//        pdfView.usePageViewController(true)
+//        pdfView.pageBreakMargins = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+//        pdfView.autoScales = true
+//        pdfView.backgroundColor = view.backgroundColor!
+//        
+//        thumbnailView.pdfView = pdfView
+//        thumbnailView.thumbnailSize = CGSize(width: 100, height: 100)
+//        thumbnailView.layoutMode = .vertical
+//        thumbnailView.backgroundColor = thumbnailViewContainer.backgroundColor
+//    }
+//    
+//    // This is to change Drawing tool
+//    @IBAction func changeDrawingTool(sender: UIBarButtonItem) {
+//        // In this demo app we have all drawing controls on a Toolbar, each Toolbar item has its tag, see DrawitgTool enum for details
+//        toolbarItems?.forEach({ item in
+//            item.style = .plain
+//        })
+//        
+//        sender.style = .done
+//        pdfDrawer.drawingTool = DrawingTool(rawValue: sender.tag)!
+//    }
+//    
+//    // This code is required to fix PDFView Scroll Position when NOT using pdfView.usePageViewController(true)
+//    override func viewDidLayoutSubviews() {
+//        super.viewDidLayoutSubviews()
+//        if shouldUpdatePDFScrollPosition {
+//            fixPDFViewScrollPosition()
+//        }
+//        
+//    }
+//    
+//    // This code is required to fix PDFView Scroll Position when NOT using pdfView.usePageViewController(true)
+//    private func fixPDFViewScrollPosition() {
+//        if let page = pdfView.document?.page(at: 0) {
+//            pdfView.go(to: PDFDestination(page: page, at: CGPoint(x: 0, y: page.bounds(for: pdfView.displayBox).size.height)))
+//        }
+//    }
+//    
+//    // This code is required to fix PDFView Scroll Position when NOT using pdfView.usePageViewController(true)
+//    override func viewDidAppear(_ animated: Bool) {
+//        super.viewDidAppear(animated)
+//        shouldUpdatePDFScrollPosition = false
+//    }
+//
+//    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+//        pdfView.autoScales = true // This call is required to fix PDF document scale, seems to be bug inside PDFKit
+//    }
+//    
+//}

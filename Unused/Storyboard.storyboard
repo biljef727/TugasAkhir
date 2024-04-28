@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="HB7-Ig-t6U">
+    <device id="ipad10_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--PDFKit Demo-->
+        <scene sceneID="x3T-6d-c5x">
+            <objects>
+                <viewController id="ubP-Kn-PDz" customClass="DocumentDrawingViewController" customModule="IphExam" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="q5D-LM-VxB">
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bU3-FI-f8q" customClass="NonSelectablePDFView" customModule="IphExam" customModuleProvider="target">
+                                <rect key="frame" x="132" y="74" width="688" height="1035.5"/>
+                                <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-gI-q96" userLabel="Thumbnail View Container">
+                                <rect key="frame" x="0.0" y="74" width="132" height="1036"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vma-nj-wFR" customClass="PDFThumbnailView">
+                                        <rect key="frame" x="0.0" y="0.0" width="132" height="1036"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0aM-sT-Zcc" userLabel="V Separator">
+                                        <rect key="frame" x="131.5" y="0.0" width="0.5" height="1036"/>
+                                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.23000000000000001" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="0.5" id="gL9-bj-Hjp"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" red="0.90588235289999997" green="0.90196078430000004" blue="0.90196078430000004" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstItem="vma-nj-wFR" firstAttribute="leading" secondItem="sTB-gI-q96" secondAttribute="leading" id="708-B2-wXD"/>
+                                    <constraint firstAttribute="bottom" secondItem="vma-nj-wFR" secondAttribute="bottom" id="BN5-EA-GQF"/>
+                                    <constraint firstAttribute="bottom" secondItem="0aM-sT-Zcc" secondAttribute="bottom" id="End-si-uo9"/>
+                                    <constraint firstItem="0aM-sT-Zcc" firstAttribute="top" secondItem="sTB-gI-q96" secondAttribute="top" id="L9O-yk-982"/>
+                                    <constraint firstAttribute="trailing" secondItem="0aM-sT-Zcc" secondAttribute="trailing" id="mzY-Qd-IhV"/>
+                                    <constraint firstAttribute="width" constant="132" id="oUb-8S-S1V"/>
+                                    <constraint firstAttribute="trailing" secondItem="vma-nj-wFR" secondAttribute="trailing" id="pcz-G2-Kj5"/>
+                                    <constraint firstItem="vma-nj-wFR" firstAttribute="top" secondItem="sTB-gI-q96" secondAttribute="top" id="yq8-NR-6AM"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="czd-uG-KPp" userLabel="H Separator Bottom">
+                                <rect key="frame" x="0.0" y="1109.5" width="820" height="0.5"/>
+                                <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.23000000000000001" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="0.5" id="OQV-mw-7lg"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="r86-Da-68g"/>
+                        <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="r86-Da-68g" firstAttribute="bottom" secondItem="czd-uG-KPp" secondAttribute="bottom" id="4o6-tO-PPs"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="leading" secondItem="sTB-gI-q96" secondAttribute="trailing" id="8FR-bD-39v"/>
+                            <constraint firstItem="r86-Da-68g" firstAttribute="bottom" secondItem="sTB-gI-q96" secondAttribute="bottom" id="D6y-Qi-98x"/>
+                            <constraint firstItem="sTB-gI-q96" firstAttribute="top" secondItem="r86-Da-68g" secondAttribute="top" id="KIH-Wg-WGi"/>
+                            <constraint firstAttribute="trailing" secondItem="czd-uG-KPp" secondAttribute="trailing" id="Rp5-7t-cSN"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="top" secondItem="r86-Da-68g" secondAttribute="top" id="YKQ-NU-DlW"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="leading" secondItem="q5D-LM-VxB" secondAttribute="leading" id="eJm-79-jDu"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="top" secondItem="bU3-FI-f8q" secondAttribute="bottom" id="gT5-wL-0Sh"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="trailing" secondItem="r86-Da-68g" secondAttribute="trailing" id="tCm-qx-wtf"/>
+                            <constraint firstItem="sTB-gI-q96" firstAttribute="leading" secondItem="r86-Da-68g" secondAttribute="leading" id="u8i-8y-XSu"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems>
+                        <barButtonItem tag="1" title="Pencil" id="8OH-Bv-QsI">
+                            <connections>
+                                <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="dCH-vG-2kg"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="JNg-vK-SZM"/>
+                        <barButtonItem tag="2" title="Pen" style="done" id="Koc-Ls-aKN">
+                            <connections>
+                                <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="crh-jW-WGv"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0U6-Rj-tkT"/>
+                        <barButtonItem tag="3" title="Highlighter" id="s5f-q3-Q0R">
+                            <connections>
+                                <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="DL5-rb-cdS"/>
+                            </connections>
+                        </barButtonItem>
+                    </toolbarItems>
+                    <navigationItem key="navigationItem" title="PDFKit Demo" largeTitleDisplayMode="never" id="6jt-ar-VPP"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="pdfView" destination="bU3-FI-f8q" id="X9g-Dt-VTJ"/>
+                        <outlet property="thumbnailView" destination="vma-nj-wFR" id="lhF-0M-0PV"/>
+                        <outlet property="thumbnailViewContainer" destination="sTB-gI-q96" id="70H-d3-dmu"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lkh-be-01D" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1992" y="102"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="MDG-Cz-6FA">
+            <objects>
+                <navigationController storyboardIdentifier="mainNC" toolbarHidden="NO" id="HB7-Ig-t6U" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" largeTitles="YES" id="c5A-y7-0JW">
+                        <rect key="frame" x="0.0" y="24" width="820" height="102"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="CM6-0i-sVd">
+                        <rect key="frame" x="0.0" y="1110" width="820" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </toolbar>
+                    <connections>
+                        <segue destination="ubP-Kn-PDz" kind="relationship" relationship="rootViewController" id="8Pi-xO-HlE"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NwQ-lW-XI9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1160" y="102"/>
+        </scene>
+    </scenes>
+</document>

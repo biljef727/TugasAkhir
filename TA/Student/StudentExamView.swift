@@ -1,20 +1,14 @@
-//
-//  StudentExamView.swift
-//  TA
-//
-//  Created by Billy Jefferson on 02/04/24.
-//
 import SwiftUI
 import PDFKit
 
 struct PDFViewWrapper: UIViewRepresentable {
-    let pdfURL: URL
+    let pdfDocument: PDFDocument
     
     @Binding var currentPage: Int
     
     func makeUIView(context: Context) -> PDFView {
         let pdfView = PDFView()
-        pdfView.document = PDFDocument(url: pdfURL)
+        pdfView.document = pdfDocument
         pdfView.autoScales = true
         pdfView.displayMode = .singlePageContinuous
         pdfView.displayDirection = .horizontal
@@ -48,8 +42,6 @@ struct PDFViewWrapper: UIViewRepresentable {
         func currentPageChanged(_ sender: PDFView) {
             if let currentPageIndex = sender.currentPage?.pageRef?.pageNumber {
                 parent.currentPage = Int(currentPageIndex) + 1
-                
-                //parent.clearCanvasDataOnNewPage(newPage: parent.currentPage)
             }
         }
     }
@@ -58,31 +50,39 @@ struct PDFViewWrapper: UIViewRepresentable {
 struct StudentExamView: View {
     @Environment(\.managedObjectContext) var viewContext
     @State private var currentPage = 1
-    //@State var previousPage = 0
+    @State private var pdfData: Data?
+    @State private var fetchError: Error?
     @State var id: UUID = UUID()
     @State var data: Data = Data()
-    let pdfURL = Bundle.main.url(forResource: "three-pages", withExtension: "pdf")!
+    var examID: String?
+    var userID: String?
+    
+    let apiManager = ApiManagerStudent()
     
     var body: some View {
         VStack {
             HStack {
                 Spacer()
-                Button(action: {
-
-                }) {
+                Button(action: {}) {
                     Text("Submit")
                 }
-                .padding(.trailing,50)
+                .padding(.trailing, 50)
             }
             ZStack {
-                PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
-                    .aspectRatio(contentMode: .fit)
+                if let pdfData = pdfData, let pdf = PDFDocument(data: pdfData) {
+                    PDFViewWrapper(pdfDocument: pdf, currentPage: $currentPage)
+                        .aspectRatio(contentMode: .fit)
+                } else if let fetchError = fetchError {
+                    Text("Failed to fetch PDF: \(fetchError.localizedDescription)")
+                } else {
+                    ProgressView()
+                }
                 
-                DrawingCanvasView(data: $data, id: id, currentPage:$currentPage)
+                DrawingCanvasView(data: $data, id: id, currentPage: $currentPage)
                     .frame(width: 520, height: 720)
                     .environment(\.managedObjectContext, viewContext)
             }
-            HStack{
+            HStack {
                 HStack(spacing: 10) {
                     ForEach(1..<totalPages + 1, id: \.self) { pageNumber in
                         Button(action: {
@@ -98,21 +98,26 @@ struct StudentExamView: View {
                 }
             }
         }
+        .onAppear {
+            // Fetch PDF data when the view appears
+            fetchPDFData()
+        }
     }
     
     var totalPages: Int {
-        guard let pdf = PDFDocument(url: pdfURL) else { return 0 }
+        guard let pdfData = pdfData, let pdf = PDFDocument(data: pdfData) else { return 0 }
         return pdf.pageCount
     }
     
-    // Implement the delegate method to update state in SwiftUI
-        func didUpdateState(newValue: Data) {
-            data = newValue
-            print("data update di view")
+    func fetchPDFData() {
+        apiManager.fetchPDF(userID: self.userID!, examID: self.examID!) { result in
+            switch result {
+            case .success(let pdfData):
+                self.pdfData = pdfData
+            case .failure(let error):
+                // Set fetch error
+                self.fetchError = error
+            }
         }
+    }
 }
-//
-//#Preview {
-//    StudentExamView()
-//}
-
