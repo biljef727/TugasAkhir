@@ -58,6 +58,7 @@ struct PDFViewWrapper: UIViewRepresentable {
 }
 
 struct Home : View {
+    // Other properties...
     @EnvironmentObject var routerView: ServiceRoute
     var examID : String?
     var userID : String?
@@ -90,6 +91,7 @@ struct Home : View {
                 },trailing:  Button(action:{
                     //saving
                     takeScreenshot()
+                    addKerjaan()
                     routerView.path.removeLast()
                 },label:{
                     Text("Submit")
@@ -99,13 +101,38 @@ struct Home : View {
     }
     
     func takeScreenshot() {
-        // Capture the screenshot
         DispatchQueue.main.async {
-            screenshot = UIApplication.shared.windows.first?.rootViewController?.view?.snapshot()
-            
-            // Save to Photos Album
-            if let screenshot = screenshot {
-                UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+            if let view = UIApplication.shared.windows.first?.rootViewController?.view {
+                self.screenshot = view.snapshot()
+                if let screenshot = self.screenshot {
+                    UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
+                }
+            }
+        }
+    }
+    
+    func addKerjaan() {
+        guard let screenshot = self.screenshot else {
+            print("Screenshot is nil.")
+            return
+        }
+        
+        guard let imageData = screenshot.jpegData(compressionQuality: 0.8) else {
+            print("Failed to convert image to JPEG data.")
+            return
+        }
+        
+        let base64String = imageData.base64EncodedString()
+        print("Base64 string: \(base64String)")
+        
+        // Call the API method passing the screenshot data
+        let apiManager = ApiManagerStudent()
+        apiManager.addKerjaan(examID: examID ?? "", section1: 0, section2: 0, section3: 0, file: base64String, userId: userID ?? "", status: "Wait") { error in
+            if let error = error {
+                // Handle error
+                print("Error: \(error)")
+            } else {
+                // Success, do something if needed
             }
         }
     }

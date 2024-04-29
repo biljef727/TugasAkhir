@@ -41,7 +41,6 @@ class ApiManagerStudent {
             }
         }.resume()
     }
-
     func fetchExamNow(userID: String, completion: @escaping(Result<(String,String,String,String), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/examNow?UserID=\(userID)"
 //        let _ = print("1")
@@ -76,8 +75,8 @@ class ApiManagerStudent {
 //                        let _ = print("8")
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-                    let _ = print(startExamTimes)
-                    let _ = print(endExamTimes)
+//                    let _ = print(startExamTimes)
+//                    let _ = print(endExamTimes)
                     completion(.success((startExamTimes,endExamTimes,examNames,examIDs)))
                 } catch {
 //                    let _ = print("10")
@@ -91,6 +90,38 @@ class ApiManagerStudent {
                 }
             }
         }.resume()
+    }
+    func addKerjaan(examID: String, section1: Int, section2: Int, section3: Int, file: String, userId: String,status:String, completion: @escaping (Error?) -> Void) {
+        let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/insertKerjaan")!
+        
+        var requestBody : [String : Any] = [
+            "ExamID": examID,
+            "NilaiSection1": section1,
+            "NilaiSection2": section2,
+            "NilaiSection3": section3,
+            "UserID": userId,
+            "StatusScore":status,
+            "NilaiFile":file
+        ]
+        
+        var request = URLRequest(url: apiUrl)
+        request.httpMethod = "POST"
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        do {
+            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
+            request.httpBody = jsonData
+            
+            URLSession.shared.dataTask(with: request) { (data, response, error) in
+                if let error = error {
+                    completion(error)
+                    return
+                }
+                completion(nil)
+            }.resume()
+        } catch {
+            completion(error)
+        }
     }
 }
 
