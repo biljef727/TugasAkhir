@@ -20,6 +20,7 @@
 		2122740D2BC5A192006C4040 /* Persistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122740C2BC5A192006C4040 /* Persistence.swift */; };
 		2122742E2BC6C1CC006C4040 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2122742D2BC6C1CC006C4040 /* ContentView.swift */; };
 		218F7E632BD9F97400ADA49C /* Testing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F7E622BD9F97400ADA49C /* Testing.swift */; };
+		218F7E652BDF6CC400ADA49C /* CanvasSaving.swift in Sources */ = {isa = PBXBuildFile; fileRef = 218F7E642BDF6CC400ADA49C /* CanvasSaving.swift */; };
 		219E814E2B91AF20002DC459 /* EditStatusExam.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814D2B91AF20002DC459 /* EditStatusExam.swift */; };
 		219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E814F2BA9481C002DC459 /* AddTeacherClass.swift */; };
 		219E81522BA9482B002DC459 /* AddStudentClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81512BA9482B002DC459 /* AddStudentClass.swift */; };
@@ -63,6 +64,7 @@
 		212274262BC6AF4D006C4040 /* PDFKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PDFKit.framework; path = System/Library/Frameworks/PDFKit.framework; sourceTree = SDKROOT; };
 		2122742D2BC6C1CC006C4040 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		218F7E622BD9F97400ADA49C /* Testing.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Testing.swift; sourceTree = "<group>"; };
+		218F7E642BDF6CC400ADA49C /* CanvasSaving.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasSaving.swift; sourceTree = "<group>"; };
 		219E814D2B91AF20002DC459 /* EditStatusExam.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditStatusExam.swift; sourceTree = "<group>"; };
 		219E814F2BA9481C002DC459 /* AddTeacherClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddTeacherClass.swift; sourceTree = "<group>"; };
 		219E81512BA9482B002DC459 /* AddStudentClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddStudentClass.swift; sourceTree = "<group>"; };
@@ -158,6 +160,8 @@
 		2122742F2BC9123D006C4040 /* Drawing */ = {
 			isa = PBXGroup;
 			children = (
+				219E81762BBBE436002DC459 /* StudentExamView.swift */,
+				218F7E622BD9F97400ADA49C /* Testing.swift */,
 				212274052BC5A08C006C4040 /* DrawingCanvasView.swift */,
 				212274072BC5A0C8006C4040 /* DrawingCanvasViewController.swift */,
 			);
@@ -167,6 +171,7 @@
 		219E815B2BAD5F40002DC459 /* Unused */ = {
 			isa = PBXGroup;
 			children = (
+				2122742F2BC9123D006C4040 /* Drawing */,
 				21B6FF912BD9F65900DC5C98 /* DocumentDrawingViewController.swift */,
 				21B6FF5F2BD9221300DC5C98 /* PDFWithAnnotationsView.swift */,
 				212133002B86F9CE00772654 /* AdminView.swift */,
@@ -218,9 +223,7 @@
 			isa = PBXGroup;
 			children = (
 				219E81562BAD37D2002DC459 /* StudentView.swift */,
-				219E81762BBBE436002DC459 /* StudentExamView.swift */,
-				218F7E622BD9F97400ADA49C /* Testing.swift */,
-				2122742F2BC9123D006C4040 /* Drawing */,
+				218F7E642BDF6CC400ADA49C /* CanvasSaving.swift */,
 				219E81782BBBE454002DC459 /* YourTakenExamView.swift */,
 				219E81742BBBE3D2002DC459 /* LastSeenResultView.swift */,
 			);
@@ -308,6 +311,7 @@
 				212274062BC5A08C006C4040 /* DrawingCanvasView.swift in Sources */,
 				2122740B2BC5A129006C4040 /* Model.xcdatamodeld in Sources */,
 				212132ED2B86EFC200772654 /* TAApp.swift in Sources */,
+				218F7E652BDF6CC400ADA49C /* CanvasSaving.swift in Sources */,
 				212133032B87035100772654 /* Service.swift in Sources */,
 				219E81502BA9481C002DC459 /* AddTeacherClass.swift in Sources */,
 				21FCED272B8DBA320049C6D3 /* ClassAdmissionView.swift in Sources */,
@@ -472,6 +476,7 @@
 				DEVELOPMENT_TEAM = 28N6P267AM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow To Save Drawings";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -502,6 +507,7 @@
 				DEVELOPMENT_TEAM = 28N6P267AM;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSPhotoLibraryUsageDescription = "Allow To Save Drawings";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

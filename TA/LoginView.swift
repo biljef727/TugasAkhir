@@ -115,9 +115,9 @@ struct LoginView: View {
                     if components.count > 1 {
                         let examInfo = components[1]
                         let examIDs = examInfo.components(separatedBy: "-").first ?? ""
-                        StudentExamView(examID: examIDs, userID:userID).environmentObject(routerView)
+                        CanvasSaving(examID: examIDs, userID:userID).environmentObject(routerView)
                     } else {
-                        StudentExamView().environmentObject(routerView)
+                        CanvasSaving().environmentObject(routerView)
                     }
                 }
             }
