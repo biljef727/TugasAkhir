@@ -17,6 +17,7 @@ struct ResultExamView: View {
     @State var selectedID: String? = nil
     @State var studentStatusExam : [String] = []
     @State var nilaiFile :[String] = []
+    @State var alertSave:Bool = false
     var examNames : String?
     var examIDs : String?
     var examDates : String?
@@ -96,6 +97,12 @@ struct ResultExamView: View {
             }
             .font(.title)
         }
+        .alert(isPresented:$alertSave){
+            Alert(
+                title: Text("Image Saved"),
+                message: Text("Succesfully saved to Photos")
+            )
+        }
         .onAppear{
             fetchStudentNameAndID()
         }
@@ -131,22 +138,10 @@ struct ResultExamView: View {
             return
         }
 
-        // Save image to file
-        guard let imageData = image.jpegData(compressionQuality: 1.0) else {
-            print("Failed to convert UIImage to JPEG data.")
-            return
-        }
-
-        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
-        let imagePath = documentsPath.appendingPathComponent("downloaded_image.jpg")
-
-        do {
-            try imageData.write(to: imagePath)
-            print("Image downloaded and saved successfully at: \(imagePath)")
-        } catch {
-            print("Failed to save image: \(error)")
-        }
+        UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+        alertSave = true
     }
+
 
 }
 
