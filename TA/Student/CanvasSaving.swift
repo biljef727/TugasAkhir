@@ -91,7 +91,6 @@ struct Home : View {
                 },trailing:  Button(action:{
                     //saving
                     takeScreenshot()
-                    addKerjaan()
                     routerView.path.removeLast()
                 },label:{
                     Text("Submit")
@@ -104,6 +103,7 @@ struct Home : View {
         DispatchQueue.main.async {
             if let view = UIApplication.shared.windows.first?.rootViewController?.view {
                 self.screenshot = view.snapshot()
+                addKerjaan()
                 if let screenshot = self.screenshot {
                     UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
                 }

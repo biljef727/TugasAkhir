@@ -17,7 +17,6 @@ struct StudentView: View {
     @State var codingTaken : [String] = ["Coding1","Coding2"]
     @State var codingTimeTaken : [String] = ["14 Maret 2024","17 Agustus 1945"]
     let apiManager = ApiManagerStudent()
-    //    let apiManager = ApiManagerTeacher()
     var body: some View {
         VStack{
             VStack(alignment:.leading){
