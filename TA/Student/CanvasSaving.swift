@@ -121,13 +121,9 @@ struct Home : View {
             print("Failed to convert image to JPEG data.")
             return
         }
-        
-        let base64String = imageData.base64EncodedString()
-        print("Base64 string: \(base64String)")
-        
         // Call the API method passing the screenshot data
         let apiManager = ApiManagerStudent()
-        apiManager.addKerjaan(examID: examID ?? "", section1: 0, section2: 0, section3: 0, file: base64String, userId: userID ?? "", status: "Wait") { error in
+        apiManager.addKerjaan(examID: examID ?? "", section1: "0", section2: "0", section3: "0", file: imageData, userId: userID ?? "", status: "Wait") { error in
             if let error = error {
                 // Handle error
                 print("Error: \(error)")

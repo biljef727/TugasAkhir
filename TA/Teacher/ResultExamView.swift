@@ -16,7 +16,7 @@ struct ResultExamView: View {
     @State var studentScore : [String] = []
     @State var selectedID: String? = nil
     @State var studentStatusExam : [String] = []
-    
+    @State var nilaiFile :[String] = []
     var examNames : String?
     var examIDs : String?
     var examDates : String?
@@ -55,8 +55,9 @@ struct ResultExamView: View {
                         
                         Button(action: {
                             //downloadsoal
+                            convertAndDownload(datafile: nilaiFile[index])
                         }) {
-                            Text("File Soal")
+                            Text("FileSoal")
                         }
                         
                         Text(studentStatusExam[index])
@@ -106,18 +107,47 @@ struct ResultExamView: View {
     func fetchStudentNameAndID(){
         apiManager.fetchStudentIDandNames(classID: self.gradeIDs!, examID: self.examIDs!) { result in
             switch result {
-            case .success(let (studentNames, studentID,nilaiTotal,statusScore)):
+            case .success(let (studentNames, studentID,nilaiTotal,statusScore,nilaiFile)):
                 DispatchQueue.main.async {
                     self.listStudentName = studentNames
                     self.listStudentID = studentID
                     self.studentScore = nilaiTotal
                     self.studentStatusExam = statusScore
+                    self.nilaiFile = nilaiFile
                 }
             case .failure(let error):
                 print("Error fetching class names: \(error)")
             }
         }
     }
+    func convertAndDownload(datafile: String) {
+        guard let data = Data(base64Encoded: datafile) else {
+            print("Failed to decode base64 data.")
+            return
+        }
+
+        guard let image = UIImage(data: data) else {
+            print("Failed to create UIImage from data.")
+            return
+        }
+
+        // Save image to file
+        guard let imageData = image.jpegData(compressionQuality: 1.0) else {
+            print("Failed to convert UIImage to JPEG data.")
+            return
+        }
+
+        let documentsPath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let imagePath = documentsPath.appendingPathComponent("downloaded_image.jpg")
+
+        do {
+            try imageData.write(to: imagePath)
+            print("Image downloaded and saved successfully at: \(imagePath)")
+        } catch {
+            print("Failed to save image: \(error)")
+        }
+    }
+
 }
 
 #Preview {

@@ -275,7 +275,7 @@ class ApiManagerTeacher {
         }.resume()
     }
     
-    func fetchStudentIDandNames(classID: String, examID: String, completion: @escaping(Result<([String], [String],[String],[String]), Error>) -> Void) {
+    func fetchStudentIDandNames(classID: String, examID: String, completion: @escaping(Result<([String], [String],[String],[String],[String]), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/studentExamResult?ClassID=\(classID)&ExamID=\(examID)"
         
         guard let url = URL(string: urlString) else {
@@ -296,10 +296,10 @@ class ApiManagerTeacher {
             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                 do {
                     let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
-                    guard let studentNames = decodedData["studentName"], let studentID = decodedData["studentID"],let nilaiTotal = decodedData["nilaiTotal"],let statusScore = decodedData["statusScore"] else {
+                    guard let studentNames = decodedData["studentName"], let studentID = decodedData["studentID"],let nilaiTotal = decodedData["nilaiTotal"],let statusScore = decodedData["statusScore"], let nilaiFile = decodedData["nilaiFile"]else {
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-                    completion(.success((studentNames, studentID,nilaiTotal,statusScore)))
+                    completion(.success((studentNames, studentID,nilaiTotal,statusScore,nilaiFile)))
                 } catch {
                     print("Error parsing JSON: \(error)")
                     completion(.failure(error))

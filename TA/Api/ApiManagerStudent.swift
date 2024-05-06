@@ -91,18 +91,22 @@ class ApiManagerStudent {
             }
         }.resume()
     }
-    func addKerjaan(examID: String, section1: Int, section2: Int, section3: Int, file: String, userId: String,status:String, completion: @escaping (Error?) -> Void) {
+    func addKerjaan(examID: String, section1: String, section2: String, section3: String, file: Data?, userId: String, status: String, completion: @escaping (Error?) -> Void) {
         let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/insertKerjaan")!
         
-        var requestBody : [String : Any] = [
+        var requestBody: [String: Any] = [
             "ExamID": examID,
             "NilaiSection1": section1,
             "NilaiSection2": section2,
             "NilaiSection3": section3,
             "UserID": userId,
-            "StatusScore":status,
-            "NilaiFile":file
+            "StatusScore": status
         ]
+        
+        // Add file data if available
+        if let fileData = file {
+            requestBody["NilaiFile"] = fileData.base64EncodedString()
+        }
         
         var request = URLRequest(url: apiUrl)
         request.httpMethod = "POST"
@@ -117,11 +121,29 @@ class ApiManagerStudent {
                     completion(error)
                     return
                 }
-                completion(nil)
+                
+                guard let httpResponse = response as? HTTPURLResponse else {
+                    return
+                }
+                
+                let statusCode = httpResponse.statusCode
+                if (200..<300).contains(statusCode) {
+                    // Success response
+                    completion(nil)
+                } else {
+                    // Non-success response
+                    let responseString = String(data: data ?? Data(), encoding: .utf8)
+                    let error = NSError(domain: "", code: statusCode, userInfo: [
+                        NSLocalizedDescriptionKey: "Server returned status code \(statusCode)",
+                        NSLocalizedFailureReasonErrorKey: "Response: \(responseString ?? "")"
+                    ])
+                    completion(error)
+                }
             }.resume()
         } catch {
             completion(error)
         }
     }
+
 }
 
