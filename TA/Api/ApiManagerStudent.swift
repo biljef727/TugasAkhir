@@ -41,7 +41,7 @@ class ApiManagerStudent {
             }
         }.resume()
     }
-    func fetchExamNow(userID: String, completion: @escaping(Result<(String,String,String,String), Error>) -> Void) {
+    func fetchExamNow(userID: String, completion: @escaping(Result<(String,String,String,String,String), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/examNow?UserID=\(userID)"
 //        let _ = print("1")
         guard let url = URL(string: urlString) else {
@@ -67,7 +67,9 @@ class ApiManagerStudent {
                 do {
 //                    let _ = print("7")
                     let decodedData = try JSONDecoder().decode([String: String].self, from: data)
-                    guard let startExamTimes = decodedData["startExamTime"],
+                    guard 
+                        let startDateTime = decodedData["startDateTime"],
+                        let startExamTimes = decodedData["startExamTime"],
                           let endExamTimes = decodedData["endExamTime"],
                           let examNames = decodedData["examName"],
                           let examIDs = decodedData["examID"]
@@ -77,7 +79,7 @@ class ApiManagerStudent {
                     }
 //                    let _ = print(startExamTimes)
 //                    let _ = print(endExamTimes)
-                    completion(.success((startExamTimes,endExamTimes,examNames,examIDs)))
+                    completion(.success((startDateTime,startExamTimes,endExamTimes,examNames,examIDs)))
                 } catch {
 //                    let _ = print("10")
                     completion(.failure(error))

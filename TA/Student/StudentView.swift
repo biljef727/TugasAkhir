@@ -12,6 +12,7 @@ struct StudentView: View {
     @Binding var userID: String
     @State var examName : String = ""
     @State var examID : String = ""
+    @State var scheduleDate :String = ""
     @State var scheduleStartExamTime :String = ""
     @State var scheduleEndExamTime : String = ""
     @State var codingTaken : [String] = ["Coding1","Coding2"]
@@ -46,12 +47,14 @@ struct StudentView: View {
                 Text("New Exam")
                 HStack{
                     Text("Start Time :")
-                    Text("\(formatDate(from:scheduleStartExamTime) ?? "")")
+                    Text("\(formatDate(from:scheduleDate) ?? "")")
+                    Text("\(formatTime(from:scheduleStartExamTime) ?? "")")
                 }
                 .padding(.vertical)
                 HStack{
                     Text("End Time:")
-                    Text("\(formatDate(from:scheduleEndExamTime) ?? "")")
+                    Text("\(formatDate(from:scheduleDate) ?? "")")
+                    Text("\(formatTime(from:scheduleEndExamTime) ?? "")")
                 }
                 .padding(.vertical)
                 HStack{
@@ -115,8 +118,9 @@ struct StudentView: View {
     func fetchExamNow() {
         apiManager.fetchExamNow(userID: self.userID) { result in
             switch result {
-            case .success(let (startExamTimes,endExamTimes,examNames,examIDs)):
+            case .success(let (startDateTime,startExamTimes,endExamTimes,examNames,examIDs)):
                 DispatchQueue.main.async {
+                    self.scheduleDate = startDateTime
                     self.scheduleStartExamTime = startExamTimes
                     self.scheduleEndExamTime = endExamTimes
                     self.examName = examNames
@@ -127,6 +131,17 @@ struct StudentView: View {
             }
         }
     }
+    func formatTime(from timeIntervalString: String) -> String? {
+        guard let timeInterval = TimeInterval(timeIntervalString) else {
+            return nil
+        }
+        let date = Date(timeIntervalSince1970: timeInterval)
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "h:mm a"
+        
+        return formatter.string(from: date)
+    }
     func formatDate(from timeIntervalString: String) -> String? {
         guard let timeInterval = TimeInterval(timeIntervalString) else {
             return nil
@@ -134,7 +149,7 @@ struct StudentView: View {
         let date = Date(timeIntervalSince1970: timeInterval)
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd MMMM yyyy , h:mm a"
+        formatter.dateFormat = "dd MMMM yyyy"
         
         return formatter.string(from: date)
     }
