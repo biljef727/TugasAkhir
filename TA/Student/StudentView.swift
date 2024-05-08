@@ -6,8 +6,18 @@
 //
 
 import SwiftUI
+import CoreData
 
 struct StudentView: View {
+    
+    @Environment(\.managedObjectContext) private var viewContext
+
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \Exam.examIDLast, ascending: true)],
+        animation: .default)
+    
+    private var items: FetchedResults<Exam>
+    
     @EnvironmentObject var routerView : ServiceRoute
     @Binding var userID: String
     @State var examName : String = ""
@@ -15,24 +25,27 @@ struct StudentView: View {
     @State var scheduleDate :String = ""
     @State var scheduleStartExamTime :String = ""
     @State var scheduleEndExamTime : String = ""
-    @State var codingTaken : [String] = ["Coding1","Coding2"]
-    @State var codingTimeTaken : [String] = ["14 Maret 2024","17 Agustus 1945"]
+    @State var codingNameTaken : [String] = []
+    @State var codingIDTaken : [String] = []
+    @State var codingTimeTaken : [String] = []
+    @State var scoring : String = ""
+    @State var counter : Int = 1
+    
     let apiManager = ApiManagerStudent()
     var body: some View {
         VStack{
             VStack(alignment:.leading){
                 Text("Last Seen Exam")
                 HStack{
-                    Text("Exam Name :")
-                    Text("-")
+                    Text("Exam Name : \(fetchLastSeenExam()?.examNameLast ?? "-")")
                 }
                 .padding(.vertical)
                 HStack{
-                    Text("Score Result :")
-                    Text("-")
+                    Text("Score Result :  \(fetchLastSeenExam()?.scoreLast ?? "-") ")
                     Spacer()
                     Button(action:{
-                        
+                        let examInfo = "\(codingIDTaken[0])"
+                        routerView.path.append("yourTakenExam/\(examInfo)")
                     }, label:{
                         Text("See Result")
                             .foregroundColor(Color.white)
@@ -43,46 +56,101 @@ struct StudentView: View {
                 }
             }
             Divider()
-            VStack(alignment:.leading){
-                Text("New Exam")
-                HStack{
-                    Text("Start Time :")
-                    Text("\(formatDate(from:scheduleDate) ?? "")")
-                    Text("\(formatTime(from:scheduleStartExamTime) ?? "")")
+            if counter == 1{
+                VStack(alignment:.leading){
+                    Text("New Exam")
+                    HStack{
+                        Text("Start Time : \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleStartExamTime) ?? "")")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("End Time: \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleEndExamTime) ?? "")")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("Exam Name : \(examName)")
+                        Spacer()
+                        Button(action:{
+                            let examInfo = "\(examID)-\(counter)"
+                            routerView.path.append("startExam/\(examInfo)")
+                            counter += 1
+                        }, label:{
+                            Text("Start")
+                                .foregroundColor(Color.white)
+                        })
+                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(15)
+                    }
                 }
-                .padding(.vertical)
-                HStack{
-                    Text("End Time:")
-                    Text("\(formatDate(from:scheduleDate) ?? "")")
-                    Text("\(formatTime(from:scheduleEndExamTime) ?? "")")
+            }
+            if counter == 2{
+                VStack(alignment:.leading){
+                    Text("New Exam")
+                    HStack{
+                        Text("Start Time : \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleStartExamTime) ?? "")")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("End Time: \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleEndExamTime) ?? "")")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("Exam Name : \(examName)")
+                        Spacer()
+                        Button(action:{
+                            let examInfo = "\(examID)-\(counter)"
+                            routerView.path.append("startExam/\(examInfo)")
+                            counter += 1
+                        }, label:{
+                            Text("Start")
+                                .foregroundColor(Color.white)
+                        })
+                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(15)
+                    }
                 }
-                .padding(.vertical)
-                HStack{
-                    Text("Exam Name :")
-                    Text("\(examName)")
-                    Spacer()
-                    Button(action:{
-                        let examInfo = "\(examID)"
-                        routerView.path.append("startExam/\(examInfo)")
-                    }, label:{
-                        Text("Start")
-                            .foregroundColor(Color.white)
-                    })
-                    .frame(width: UIScreen.main.bounds.width/4,height: 50)
-                    .background(Color.accentColor)
-                    .cornerRadius(15)
+            }
+            if counter == 3{
+                VStack(alignment:.leading){
+                    Text("New Exam")
+                    HStack{
+                        Text("Start Time :")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("End Time:")
+                    }
+                    .padding(.vertical)
+                    HStack{
+                        Text("Exam Name :")
+                        Spacer()
+                        Button(action:{
+                            
+                        }, label:{
+                            Text("Start")
+                                .foregroundColor(Color.white)
+                        })
+                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(15)
+                    }
                 }
             }
             Divider()
             VStack(alignment:.leading){
                 Text("Your Taken Exam")
                 VStack{
-                    ForEach(0..<codingTaken.count, id: \.self) { index in
+                    ForEach(0..<codingNameTaken.count, id: \.self) { index in
                         HStack{
-                            Text("- \(codingTaken[index]) | \(codingTimeTaken[index])").tag(index)
+                            Text("- \(codingNameTaken[index]) | \(formatDate(from:codingTimeTaken[index]) ?? "")").tag(index)
                             Spacer()
                             Button(action:{
-                                
+                                fetchScore(examID: codingIDTaken[index])
+                                saveToCoreData(examID: codingIDTaken[index], examName: codingNameTaken[index],score: scoring)
+                                let examInfo = "\(codingIDTaken[index])"
+                                routerView.path.append("yourTakenExam/\(examInfo)")
                             }, label:{
                                 Text("See")
                                     .foregroundColor(Color.white)
@@ -99,6 +167,7 @@ struct StudentView: View {
         }
         .onAppear{
             fetchExamNow()
+            fetchExamWas()
         }
         .frame(maxWidth: UIScreen.main.bounds.width/2, maxHeight: UIScreen.main.bounds.height)
         //        .background(Color.red)
@@ -120,11 +189,46 @@ struct StudentView: View {
             switch result {
             case .success(let (startDateTime,startExamTimes,endExamTimes,examNames,examIDs)):
                 DispatchQueue.main.async {
-                    self.scheduleDate = startDateTime
-                    self.scheduleStartExamTime = startExamTimes
-                    self.scheduleEndExamTime = endExamTimes
-                    self.examName = examNames
-                    self.examID = examIDs
+                    if counter == 1{
+                        self.scheduleDate = startDateTime[0]
+                        self.scheduleStartExamTime = startExamTimes[0]
+                        self.scheduleEndExamTime = endExamTimes[0]
+                        self.examName = examNames[0]
+                        self.examID = examIDs[0]
+                    }
+                    if counter == 2{
+                        self.scheduleDate = startDateTime[1]
+                        self.scheduleStartExamTime = startExamTimes[1]
+                        self.scheduleEndExamTime = endExamTimes[1]
+                        self.examName = examNames[1]
+                        self.examID = examIDs[1]
+                    }
+                }
+            case .failure(let error):
+                print("Error fetching class names: \(error)")
+            }
+        }
+    }
+    func fetchExamWas() {
+        apiManager.fetchExamWas(userID: self.userID) { result in
+            switch result {
+            case .success(let (_,startExamTimes,_,examNames,examIDs)):
+                DispatchQueue.main.async {
+                        self.codingTimeTaken = startExamTimes
+                        self.codingNameTaken = examNames
+                        self.codingIDTaken = examIDs
+                }
+            case .failure(let error):
+                print("Error fetching class names: \(error)")
+            }
+        }
+    }
+    func fetchScore(examID: String){
+        apiManager.fetchScore(userID: self.userID,examID: examID) { result in
+            switch result {
+            case .success(let (_,_,_,_,_,totalScore,_)):
+                DispatchQueue.main.async {
+                    self.scoring = totalScore
                 }
             case .failure(let error):
                 print("Error fetching class names: \(error)")
@@ -152,6 +256,31 @@ struct StudentView: View {
         formatter.dateFormat = "dd MMMM yyyy"
         
         return formatter.string(from: date)
+    }
+    func saveToCoreData(examID: String, examName: String,score:String) {
+        let newExam = Exam(context: viewContext)
+        newExam.examIDLast = examID
+        newExam.examNameLast = examName
+        newExam.scoreLast = score
+
+        do {
+            try viewContext.save()
+        } catch {
+            print("Error saving data to Core Data: \(error)")
+        }
+    }
+    func fetchLastSeenExam() -> Exam? {
+        let fetchRequest: NSFetchRequest<Exam> = Exam.fetchRequest()
+        fetchRequest.fetchLimit = 1
+        fetchRequest.sortDescriptors = [NSSortDescriptor(keyPath: \Exam.examIDLast, ascending: false)]
+
+        do {
+            let exams = try viewContext.fetch(fetchRequest)
+            return exams.first
+        } catch {
+            print("Error fetching last seen exam: \(error)")
+            return nil
+        }
     }
 }
 //

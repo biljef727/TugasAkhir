@@ -22,3 +22,6 @@ struct TAApp: App {
     }
 }
 
+class AppDelegate: NSObject, UIApplicationDelegate {
+    var window: UIWindow?
+}

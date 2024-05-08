@@ -41,47 +41,99 @@ class ApiManagerStudent {
             }
         }.resume()
     }
-    func fetchExamNow(userID: String, completion: @escaping(Result<(String,String,String,String,String), Error>) -> Void) {
+    func fetchExamNow(userID: String, completion: @escaping(Result<([String],[String],[String],[String],[String]), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/examNow?UserID=\(userID)"
-//        let _ = print("1")
+        //        let _ = print("1")
         guard let url = URL(string: urlString) else {
-//            let _ = print("2")
+            //            let _ = print("2")
             completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
             return
         }
-//        let _ = print("3")
+        //        let _ = print("3")
         
         var request = URLRequest(url: url)
         request.httpMethod = "GET"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-//        let _ = print("4")
+        //        let _ = print("4")
         URLSession.shared.dataTask(with: request) { data, response, error in
             guard let data = data, error == nil else {
-//                let _ = print("5")
+                //                let _ = print("5")
                 print("Error: \(error?.localizedDescription ?? "Unknown error")")
                 completion(.failure(error!))
                 return
             }
-//            let _ = print("6")
+            //            let _ = print("6")
             if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
                 do {
-//                    let _ = print("7")
-                    let decodedData = try JSONDecoder().decode([String: String].self, from: data)
-                    guard 
+                    //                    let _ = print("7")
+                    let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
+                    guard
                         let startDateTime = decodedData["startDateTime"],
                         let startExamTimes = decodedData["startExamTime"],
-                          let endExamTimes = decodedData["endExamTime"],
-                          let examNames = decodedData["examName"],
-                          let examIDs = decodedData["examID"]
+                        let endExamTimes = decodedData["endExamTime"],
+                        let examNames = decodedData["examName"],
+                        let examIDs = decodedData["examID"]
                     else {
-//                        let _ = print("8")
+                        //                        let _ = print("8")
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-//                    let _ = print(startExamTimes)
-//                    let _ = print(endExamTimes)
+                    //                    let _ = print(startExamTimes)
+                    //                    let _ = print(endExamTimes)
                     completion(.success((startDateTime,startExamTimes,endExamTimes,examNames,examIDs)))
                 } catch {
-//                    let _ = print("10")
+                    //                    let _ = print("10")
+                    completion(.failure(error))
+                }
+            } else {
+                if let errorMessage = String(data: data, encoding: .utf8) {
+                    // Handle error message
+                } else {
+                    // Handle unknown error
+                }
+            }
+        }.resume()
+    }
+    func fetchExamWas(userID: String, completion: @escaping(Result<([String],[String],[String],[String],[String]), Error>) -> Void) {
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/examWas?UserID=\(userID)"
+        //        let _ = print("1")
+        guard let url = URL(string: urlString) else {
+            //            let _ = print("2")
+            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        //        let _ = print("3")
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //        let _ = print("4")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                //                let _ = print("5")
+                print("Error: \(error?.localizedDescription ?? "Unknown error")")
+                completion(.failure(error!))
+                return
+            }
+            //            let _ = print("6")
+            if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
+                do {
+                    //                    let _ = print("7")
+                    let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
+                    guard
+                        let startDateTime = decodedData["startDateTime"],
+                        let startExamTimes = decodedData["startExamTime"],
+                        let endExamTimes = decodedData["endExamTime"],
+                        let examNames = decodedData["examName"],
+                        let examIDs = decodedData["examID"]
+                    else {
+                        //                        let _ = print("8")
+                        throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+                    }
+                    //                    let _ = print(startExamTimes)
+                    //                    let _ = print(endExamTimes)
+                    completion(.success((startDateTime,startExamTimes,endExamTimes,examNames,examIDs)))
+                } catch {
+                    //                    let _ = print("10")
                     completion(.failure(error))
                 }
             } else {
@@ -146,6 +198,55 @@ class ApiManagerStudent {
             completion(error)
         }
     }
-
+    func fetchScore(userID: String,examID:String, completion: @escaping(Result<(String,String,String,String,String,String,String), Error>) -> Void) {
+        let urlString = "https://indramaryati.xyz/iph_exam/public/api/getNilai?UserID=\(userID)&ExamID=\(examID)"
+        guard let url = URL(string: urlString) else {
+            completion(.failure(NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid URL"])))
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        //        let _ = print("4")
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                //                let _ = print("5")
+                print("Error: \(error?.localizedDescription ?? "Unknown error")")
+                completion(.failure(error!))
+                return
+            }
+            //            let _ = print("6")
+            if let httpResponse = response as? HTTPURLResponse, (200...299).contains(httpResponse.statusCode) {
+                do {
+                    //                    let _ = print("7")
+                    let decodedData = try JSONDecoder().decode([String: String].self, from: data)
+                    guard
+                        let studentName = decodedData["studentName"],
+                        let examName = decodedData["examName"],
+                        let score1 = decodedData["score1"],
+                        let score2 = decodedData["score2"],
+                        let score3 = decodedData["score3"],
+                        let totalScore = decodedData["totalScore"],
+//                        let nilaiTambahan = decodedData["nilaiTambahan"],
+                        let statusScore = decodedData["statusScore"]
+                    else {
+                        throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
+                    }
+                    completion(.success((studentName,examName,score1,score2,score3,totalScore,statusScore)))
+                } catch {
+                    //                    let _ = print("10")
+                    completion(.failure(error))
+                }
+            } else {
+                if let errorMessage = String(data: data, encoding: .utf8) {
+                    // Handle error message
+                } else {
+                    // Handle unknown error
+                }
+            }
+        }.resume()
+    }
+    
 }
 

@@ -75,7 +75,7 @@ struct LoginView: View {
                         .padding(.horizontal)
                         .foregroundColor(Color.white)
                 })
-                .frame(width: UIScreen.main.bounds.width / 3)
+                .frame(width: UIScreen.main.bounds.width / 2,height: 50)
                 .background(Color.accentColor)
                 .cornerRadius(15)
             }
@@ -114,10 +114,27 @@ struct LoginView: View {
                     let components = val.components(separatedBy: "/")
                     if components.count > 1 {
                         let examInfo = components[1]
-                        let examIDs = examInfo.components(separatedBy: "-").first ?? ""
-                        CanvasSaving(examID: examIDs, userID:userID).environmentObject(routerView)
+                        let examInfoComponents = examInfo.components(separatedBy: "-")
+                        if examInfoComponents.count == 2 {
+                            let examIDs = examInfoComponents[0]
+                            let counterExam = examInfoComponents[1]
+                            CanvasSaving(examID: examIDs, userID:userID,counter: Int(counterExam)).environmentObject(routerView)
+                        }
                     } else {
                         CanvasSaving().environmentObject(routerView)
+                    }
+                }
+                else if val.hasPrefix("yourTakenExam/"){
+                    let components = val.components(separatedBy: "/")
+                    if components.count > 1 {
+                        let examInfo = components[1]
+                        let examInfoComponents = examInfo.components(separatedBy: "-")
+                        if examInfoComponents.count == 1 {
+                            let examIDs = examInfoComponents[0]
+                            YourTakenExamView(examID: examIDs, userID:userID).environmentObject(routerView)
+                        }
+                    } else {
+                        YourTakenExamView().environmentObject(routerView)
                     }
                 }
             }

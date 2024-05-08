@@ -2,7 +2,7 @@
 //  FixAdminView.swift
 //  TA
 //
-//  Created by Billy Jefferson on 22/03/24.
+//  Created by Billy Jefferson on 22/03/22.
 //
 
 import SwiftUI
@@ -113,9 +113,9 @@ struct FixAdminView: View {
                 }
                 ScrollView {
                     VStack(alignment:.leading) {
-                        ForEach(0..<className.count / 4 + 1, id: \.self) { row in
+                        ForEach(0..<className.count / 3 + 1, id: \.self) { column in
                             HStack(spacing: 20) {
-                                ForEach(0..<min(className.count - row * 4, 4), id: \.self) { index in
+                                ForEach(0..<min(className.count - column * 2, 2), id: \.self) { index in
                                     RoundedRectangle(cornerRadius: 16, style: .circular)
                                         .frame(width: 200, height: 200)
                                         .shadow(radius: 5)
@@ -131,7 +131,7 @@ struct FixAdminView: View {
                                                 VStack {
                                                     Spacer()
                                                     HStack {
-                                                        Text("\(className[row * 4 + index]) | \(classSemester[row * 4 + index])".prefix(15))
+                                                        Text("\(className[column * 2 + index]) | \(classSemester[column * 2 + index])".prefix(15))
                                                             .bold()
                                                             .foregroundColor(.white)
                                                             .font(.title3)
@@ -143,8 +143,8 @@ struct FixAdminView: View {
                                             }
                                         )
                                         .onTapGesture {
-                                            let selectedClassName = className[row * 4 + index]
-                                            let selectedClassSemester = classSemester[row * 4 + index]
+                                            let selectedClassName = className[column * 2 + index]
+                                            let selectedClassSemester = classSemester[column * 2 + index]
                                             apiManager.fetchClassID(className: selectedClassName, classSemester: selectedClassSemester) { classID in
                                                 guard let classID = classID else {
                                                     return

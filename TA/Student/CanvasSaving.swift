@@ -6,8 +6,10 @@ import PDFKit
 struct CanvasSaving: View {
     var examID : String?
     var userID : String?
+    var counter : Int?
+    
     var body: some View {
-        Home(examID: examID, userID: userID)
+        Home(examID: examID, userID: userID, counter: counter)
     }
 }
 
@@ -62,16 +64,31 @@ struct Home : View {
     @EnvironmentObject var routerView: ServiceRoute
     var examID : String?
     var userID : String?
+    var counter : Int?
     @State var canvas = PKCanvasView()
     @State var isDraw = true
     @State private var currentPage = 1
-    let pdfURL = Bundle.main.url(forResource: "dummy", withExtension: "pdf")!
+    
+    // Define pdfURL based on counter
+    var pdfURL: URL {
+        if counter == 1 {
+            return Bundle.main.url(forResource: "Soal_1_Section", withExtension: "pdf")!
+        }
+        if counter == 2 {
+            return Bundle.main.url(forResource: "Soal_2_Section", withExtension: "pdf")!
+        }
+        else{
+            return Bundle.main.url(forResource: "", withExtension: "pdf")!
+        }
+    }
+    
     @State private var screenshot: UIImage? = nil
     
     var body: some View{
-        ZStack{
-            PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage)
-                .aspectRatio(contentMode: .fit)
+        let pdfView = PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage) // Pass pdfURL to PDFViewWrapper
+        
+        return ZStack{
+            pdfView.aspectRatio(contentMode: .fit)
             
             DrawingView(canvas: $canvas,isDraw: $isDraw)
                 .frame(width: 520, height: 720)
@@ -97,6 +114,10 @@ struct Home : View {
                 }))
         }
         .navigationBarBackButtonHidden(true)
+        .onAppear {
+            disableHomeGesture()
+            preventDeviceLock()
+        }
     }
     
     func takeScreenshot() {
@@ -104,9 +125,7 @@ struct Home : View {
             if let view = UIApplication.shared.windows.first?.rootViewController?.view {
                 self.screenshot = view.snapshot()
                 addKerjaan()
-                if let screenshot = self.screenshot {
-                    UIImageWriteToSavedPhotosAlbum(screenshot, nil, nil, nil)
-                }
+                
             }
         }
     }
@@ -130,6 +149,19 @@ struct Home : View {
             } else {
                 // Success, do something if needed
             }
+        }
+    }
+    func disableHomeGesture() {
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
+            return
+        }
+        appDelegate.window?.isMultipleTouchEnabled = false
+    }
+    
+    func preventDeviceLock() {
+        UIApplication.shared.isIdleTimerDisabled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30 * 60) { // 30 minutes
+            UIApplication.shared.isIdleTimerDisabled = false
         }
     }
 }
@@ -159,11 +191,5 @@ extension UIView {
         let image = UIGraphicsGetImageFromCurrentImageContext()!
         UIGraphicsEndImageContext()
         return image
-    }
-}
-
-struct CanvasSaving_Previews: PreviewProvider {
-    static var previews: some View {
-        CanvasSaving()
     }
 }
