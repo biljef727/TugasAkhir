@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 import SwiftData
 
 // TAApp.swift
@@ -24,4 +25,15 @@ struct TAApp: App {
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     var window: UIWindow?
+
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        // Disable edge swiping gestures
+        if let window = self.window,
+           let rootViewController = window.rootViewController {
+            let gestureRecognizer = UISwipeGestureRecognizer(target: nil, action: nil)
+            rootViewController.view.addGestureRecognizer(gestureRecognizer)
+        }
+        
+        return true
+    }
 }

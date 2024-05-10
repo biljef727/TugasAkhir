@@ -59,6 +59,7 @@ struct PDFViewWrapper: UIViewRepresentable {
     }
 }
 
+
 struct Home : View {
     // Other properties...
     @EnvironmentObject var routerView: ServiceRoute
@@ -89,6 +90,7 @@ struct Home : View {
         
         return ZStack{
             pdfView.aspectRatio(contentMode: .fit)
+//                .frame(width: 800, height: 950)
             
             DrawingView(canvas: $canvas,isDraw: $isDraw)
                 .frame(width: 520, height: 720)
@@ -98,12 +100,14 @@ struct Home : View {
                         isDraw = true
                     }){
                         Image(systemName: "pencil")
+                            .foregroundColor(isDraw ? Color.black : Color.blue)
                     }
                     Button(action:{
                         //erase tool
                         isDraw = false
                     }){
                         Image(systemName: "eraser.fill")
+                            .foregroundColor(isDraw ? Color.blue : Color.black)
                     }
                 },trailing:  Button(action:{
                     //saving
@@ -125,7 +129,6 @@ struct Home : View {
             if let view = UIApplication.shared.windows.first?.rootViewController?.view {
                 self.screenshot = view.snapshot()
                 addKerjaan()
-                
             }
         }
     }
@@ -151,6 +154,7 @@ struct Home : View {
             }
         }
     }
+    
     func disableHomeGesture() {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             return
@@ -172,15 +176,39 @@ struct DrawingView : UIViewRepresentable{
     
     let ink = PKInkingTool(.pen,color: .black)
     let eraser = PKEraserTool(.bitmap)
+    
     func makeUIView(context: Context) -> PKCanvasView {
-        
         canvas.drawingPolicy = .anyInput
         canvas.backgroundColor = .clear
         canvas.tool = isDraw ? ink : eraser
         return canvas
     }
+    
     func updateUIView(_ uiView: PKCanvasView, context: Context) {
         uiView.tool = isDraw ? ink : eraser
+    }
+    
+    func makeCoordinator() -> Coordinator {
+        Coordinator(self)
+    }
+    
+    class Coordinator: NSObject, PKCanvasViewDelegate {
+        let parent: DrawingView
+        
+        init(_ parent: DrawingView) {
+            self.parent = parent
+        }
+        
+        func canvasViewDidBeginUsingTool(_ canvasView: PKCanvasView) {
+            // Check if the current tool is a pencil tool
+            if let pencilTool = canvasView.tool as? PKInkingTool, pencilTool.inkType == .pen {
+                // Allow drawing only with the pencil
+                parent.isDraw = true
+            } else {
+                // Disable drawing with finger
+                parent.isDraw = false
+            }
+        }
     }
 }
 

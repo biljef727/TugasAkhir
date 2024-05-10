@@ -74,10 +74,10 @@ struct LoginView: View {
                         .padding(.vertical, 5)
                         .padding(.horizontal)
                         .foregroundColor(Color.white)
+                        .frame(width: UIScreen.main.bounds.width / 2,height: 50)
+                        .background(Color.accentColor)
+                        .cornerRadius(15)
                 })
-                .frame(width: UIScreen.main.bounds.width / 2,height: 50)
-                .background(Color.accentColor)
-                .cornerRadius(15)
             }
             .navigationDestination(for: String.self) { val in
                 if val == "admin"{
