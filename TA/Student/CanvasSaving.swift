@@ -87,36 +87,36 @@ struct Home : View {
     
     var body: some View{
         let pdfView = PDFViewWrapper(pdfURL: pdfURL, currentPage: $currentPage) // Pass pdfURL to PDFViewWrapper
-        
-        return ZStack{
-            pdfView.aspectRatio(contentMode: .fit)
-//                .frame(width: 800, height: 950)
-            
-            DrawingView(canvas: $canvas,isDraw: $isDraw)
-                .frame(width: 520, height: 720)
-                .navigationBarTitleDisplayMode(.inline)
-                .navigationBarItems(leading:HStack{
-                    Button(action:{
-                        isDraw = true
-                    }){
-                        Image(systemName: "pencil")
-                            .foregroundColor(isDraw ? Color.black : Color.blue)
-                    }
-                    Button(action:{
-                        //erase tool
-                        isDraw = false
-                    }){
-                        Image(systemName: "eraser.fill")
-                            .foregroundColor(isDraw ? Color.blue : Color.black)
-                    }
-                },trailing:  Button(action:{
-                    //saving
-                    takeScreenshot()
-                    routerView.path.removeLast()
-                },label:{
-                    Text("Submit")
-                }))
-        }
+//        ScrollView{
+            return ZStack{
+                pdfView.aspectRatio(contentMode: .fit)
+                //                .frame(width: 800, height: 950)
+                
+                DrawingView(canvas: $canvas,isDraw: $isDraw)
+                    .frame(width: 520, height: 720)
+                    .navigationBarTitleDisplayMode(.inline)
+                    .navigationBarItems(leading:HStack{
+                        Button(action:{
+                            isDraw = true
+                        }){
+                            Image(systemName: "pencil")
+                                .foregroundColor(isDraw ? Color.black : Color.blue)
+                        }
+                        Button(action:{
+                            //erase tool
+                            isDraw = false
+                        }){
+                            Image(systemName: "eraser.fill")
+                                .foregroundColor(isDraw ? Color.blue : Color.black)
+                        }
+                    },trailing:  Button(action:{
+                        //saving
+                        takeScreenshot()
+                    },label:{
+                        Text("Submit")
+                    }))
+            }
+//        }
         .navigationBarBackButtonHidden(true)
         .onAppear {
             disableHomeGesture()
@@ -129,6 +129,7 @@ struct Home : View {
             if let view = UIApplication.shared.windows.first?.rootViewController?.view {
                 self.screenshot = view.snapshot()
                 addKerjaan()
+                routerView.path.removeLast()
             }
         }
     }
