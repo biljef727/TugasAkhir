@@ -7,16 +7,16 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--PDFKit Demo-->
+        <!--Document Drawing View Controller-->
         <scene sceneID="x3T-6d-c5x">
             <objects>
-                <viewController id="ubP-Kn-PDz" customClass="DocumentDrawingViewController" customModule="IphExam" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DocumentDrawingViewController" id="ubP-Kn-PDz" customClass="DocumentDrawingViewController" customModule="TA" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="q5D-LM-VxB">
                         <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bU3-FI-f8q" customClass="NonSelectablePDFView" customModule="IphExam" customModuleProvider="target">
-                                <rect key="frame" x="132" y="74" width="688" height="1035.5"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="bU3-FI-f8q" customClass="NonSelectablePDFView" customModule="TA" customModuleProvider="target">
+                                <rect key="frame" x="132" y="74" width="688" height="1036"/>
                                 <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="sTB-gI-q96" userLabel="Thumbnail View Container">
@@ -54,41 +54,36 @@
                                 </constraints>
                             </view>
                         </subviews>
-                        <viewLayoutGuide key="safeArea" id="r86-Da-68g"/>
+                        <viewLayoutGuide key="safeArea" id="CTf-wB-VbY"/>
                         <color key="backgroundColor" red="0.92549019610000005" green="0.92549019610000005" blue="0.92549019610000005" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
-                            <constraint firstItem="r86-Da-68g" firstAttribute="bottom" secondItem="czd-uG-KPp" secondAttribute="bottom" id="4o6-tO-PPs"/>
-                            <constraint firstItem="bU3-FI-f8q" firstAttribute="leading" secondItem="sTB-gI-q96" secondAttribute="trailing" id="8FR-bD-39v"/>
-                            <constraint firstItem="r86-Da-68g" firstAttribute="bottom" secondItem="sTB-gI-q96" secondAttribute="bottom" id="D6y-Qi-98x"/>
-                            <constraint firstItem="sTB-gI-q96" firstAttribute="top" secondItem="r86-Da-68g" secondAttribute="top" id="KIH-Wg-WGi"/>
-                            <constraint firstAttribute="trailing" secondItem="czd-uG-KPp" secondAttribute="trailing" id="Rp5-7t-cSN"/>
-                            <constraint firstItem="bU3-FI-f8q" firstAttribute="top" secondItem="r86-Da-68g" secondAttribute="top" id="YKQ-NU-DlW"/>
-                            <constraint firstItem="czd-uG-KPp" firstAttribute="leading" secondItem="q5D-LM-VxB" secondAttribute="leading" id="eJm-79-jDu"/>
-                            <constraint firstItem="czd-uG-KPp" firstAttribute="top" secondItem="bU3-FI-f8q" secondAttribute="bottom" id="gT5-wL-0Sh"/>
-                            <constraint firstItem="bU3-FI-f8q" firstAttribute="trailing" secondItem="r86-Da-68g" secondAttribute="trailing" id="tCm-qx-wtf"/>
-                            <constraint firstItem="sTB-gI-q96" firstAttribute="leading" secondItem="r86-Da-68g" secondAttribute="leading" id="u8i-8y-XSu"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="bottom" secondItem="CTf-wB-VbY" secondAttribute="bottom" id="1nM-6c-V1f"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="leading" secondItem="sTB-gI-q96" secondAttribute="trailing" id="9Tq-qx-VjN"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="centerX" secondItem="q5D-LM-VxB" secondAttribute="centerX" id="BcP-P2-nvz"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="bottom" secondItem="sTB-gI-q96" secondAttribute="bottom" id="K7f-Qy-AjL"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="trailing" secondItem="bU3-FI-f8q" secondAttribute="trailing" id="On0-UP-sDJ"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="bottom" secondItem="bU3-FI-f8q" secondAttribute="bottom" id="Tdc-5N-AwK"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="leading" secondItem="q5D-LM-VxB" secondAttribute="leadingMargin" constant="-20" id="UIV-Z7-aLn"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="top" secondItem="CTf-wB-VbY" secondAttribute="top" id="Yhp-x6-KCO"/>
+                            <constraint firstItem="czd-uG-KPp" firstAttribute="leading" secondItem="sTB-gI-q96" secondAttribute="leading" id="dxW-qW-u6L"/>
+                            <constraint firstItem="bU3-FI-f8q" firstAttribute="top" secondItem="sTB-gI-q96" secondAttribute="top" id="tLv-tB-LZC"/>
                         </constraints>
                     </view>
                     <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="JNg-vK-SZM"/>
                         <barButtonItem tag="1" title="Pencil" id="8OH-Bv-QsI">
                             <connections>
                                 <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="dCH-vG-2kg"/>
                             </connections>
                         </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="JNg-vK-SZM"/>
-                        <barButtonItem tag="2" title="Pen" style="done" id="Koc-Ls-aKN">
-                            <connections>
-                                <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="crh-jW-WGv"/>
-                            </connections>
-                        </barButtonItem>
-                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0U6-Rj-tkT"/>
-                        <barButtonItem tag="3" title="Highlighter" id="s5f-q3-Q0R">
+                        <barButtonItem tag="3" title="Eraser" id="s5f-q3-Q0R">
                             <connections>
                                 <action selector="changeDrawingToolWithSender:" destination="ubP-Kn-PDz" id="DL5-rb-cdS"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="0U6-Rj-tkT"/>
                     </toolbarItems>
-                    <navigationItem key="navigationItem" title="PDFKit Demo" largeTitleDisplayMode="never" id="6jt-ar-VPP"/>
+                    <navigationItem key="navigationItem" largeTitleDisplayMode="never" id="6jt-ar-VPP"/>
                     <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="pdfView" destination="bU3-FI-f8q" id="X9g-Dt-VTJ"/>
@@ -98,7 +93,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lkh-be-01D" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1992" y="102"/>
+            <point key="canvasLocation" x="1991.7073170731708" y="101.69491525423729"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MDG-Cz-6FA">
@@ -117,6 +112,7 @@
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NwQ-lW-XI9" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <navigationItem title="PDFKit Demo" largeTitleDisplayMode="never" id="gDA-Uc-y0Z"/>
             </objects>
             <point key="canvasLocation" x="1160" y="102"/>
         </scene>

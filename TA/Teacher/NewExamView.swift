@@ -15,12 +15,12 @@ struct NewExamView: View {
     @Binding var examName: [String]
     @Binding var sectionExamCounter: [Int]
     @Binding var userID: String
-    var refreshSubject: PassthroughSubject<UUID, Never> // Changed type to PassthroughSubject<UUID, Never>
+    var refreshSubject: PassthroughSubject<UUID, Never>
     
     let apiManager = ApiManagerTeacher()
     @State private var documentData: Data?
-    
     @State private var documentURL: URL?
+    @State private var documentName: String = "No PDF selected"
     @State private var isShowingDocumentPicker = false
     @State private var isDocumentUploaded = false
     
@@ -43,16 +43,13 @@ struct NewExamView: View {
                         .padding()
                 }
                 .sheet(isPresented: $isShowingDocumentPicker) {
-                    DocumentPicker(documentData: $documentData)
+                    DocumentPicker(documentData: $documentData, documentName: $documentName)
                 }
-                
-                Text("Document: \(documentData != nil ? "PDF selected" : "No PDF selected")")
+                Text("Document: \(documentName)")
                     .foregroundColor(documentData != nil ? Color.black : Color.red)
                     .padding()
                     .disabled(true)
             }
-            
-            
             HStack {
                 Text("Exam Section ( Max 3 )")
                 Button(action: {
@@ -99,10 +96,14 @@ struct NewExamView: View {
             .border(Color.black)
             
             Button(action: {
+                let section1Score = Int(scores[0]) ?? 0
+                let section2Score = sectionCounter > 1 ? Int(scores[1]) ?? 0 : 0
+                let section3Score = sectionCounter > 2 ? Int(scores[2]) ?? 0 : 0
+
                 apiManager.addNewExam(examName: textFieldExamName,
-                                      section1: Int(scores[selectedChoicesSectionIndexes[0]])!,
-                                      section2: sectionCounter > 1 ? Int(scores[selectedChoicesSectionIndexes[1]])! : 0,
-                                      section3: sectionCounter > 2 ? Int(scores[selectedChoicesSectionIndexes[2]])! : 0,
+                                      section1: section1Score,
+                                      section2: section2Score,
+                                      section3: section3Score,
                                       file: documentData,
                                       userId: userID)
                 { error in
@@ -112,7 +113,7 @@ struct NewExamView: View {
                         print("Exam added successfully")
                         DispatchQueue.main.async {
                             refreshSubject.send(UUID())
-                        }// Sending UUID to trigger refresh
+                        }
                     }
                 }
                 self.isPresented = false
@@ -126,8 +127,13 @@ struct NewExamView: View {
             .frame(width: UIScreen.main.bounds.width / 3, height: 50)
             .background(Color.accentColor)
             .cornerRadius(15)
+            .disabled(!isFormValid(totalScore: totalScore))
         }
         .padding()
+    }
+    
+    private func isFormValid(totalScore: Int) -> Bool {
+        return !textFieldExamName.isEmpty && documentData != nil && totalScore == 100
     }
 }
 
@@ -141,6 +147,7 @@ struct SectionView: View {
         VStack {
             HStack {
                 Text("\(indexToRoman(sectionIndex + 1)) : ")
+                    .frame(width: 30, alignment: .leading)
                 Picker("Section \(indexToRoman(sectionIndex + 1))", selection: $selectedChoiceIndex) {
                     ForEach(0..<sectionChoices.count) { index in
                         Text("\(sectionChoices[index])").tag(index)
@@ -155,9 +162,8 @@ struct SectionView: View {
                     Image(systemName: "percent")
                 }
                 .padding(.horizontal)
-                .frame(width: UIScreen.main.bounds.width / 10)
+                .frame(width: UIScreen.main.bounds.width / 8)
                 .border(Color.black)
-                
             }
         }
     }
@@ -174,9 +180,10 @@ struct SectionView: View {
 
 struct DocumentPicker: UIViewControllerRepresentable {
     @Binding var documentData: Data?
+    @Binding var documentName: String
     
     func makeCoordinator() -> Coordinator {
-        return Coordinator(documentData: $documentData)
+        return Coordinator(documentData: $documentData, documentName: $documentName)
     }
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
@@ -189,15 +196,18 @@ struct DocumentPicker: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIDocumentPickerDelegate {
         @Binding var documentData: Data?
+        @Binding var documentName: String
         
-        init(documentData: Binding<Data?>) {
+        init(documentData: Binding<Data?>, documentName: Binding<String>) {
             _documentData = documentData
+            _documentName = documentName
         }
         
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             guard let url = urls.first else { return }
             do {
                 documentData = try Data(contentsOf: url)
+                documentName = url.lastPathComponent
             } catch {
                 print("Error converting file to data: \(error)")
             }

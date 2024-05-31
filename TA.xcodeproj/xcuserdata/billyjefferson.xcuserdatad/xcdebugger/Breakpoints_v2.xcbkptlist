@@ -20,17 +20,17 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            uuid = "AB4084D0-1471-448D-B615-C29250511CB4"
-            shouldBeEnabled = "No"
+            uuid = "C6FF6E64-C3AD-4613-A9B8-AA80A6245082"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "TA/Teacher/EditStatusExam.swift"
+            filePath = "TA/Teacher/TeacherView.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "31"
-            endingLineNumber = "31"
-            landmarkName = "body"
-            landmarkType = "24">
+            startingLineNumber = "122"
+            endingLineNumber = "122"
+            landmarkName = "fetchExamNames()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

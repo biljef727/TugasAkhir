@@ -50,146 +50,104 @@ struct FixAdminView: View {
     @State var classSemester: [String] = []
     @State private var isAddClassPresented = false
     @State private var showNewTeacherView = false
-
+    
     let refreshSubject = PassthroughSubject<Void, Never>()
     let apiManager = APIManager()
     
     @State private var shouldRefresh: Bool = false
     var body: some View {
-        VStack {
-            HStack {
-                VStack {
-                    Rectangle()
-                        .foregroundColor(.white)
-                        .overlay(
-                            VStack(alignment:.leading) {
-                                Button(action: {
-                                    if routerView.path.last == "admin" {
-                                    } else {
-                                        routerView.navigate(to:"admin")
+        ScrollView {
+            VStack(alignment:.leading) {
+                ForEach(0..<className.count / 4 + 1, id: \.self) { column in
+                    HStack(spacing: 20) {
+                        ForEach(0..<min(className.count - column * 4, 4), id: \.self) { index in
+                            RoundedRectangle(cornerRadius: 16, style: .circular)
+                                .frame(width: 200, height: 200)
+                                .shadow(radius: 5)
+                                .foregroundColor(.white)
+                                .overlay(
+                                    ZStack {
+                                        Image("images")
+                                            .resizable()
+                                            .scaledToFill()
+                                            .frame(width: 200, height: 150)
+                                            .cornerRadius(16)
+                                            .padding(.bottom, 50)
+                                        VStack {
+                                            Spacer()
+                                            HStack {
+                                                Text("\(className[column * 4 + index]) | \(classSemester[column * 2 + index])".prefix(15))
+                                                    .bold()
+                                                    .foregroundColor(.white)
+                                                    .font(.title3)
+                                                    .padding(.vertical, 13)
+                                                    .frame(maxWidth: .infinity)
+                                                    .background(RoundedCorners(bl: 16, br: 16))
+                                            }
+                                        }
                                     }
-                                }, label: {
-                                    Image(systemName: "person.fill")
-                                    Text("Admin")
-                                })
-                                .frame(width: 200)
-                                .padding(.vertical)
-                                .font(.title)
-                                Divider()
-                                HStack {
-                                    Button(action: {
-                                        if routerView.path.last == "newTeacher" {
-                                        } else {
-                                            routerView.navigate(to:"newTeacher")
+                                )
+                                .onTapGesture {
+                                    let selectedClassName = className[column * 4 + index]
+                                    let selectedClassSemester = classSemester[column * 4 + index]
+                                    apiManager.fetchClassID(className: selectedClassName, classSemester: selectedClassSemester) { classID in
+                                        guard let classID = classID else {
+                                            return
                                         }
-                                    }, label: {
-                                        Image(systemName: "person.fill")
-                                        Text("New Teacher")
-                                    })
-                                }
-                                .frame(width: 200)
-                                .padding(.vertical)
-                                .font(.title)
-                                HStack {
-                                    Button(action: {
-                                        if routerView.path.last == "newStudent" {
-                                        } else {
-                                            routerView.navigate(to:"newStudent")
+                                        DispatchQueue.main.async {
+                                            routerView.classID = classID
+                                            routerView.path.append("classAdmission")
                                         }
-                                    }, label: {
-                                        Image(systemName: "person.fill")
-                                        Text("New Student")
-                                    })
+                                    }
                                 }
-                                .frame(width: 200)
-                                .padding(.vertical)
-                                .font(.title)
-                                Divider()
-                                Spacer()
-                            }
-                        )
-                        .frame(width: 200, height: UIScreen.main.bounds.height/8*7)
-                    Spacer()
-                }
-                ScrollView {
-                    VStack(alignment:.leading) {
-                        ForEach(0..<className.count / 3 + 1, id: \.self) { column in
-                            HStack(spacing: 20) {
-                                ForEach(0..<min(className.count - column * 2, 2), id: \.self) { index in
-                                    RoundedRectangle(cornerRadius: 16, style: .circular)
-                                        .frame(width: 200, height: 200)
-                                        .shadow(radius: 5)
-                                        .foregroundColor(.white)
-                                        .overlay(
-                                            ZStack {
-                                                Image("images")
-                                                    .resizable()
-                                                    .scaledToFill()
-                                                    .frame(width: 200, height: 150)
-                                                    .cornerRadius(16)
-                                                    .padding(.bottom, 50)
-                                                VStack {
-                                                    Spacer()
-                                                    HStack {
-                                                        Text("\(className[column * 2 + index]) | \(classSemester[column * 2 + index])".prefix(15))
-                                                            .bold()
-                                                            .foregroundColor(.white)
-                                                            .font(.title3)
-                                                            .padding(.vertical, 13)
-                                                            .frame(maxWidth: .infinity)
-                                                            .background(RoundedCorners(bl: 16, br: 16))
-                                                    }
-                                                }
-                                            }
-                                        )
-                                        .onTapGesture {
-                                            let selectedClassName = className[column * 2 + index]
-                                            let selectedClassSemester = classSemester[column * 2 + index]
-                                            apiManager.fetchClassID(className: selectedClassName, classSemester: selectedClassSemester) { classID in
-                                                guard let classID = classID else {
-                                                    return
-                                                }
-                                                DispatchQueue.main.async {
-                                                    routerView.classID = classID
-                                                    routerView.path.append("classAdmission")
-                                                }
-                                            }
-                                        }
-                                }
-                            }
                         }
                     }
-                    .padding()
                 }
-
-                .padding()
-                Spacer()
             }
-            .navigationBarBackButtonHidden(true)
-            .navigationBarTitle("IPH Exam Management")
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack {
-                        Button(action: {
-                            routerView.path.removeAll()
-                        }) {
-                            Image(systemName: "square.and.arrow.up.circle")
-                            Text("Log Out")
-                        }
+            .padding()
+        }
+        .sheet(isPresented: $isAddClassPresented) {
+            NewClassView(isPresented: $isAddClassPresented, refreshSubject: refreshSubject, className: $className)
+        }
+        .navigationBarBackButtonHidden(true)
+        .navigationBarTitle("IPH Exam Management")
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                HStack {
+                    Button(action: {
+                        routerView.path.removeAll()
+                    }) {
+                        Image(systemName: "square.and.arrow.up.circle")
                     }
                 }
-                ToolbarItem(placement: .topBarTrailing) {
-                    HStack {
+            }
+            ToolbarItem(placement: .navigationBarTrailing) {
+                HStack{
+                    Menu(content: {
                         Button(action: {
                             self.isAddClassPresented.toggle()
                         }) {
-                            Image(systemName: "plus")
-                            Text("Add New Class")
+                            Text("New Class")
                         }
-                        .sheet(isPresented: $isAddClassPresented) {
-                            NewClassView(isPresented: $isAddClassPresented, refreshSubject: refreshSubject, className: $className)
+                        Button(action: {
+                            if routerView.path.last != "newTeacher" {
+                                routerView.navigate(to:"newTeacher")
+                            }
+                        }) {
+                            Text("Add New Teacher")
                         }
-                    }
+                        Button(action: {
+                            if routerView.path.last != "newStudent" {
+                                routerView.navigate(to:"newStudent")
+                            }
+                        }) {
+                            Text("Add New Student")
+                        }
+                    }, label: {
+                        Text("ADD")
+                    })
+                       
+                    
                 }
             }
         }
@@ -200,6 +158,7 @@ struct FixAdminView: View {
             fetchClassNames()
         }
     }
+    
     private func fetchClassNames() {
         apiManager.getClassNames { result in
             switch result {
@@ -212,9 +171,9 @@ struct FixAdminView: View {
                 print("Error fetching class names: \(error)")
             }
         }
-        
     }
 }
+
 
 #Preview {
     FixAdminView()

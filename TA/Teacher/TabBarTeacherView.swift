@@ -30,7 +30,6 @@ struct TabBarTeacherView: View {
                     routerView.path.removeAll()
                 }) {
                     Image(systemName: "square.and.arrow.up.circle")
-                    Text("Log Out")
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {

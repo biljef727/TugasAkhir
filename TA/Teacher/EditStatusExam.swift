@@ -17,7 +17,9 @@ struct EditStatusExam: View {
     @State var studentID:  String = ""
     @State var examCounter : Int = 0
     @State var maxScore : Int = 0
+    @State var comment : String = ""
     @Binding var userID: String?
+    var examIDs: String?
     var refreshSubject: PassthroughSubject<UUID, Never>
     
     var totalScore: Double {
@@ -34,7 +36,6 @@ struct EditStatusExam: View {
             ForEach(0..<examCounter, id: \.self) { index in
                 SectionsView(index: index + 1, score: $scores[index])
             }
-            
             HStack {
                 Text("Total Score: \(totalScore, specifier: "%.0f")")
                 Image(systemName: "percent")
@@ -43,18 +44,24 @@ struct EditStatusExam: View {
             .frame(maxWidth: .infinity)
             .border(Color.black)
             
+            TextField("Type your comment", text: $comment)
+                .padding()
+                .border(Color.black)
+                .padding(.top)
+            
             Button(action: {
                 apiManager.editStatusScore(
                     userID: userID!,
+                    examID: examIDs!,
                     NilaiSection1: Int(scores[0]) ?? 0,
                     NilaiSection2: Int(scores[1]) ?? 0,
                     NilaiSection3: Int(scores[2]) ?? 0,
-                    NilaiTotal: Int(totalScore)
+                    NilaiTotal: Int(totalScore),
+                    feedback: comment
                 ) { error in
                     if let error = error {
                         print("Error occurred: \(error)")
                     } else {
-                        print("Exam status edited successfully")
                         DispatchQueue.main.async {
                             refreshSubject.send(UUID())
                         }
@@ -73,17 +80,27 @@ struct EditStatusExam: View {
         }
         .onAppear {
             getData()
+            examCounters()
         }
-        
     }
-    
     func getData() {
         apiManager.fetchNilaiStudent(userID: self.userID!) { result in
             switch result {
-            case .success(let (studentName,studentID,_,examCounter)):
+            case .success(let (studentName,studentID,_,_)):
                 DispatchQueue.main.async {
                     self.studentName = studentName
                     self.studentID = studentID
+                }
+            case .failure(let error):
+                print("Error fetching student data: \(error)")
+            }
+        }
+    }
+    func examCounters(){
+        apiManager.fetchExamCounter(examID: self.examIDs!){ result in
+            switch result {
+            case .success(let examCounter):
+                DispatchQueue.main.async {
                     self.examCounter = Int(examCounter) ?? 0
                 }
             case .failure(let error):

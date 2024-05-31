@@ -108,21 +108,24 @@ struct LoginView: View {
                         ResultExamView().environmentObject(routerView)
                     }
                 }else if val == "student"{
-                    StudentView(userID:$userID).environmentObject(routerView)
+                    StudentView(userID:$userID, userName: $userFullName).environmentObject(routerView)
                 }
-                else if val.hasPrefix("startExam/"){
-                    let components = val.components(separatedBy: "/")
-                    if components.count > 1 {
-                        let examInfo = components[1]
-                        let examInfoComponents = examInfo.components(separatedBy: "-")
-                        if examInfoComponents.count == 2 {
-                            let examIDs = examInfoComponents[0]
-                            let counterExam = examInfoComponents[1]
-                            CanvasSaving(examID: examIDs, userID:userID,counter: Int(counterExam)).environmentObject(routerView)
-                        }
-                    } else {
-                        CanvasSaving().environmentObject(routerView)
-                    }
+//                else if val.hasPrefix("startExam/"){
+//                    let components = val.components(separatedBy: "/")
+//                    if components.count > 1 {
+//                        let examInfo = components[1]
+//                        let examInfoComponents = examInfo.components(separatedBy: "-")
+//                        if examInfoComponents.count == 2 {
+//                            let examIDs = examInfoComponents[0]
+//                            let counterExam = examInfoComponents[1]
+//                            CanvasSaving(examID: examIDs, userID:userID,counter: Int(counterExam)).environmentObject(routerView)
+//                        }
+//                    } else {
+//                        CanvasSaving().environmentObject(routerView)
+//                    }
+//                }
+                else if val == "startExam"{
+                    StudentExamView().environmentObject(routerView)
                 }
                 else if val.hasPrefix("yourTakenExam/"){
                     let components = val.components(separatedBy: "/")

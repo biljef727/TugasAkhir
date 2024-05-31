@@ -99,11 +99,10 @@ struct ScheduleExamView: View {
                     .padding(.horizontal)
                     .foregroundColor(Color.white)
                     .font(.title)
+                    .frame(width: UIScreen.main.bounds.width/3,height: 50)
+                    .background(Color.accentColor)
+                    .cornerRadius(15)
             })
-
-            .frame(width: UIScreen.main.bounds.width/3,height: 50)
-            .background(Color.accentColor)
-            .cornerRadius(15)
         }
         .onAppear{
             fetchExamNames()

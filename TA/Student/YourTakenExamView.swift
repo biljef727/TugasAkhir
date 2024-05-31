@@ -62,7 +62,7 @@ struct YourTakenExamView: View {
     func fetchScore(){
         apiManager.fetchScore(userID: self.userID!,examID: self.examID!) { result in
             switch result {
-            case .success(let (studentName,examName,score1,score2,score3,totalScore,statusScore)):
+            case .success(let (studentName,examName,score1,score2,score3,totalScore,nilaiTambahan,statusScore)):
                 DispatchQueue.main.async {
                     self.examName = examName
                     self.studentName = studentName
@@ -70,7 +70,7 @@ struct YourTakenExamView: View {
                     self.nilai2 = score2
                     self.nilai3 = score3
                     self.nilaiTotal = totalScore
-                    self.nilaiTambahan = "0"
+                    self.nilaiTambahan = nilaiTambahan
                     self.statusScore = statusScore
                 }
             case .failure(let error):

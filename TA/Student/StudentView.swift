@@ -20,6 +20,7 @@ struct StudentView: View {
     
     @EnvironmentObject var routerView : ServiceRoute
     @Binding var userID: String
+    @Binding var userName : String
     @State var examName : String = ""
     @State var examID : String = ""
     @State var scheduleDate :String = ""
@@ -30,6 +31,7 @@ struct StudentView: View {
     @State var codingTimeTaken : [String] = []
     @State var scoring : String = ""
     @State var counter : Int = 1
+    @State var showAllExams = false
     
     let apiManager = ApiManagerStudent()
     var body: some View {
@@ -49,10 +51,10 @@ struct StudentView: View {
                     }, label:{
                         Text("See Result")
                             .foregroundColor(Color.white)
+                            .frame(width: UIScreen.main.bounds.width/4,height: 50)
+                            .background(Color.accentColor)
+                            .cornerRadius(15)
                     })
-                    .frame(width: UIScreen.main.bounds.width/4,height: 50)
-                    .background(Color.accentColor)
-                    .cornerRadius(15)
                 }
             }
             Divider()
@@ -72,105 +74,122 @@ struct StudentView: View {
                         Spacer()
                         Button(action:{
                             let examInfo = "\(examID)-\(counter)"
-                            routerView.path.append("startExam/\(examInfo)")
-                            counter += 1
+                            routerView.path.append("startExam")
+//                            counter += 1
                         }, label:{
                             Text("Start")
                                 .foregroundColor(Color.white)
+                                .frame(width: UIScreen.main.bounds.width/4,height: 50)
+                                .background(Color.accentColor)
+                                .cornerRadius(15)
                         })
-                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
-                        .background(Color.accentColor)
-                        .cornerRadius(15)
                     }
                 }
             }
-            if counter == 2{
-                VStack(alignment:.leading){
-                    Text("New Exam")
-                    HStack{
-                        Text("Start Time : \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleStartExamTime) ?? "")")
-                    }
-                    .padding(.vertical)
-                    HStack{
-                        Text("End Time: \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleEndExamTime) ?? "")")
-                    }
-                    .padding(.vertical)
-                    HStack{
-                        Text("Exam Name : \(examName)")
-                        Spacer()
-                        Button(action:{
-                            let examInfo = "\(examID)-\(counter)"
-                            routerView.path.append("startExam/\(examInfo)")
-                            counter += 1
-                        }, label:{
-                            Text("Start")
-                                .foregroundColor(Color.white)
-                        })
-                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
-                        .background(Color.accentColor)
-                        .cornerRadius(15)
-                    }
-                }
-            }
-            if counter == 3{
-                VStack(alignment:.leading){
-                    Text("New Exam")
-                    HStack{
-                        Text("Start Time :")
-                    }
-                    .padding(.vertical)
-                    HStack{
-                        Text("End Time:")
-                    }
-                    .padding(.vertical)
-                    HStack{
-                        Text("Exam Name :")
-                        Spacer()
-                        Button(action:{
-                            
-                        }, label:{
-                            Text("Start")
-                                .foregroundColor(Color.white)
-                        })
-                        .frame(width: UIScreen.main.bounds.width/4,height: 50)
-                        .background(Color.accentColor)
-                        .cornerRadius(15)
-                    }
-                }
-            }
+//            if counter == 2{
+//                VStack(alignment:.leading){
+//                    Text("New Exam")
+//                    HStack{
+//                        Text("Start Time : \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleStartExamTime) ?? "")")
+//                    }
+//                    .padding(.vertical)
+//                    HStack{
+//                        Text("End Time: \(formatDate(from:scheduleDate) ?? "") \(formatTime(from:scheduleEndExamTime) ?? "")")
+//                    }
+//                    .padding(.vertical)
+//                    HStack{
+//                        Text("Exam Name : \(examName)")
+//                        Spacer()
+//                        Button(action:{
+//                            let examInfo = "\(examID)-\(counter)"
+//                            routerView.path.append("startExam/\(examInfo)")
+//                            counter += 1
+//                        }, label:{
+//                            Text("Start")
+//                                .foregroundColor(Color.white)
+//                                .frame(width: UIScreen.main.bounds.width/4,height: 50)
+//                                .background(Color.accentColor)
+//                                .cornerRadius(15)
+//                        })
+//                    }
+//                }
+//            }
+//            if counter == 3{
+//                VStack(alignment:.leading){
+//                    Text("New Exam")
+//                    HStack{
+//                        Text("Start Time :")
+//                    }
+//                    .padding(.vertical)
+//                    HStack{
+//                        Text("End Time:")
+//                    }
+//                    .padding(.vertical)
+//                    HStack{
+//                        Text("Exam Name :")
+//                        Spacer()
+//                        Button(action:{
+//                            
+//                        }, label:{
+//                            Text("Start")
+//                                .foregroundColor(Color.white)
+//                                .frame(width: UIScreen.main.bounds.width/4,height: 50)
+//                                .background(Color.accentColor)
+//                                .cornerRadius(15)
+//                        })
+//                    }
+//                }
+//            }
             Divider()
-            VStack(alignment:.leading){
-                Text("Your Taken Exam")
-                VStack{
-                    ForEach(0..<codingNameTaken.count, id: \.self) { index in
-                        HStack{
-                            Text("- \(codingNameTaken[index]) | \(formatDate(from:codingTimeTaken[index]) ?? "")").tag(index)
-                            Spacer()
-                            Button(action:{
-                                fetchScore(examID: codingIDTaken[index])
-                                saveToCoreData(examID: codingIDTaken[index], examName: codingNameTaken[index],score: scoring)
-                                let examInfo = "\(codingIDTaken[index])"
-                                routerView.path.append("yourTakenExam/\(examInfo)")
-                            }, label:{
-                                Text("See")
-                                    .foregroundColor(Color.white)
-                            })
-                            .frame(width: UIScreen.main.bounds.width/10,height: 50)
-                            .background(Color.accentColor)
-                            .cornerRadius(15)
+            ScrollView{
+                VStack(alignment: .leading) {
+                    Text("Your Taken Exam")
+                    VStack {
+                        ForEach(0..<min(codingNameTaken.count, showAllExams ? codingNameTaken.count : 2), id: \.self) { index in
+                            HStack {
+                                Text("- \(codingNameTaken[index]) | \(formatDate(from: codingTimeTaken[index]) ?? "")").tag(index)
+                                Spacer()
+                                Button(action:{
+                                    fetchScore(examID: codingIDTaken[index])
+                                    saveToCoreData(examID: codingIDTaken[index], examName: codingNameTaken[index], score: scoring)
+                                    let examInfo = "\(codingIDTaken[index])"
+                                    routerView.path.append("yourTakenExam/\(examInfo)")
+                                }, label:{
+                                    Text("See")
+                                        .foregroundColor(Color.white)
+                                        .frame(width: UIScreen.main.bounds.width/10, height: 50)
+                                        .background(Color.accentColor)
+                                        .cornerRadius(15)
+                                })
+                            }
+                            .padding(.vertical)
                         }
-                        .padding(.vertical)
+                        if !showAllExams && codingNameTaken.count > 2 {
+                            Button(action: {
+                                showAllExams = true
+                            }) {
+                                Text("See More")
+                                    .foregroundColor(Color.accentColor)
+                                    .padding(.top, 10)
+                            }
+                        }else{
+                            Button(action: {
+                                showAllExams = false
+                            }) {
+                                Text("See Less")
+                                    .foregroundColor(Color.accentColor)
+                                    .padding(.top, 10)
+                            }
+                        }
                     }
                 }
             }
-            Divider()
         }
         .onAppear{
             fetchExamNow()
             fetchExamWas()
         }
-        .frame(maxWidth: UIScreen.main.bounds.width/2, maxHeight: UIScreen.main.bounds.height)
-        //        .background(Color.red)
+        .frame(maxWidth: UIScreen.main.bounds.width/2)
         .font(.title)
         .navigationBarBackButtonHidden(true)
         .toolbar {
@@ -179,8 +198,10 @@ struct StudentView: View {
                     routerView.path.removeAll()
                 }) {
                     Image(systemName: "square.and.arrow.up.circle")
-                    Text("Log Out")
                 }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                Text("\(userName)")
             }
         }
     }
@@ -226,7 +247,7 @@ struct StudentView: View {
     func fetchScore(examID: String){
         apiManager.fetchScore(userID: self.userID,examID: examID) { result in
             switch result {
-            case .success(let (_,_,_,_,_,totalScore,_)):
+            case .success(let (_,_,_,_,_,totalScore,_,_)):
                 DispatchQueue.main.async {
                     self.scoring = totalScore
                 }
