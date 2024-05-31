@@ -19,10 +19,8 @@ struct NewExamView: View {
     
     let apiManager = ApiManagerTeacher()
     @State private var documentData: Data?
-    @State private var documentURL: URL?
-    @State private var documentName: String = "No PDF selected"
+    @State private var documentName: String = "No document selected"
     @State private var isShowingDocumentPicker = false
-    @State private var isDocumentUploaded = false
     
     var body: some View {
         VStack {
@@ -50,6 +48,7 @@ struct NewExamView: View {
                     .padding()
                     .disabled(true)
             }
+            
             HStack {
                 Text("Exam Section ( Max 3 )")
                 Button(action: {
@@ -105,7 +104,8 @@ struct NewExamView: View {
                                       section2: section2Score,
                                       section3: section3Score,
                                       file: documentData,
-                                      userId: userID)
+                                      userId: userID,
+                                      documentName: documentName)
                 { error in
                     if let error = error {
                         print("Error occurred: \(error)")

@@ -86,17 +86,17 @@ struct TeacherView: View {
                             HStack {
                                 Text("\(examName[index]) | Total Section : \(examCounter[index])")
                                     .padding()
-                                Button(action: {
-                                    let fileData = examFiles[index]
-                                    let fileName = "\(examName[index]).pdf"
-                                    if let rootView = UIApplication.shared.windows.first?.rootViewController?.view {
-                                        documentInteractionHelper.openDocument(data: fileData, fileName: fileName, from: rootView)
-                                    }
-                                }) {
-                                    Text("Download \(examName[index]).pdf")
-                                        .foregroundColor(.blue)
-                                        .underline()
-                                }
+//                                Button(action: {
+//                                    let fileData = examFiles[index]
+//                                    let fileName = "\(examName[index]).pdf"
+//                                    if let rootView = UIApplication.shared.windows.first?.rootViewController?.view {
+//                                        documentInteractionHelper.openDocument(data: fileData, fileName: fileName, from: rootView)
+//                                    }
+//                                }) {
+//                                    Text("Download \(examName[index]).pdf")
+//                                        .foregroundColor(.blue)
+//                                        .underline()
+//                                }
                             }
                         }
                     }
