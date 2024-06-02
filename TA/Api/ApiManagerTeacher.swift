@@ -144,7 +144,7 @@ class ApiManagerTeacher {
 //        }
 //    }
     
-    func fetchClassID(userID: String, completion: @escaping(Result<([String], [String],[Data]), Error>) -> Void) {
+    func fetchClassID(userID: String, completion: @escaping(Result<([String], [String]), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/fetchExamData?UserID=\(userID)"
         
         guard let url = URL(string: urlString) else {
@@ -166,17 +166,16 @@ class ApiManagerTeacher {
                 do {
                     let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
                     guard let examNames = decodedData["ExamName"], 
-                            let examSectionCounter = decodedData["ExamCounter"],
-                            let examFileStrings = decodedData["ExamFile"] else {
+                            let examSectionCounter = decodedData["ExamCounter"] else {
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-                    let examFiles: [Data] = try examFileStrings.map { base64String in
-                                       guard let fileData = Data(base64Encoded: base64String) else {
-                                           throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to decode base64 file data"])
-                                       }
-                                       return fileData
-                                   }
-                    completion(.success((examNames, examSectionCounter,examFiles)))
+//                    let examFiles: [Data] = try examFileStrings.map { base64String in
+//                                       guard let fileData = Data(base64Encoded: base64String) else {
+//                                           throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to decode base64 file data"])
+//                                       }
+//                                       return fileData
+//                                   }
+                    completion(.success((examNames, examSectionCounter)))
                 } catch {
                     print("Error parsing JSON: \(error)")
                     completion(.failure(error))

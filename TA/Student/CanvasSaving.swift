@@ -146,7 +146,7 @@
 //        }
 //        // Call the API method passing the screenshot data
 //        let apiManager = ApiManagerStudent()
-//        apiManager.addKerjaan(examID: examID ?? "", section1: "0", section2: "0", section3: "0", file: imageData, userId: userID ?? "", status: "Wait") { error in
+//        apiManager.addKerjaan(examID: examID ?? "", section1: "0", section2: "0", section3: "0", file: imageData, userId: userID ?? "", status: "Not Graded") { error in
 //            if let error = error {
 //                // Handle error
 //                print("Error: \(error)")

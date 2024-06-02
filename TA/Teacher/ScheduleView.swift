@@ -50,11 +50,26 @@ struct ScheduleView: View {
             }
             ScrollView{
                 HStack{
-                    VStack(alignment: .leading){
+                    VStack(){
                         ForEach(0..<scheduleExam.count, id: \.self) { index in
                             HStack{
-                                Text("\(scheduleExam[index]) | \(formatDate(from: scheduleStartDate[index])!) | \(formatScheduleStartTime(from: scheduleStartExamTime[index])!) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])!) | \(scheduleGrade[index])")
-                                    .padding()
+                                Text("\(scheduleExam[index])")
+//                                    .multilineTextAlignment(.leading)
+                                    .frame(maxWidth: UIScreen.main.bounds.width/5)
+                                Text("\(formatDate(from: scheduleStartDate[index])!)")
+                                    .frame(maxWidth: UIScreen.main.bounds.width/5)
+                                Text("\(formatScheduleStartTime(from: scheduleStartExamTime[index])!) - \(formatScheduleStartTime(from: scheduleEndExamTime[index])!)")
+                                    .frame(maxWidth: UIScreen.main.bounds.width/5)
+                                Text("\(scheduleGrade[index])")
+                                    .frame(maxWidth: UIScreen.main.bounds.width/5)
+                            }
+                            .padding()
+                        }
+                    }
+                    Spacer()
+                    VStack(alignment: .trailing){
+                        ForEach(0..<scheduleExam.count, id: \.self) { index in
+                            HStack{
                                 Button(action: {
                                     let examInfo = "\(scheduleExam[index])-\(examIDs[index])-\(passingFormatDate(from: scheduleStartDate[index])!)-\(scheduleGradeID[index])"
                                     routerView.navigate(to: "resultExam/\(examInfo)")
@@ -65,10 +80,11 @@ struct ScheduleView: View {
                                         .foregroundColor(.white)
                                         .cornerRadius(5)
                                 }
+                                .frame(maxWidth: UIScreen.main.bounds.width/5)
                             }
                         }
                     }
-                    Spacer()
+                    
                 }
             }
         }

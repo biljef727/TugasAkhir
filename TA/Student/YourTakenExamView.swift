@@ -22,8 +22,7 @@ struct YourTakenExamView: View {
     let apiManager = ApiManagerStudent()
     var body: some View {
         VStack{
-            LazyVGrid(columns: [
-                GridItem(.flexible()),
+            LazyHGrid(rows: [
                 GridItem(.flexible()),
                 GridItem(.flexible()),
                 GridItem(.flexible()),
@@ -31,6 +30,7 @@ struct YourTakenExamView: View {
                 GridItem(.flexible()),
                 GridItem(.flexible()),
                 GridItem(.flexible())
+//                GridItem(.flexible())
             ], spacing: 10) {
                 Text("ExamName").font(.headline)
                 Text("Student Name").font(.headline)
@@ -38,8 +38,8 @@ struct YourTakenExamView: View {
                 Text("Nilai Section 2").font(.headline)
                 Text("Nilai Section 3").font(.headline)
                 Text("Nilai Total").font(.headline)
-                Text("Nilai Catatan Tambahan").font(.headline)
-                Text("Status Score").font(.headline)
+                Text("Catatan Tambahan").font(.headline)
+//                Text("Status").font(.headline)
                 
                 Text("\(examName)")
                 Text("\(studentName)")
@@ -48,11 +48,12 @@ struct YourTakenExamView: View {
                 Text("\(nilai3)")
                 Text("\(nilaiTotal)")
                 Text("\(nilaiTambahan)")
-                Text("\(statusScore)")
+//                Text("\(statusScore)")
                     .padding()
                 
             }
-            .border(Color.black)
+            .frame(maxWidth: UIScreen.main.bounds.width)
+//            .border(Color.black)
             .padding()
         }
         .onAppear{

@@ -84,20 +84,24 @@ struct TeacherView: View {
                     VStack(alignment: .leading) {
                         ForEach(0..<examName.count, id: \.self) { index in
                             HStack {
-                                Text("\(examName[index]) | Total Section : \(examCounter[index])")
-                                    .padding()
-//                                Button(action: {
+                                Text("\(examName[index])")
+                                    .frame(maxWidth: UIScreen.main.bounds.width/3)
+                                Text("Total Section : \(examCounter[index])")
+                                    .frame(maxWidth: UIScreen.main.bounds.width/3)
+                                Button(action: {
 //                                    let fileData = examFiles[index]
 //                                    let fileName = "\(examName[index]).pdf"
 //                                    if let rootView = UIApplication.shared.windows.first?.rootViewController?.view {
 //                                        documentInteractionHelper.openDocument(data: fileData, fileName: fileName, from: rootView)
 //                                    }
-//                                }) {
-//                                    Text("Download \(examName[index]).pdf")
-//                                        .foregroundColor(.blue)
-//                                        .underline()
-//                                }
+                                }) {
+                                    Text("Download \(examName[index]).pdf")
+                                        .foregroundColor(.blue)
+                                        .underline()
+                                }
+                                .frame(maxWidth: UIScreen.main.bounds.width/3)
                             }
+                            .padding()
                         }
                     }
                     Spacer()
@@ -115,11 +119,11 @@ struct TeacherView: View {
     func fetchExamNames() {
         apiManager.fetchClassID(userID: self.userID) { result in
             switch result {
-            case .success(let (examNames, examSectionCounter, examFiles)):
+            case .success(let (examNames, examSectionCounter)):
                 DispatchQueue.main.async {
                     self.examName = examNames
                     self.examCounter = examSectionCounter
-                    self.examFiles = examFiles
+//                    self.examFiles = examFiles
                 }
             case .failure(let error):
                 print("Error fetching class names: \(error)")
