@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NewStudentView: View {
     @EnvironmentObject var routerView: ServiceRoute
@@ -15,9 +16,16 @@ struct NewStudentView: View {
     @State var passwordFieldStudent : String = ""
     @State var checkPasswordStudent : Bool = false
     
+    @Binding var isPresented: Bool
+    var refreshSubject: PassthroughSubject<Void, Never>
+    
     let apiManager = APIManager()
     var body: some View {
         VStack{
+            Spacer()
+            Text("Add New Student")
+                .font(Font.custom("", size: 50))
+            Spacer()
             HStack{
                 Image(systemName: "pencil.tip")
                 TextField("Student Name",text: $nameFieldStudent)
@@ -26,6 +34,7 @@ struct NewStudentView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "mail.fill")
                 TextField("Student Email",text: $emailFieldStudent)
@@ -34,6 +43,7 @@ struct NewStudentView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "lock.fill")
                 if checkPasswordStudent {
@@ -52,6 +62,7 @@ struct NewStudentView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "person.fill")
                 TextField("No Induk",text: $idFieldStudent)
@@ -61,6 +72,7 @@ struct NewStudentView: View {
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
             .padding(.bottom)
+            Spacer()
             Button(action:{
                 apiManager.addStudent(
                     userEmail: emailFieldStudent,
@@ -71,7 +83,8 @@ struct NewStudentView: View {
                     switch result {
                     case .success:
                         DispatchQueue.main.async {
-                            routerView.path.removeLast()
+                            self.isPresented = false
+                            self.refreshSubject.send()
                         }
                     case .failure(let error):
                         print("Failed to add Student: \(error.localizedDescription)")
@@ -79,17 +92,18 @@ struct NewStudentView: View {
                 }
             }, label:{
                 Text("Input")
-                    .padding(.vertical,5)
+                    .padding(.vertical, 5)
                     .padding(.horizontal)
                     .foregroundColor(Color.white)
+                    .frame(width: UIScreen.main.bounds.width/3,height: 50)
+                    .background(Color.accentColor)
+                    .cornerRadius(15)
             })
-            .frame(width: UIScreen.main.bounds.width/3)
-            .background(Color.accentColor)
-            .cornerRadius(15)
+            Spacer()
         }
     }
 }
-
-#Preview {
-    NewStudentView()
-}
+//
+//#Preview {
+//    NewStudentView()
+//}

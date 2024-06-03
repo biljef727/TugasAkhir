@@ -49,6 +49,8 @@ struct FixAdminView: View {
     @State var className: [String] = []
     @State var classSemester: [String] = []
     @State private var isAddClassPresented = false
+    @State private var isAddStudentPresented = false
+    @State private var isAddTeacherPresented = false
     @State private var showNewTeacherView = false
     
     let refreshSubject = PassthroughSubject<Void, Never>()
@@ -103,11 +105,18 @@ struct FixAdminView: View {
                         }
                     }
                 }
+                .padding()
             }
             .padding()
         }
         .sheet(isPresented: $isAddClassPresented) {
             NewClassView(isPresented: $isAddClassPresented, refreshSubject: refreshSubject, className: $className)
+        }
+        .sheet(isPresented: $isAddTeacherPresented) {
+            NewTeacherView(isPresented: $isAddTeacherPresented, refreshSubject: refreshSubject)
+        }
+        .sheet(isPresented: $isAddStudentPresented) {
+            NewStudentView(isPresented: $isAddStudentPresented, refreshSubject: refreshSubject)
         }
         .navigationBarBackButtonHidden(true)
         .navigationBarTitle("IPH Exam Management")
@@ -119,6 +128,7 @@ struct FixAdminView: View {
                     }) {
                         Image(systemName: "square.and.arrow.up.circle")
                     }
+                    .foregroundColor(.red)
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -127,24 +137,27 @@ struct FixAdminView: View {
                         Button(action: {
                             self.isAddClassPresented.toggle()
                         }) {
-                            Text("New Class")
+                            Text("Add New Class")
                         }
                         Button(action: {
-                            if routerView.path.last != "newTeacher" {
-                                routerView.navigate(to:"newTeacher")
-                            }
+//                            if routerView.path.last != "newTeacher" {
+//                                routerView.navigate(to:"newTeacher")
+//                            }
+                            self.isAddTeacherPresented.toggle()
                         }) {
                             Text("Add New Teacher")
                         }
                         Button(action: {
-                            if routerView.path.last != "newStudent" {
-                                routerView.navigate(to:"newStudent")
-                            }
+//                            if routerView.path.last != "newStudent" {
+//                                routerView.navigate(to:"newStudent")
+//                            }
+                            self.isAddStudentPresented.toggle()
                         }) {
                             Text("Add New Student")
                         }
                     }, label: {
-                        Text("ADD")
+                        Image(systemName: "plus")
+//                        Text("New User")
                     })
                        
                     

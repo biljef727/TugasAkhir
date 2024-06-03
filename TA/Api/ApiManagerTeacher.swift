@@ -106,45 +106,8 @@ class ApiManagerTeacher {
             completion(nil)
         }.resume()
     }
-
-//    func addNewExam(examName: String, section1: Int, section2: Int, section3: Int, file: Data?, userId: String, completion: @escaping (Error?) -> Void) {
-//        let apiUrl = URL(string: "https://indramaryati.xyz/iph_exam/public/api/addNewExam")!
-//        
-//        var requestBody : [String : Any] = [
-//            "ExamName": examName,
-//            "ExamSection1": section1,
-//            "ExamSection2": section2,
-//            "ExamSection3": section3,
-//            "UserID": userId
-//        ]
-//        
-//        if let fileData = file {
-//            // Convert file data to base64 string
-//            let fileBase64String = fileData.base64EncodedString()
-//            requestBody["ExamFile"] = fileBase64String
-//        }
-//        
-//        var request = URLRequest(url: apiUrl)
-//        request.httpMethod = "POST"
-//        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
-//        
-//        do {
-//            let jsonData = try JSONSerialization.data(withJSONObject: requestBody, options: [])
-//            request.httpBody = jsonData
-//            
-//            URLSession.shared.dataTask(with: request) { (data, response, error) in
-//                if let error = error {
-//                    completion(error)
-//                    return
-//                }
-//                completion(nil)
-//            }.resume()
-//        } catch {
-//            completion(error)
-//        }
-//    }
     
-    func fetchClassID(userID: String, completion: @escaping(Result<([String], [String]), Error>) -> Void) {
+    func fetchClassID(userID: String, completion: @escaping(Result<([String], [String],[String]), Error>) -> Void) {
         let urlString = "https://indramaryati.xyz/iph_exam/public/api/fetchExamData?UserID=\(userID)"
         
         guard let url = URL(string: urlString) else {
@@ -166,16 +129,11 @@ class ApiManagerTeacher {
                 do {
                     let decodedData = try JSONDecoder().decode([String: [String]].self, from: data)
                     guard let examNames = decodedData["ExamName"], 
-                            let examSectionCounter = decodedData["ExamCounter"] else {
+                            let examSectionCounter = decodedData["ExamCounter"],
+                    let examFile = decodedData["ExamFile"] else {
                         throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Invalid response format"])
                     }
-//                    let examFiles: [Data] = try examFileStrings.map { base64String in
-//                                       guard let fileData = Data(base64Encoded: base64String) else {
-//                                           throw NSError(domain: "", code: 0, userInfo: [NSLocalizedDescriptionKey: "Failed to decode base64 file data"])
-//                                       }
-//                                       return fileData
-//                                   }
-                    completion(.success((examNames, examSectionCounter)))
+                    completion(.success((examNames, examSectionCounter,examFile)))
                 } catch {
                     print("Error parsing JSON: \(error)")
                     completion(.failure(error))

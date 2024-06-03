@@ -1,11 +1,13 @@
 import SwiftUI
 
 struct StudentExamView: View {
+    @EnvironmentObject var routerView: ServiceRoute
     @StateObject var pdfDrawer = PDFDrawer()
     var examID: String?
     var userID: String?
     @State var examFile: String = ""
     @State private var isDrawing = true
+    @State private var screenshot: UIImage? = nil
     
     let apiManager = ApiManagerStudent()
     
@@ -34,18 +36,29 @@ struct StudentExamView: View {
             }
         }, trailing: Button(action: {
             // Saving
-            
+            takeScreenshot()
         }, label: {
             Text("Submit")
         }))
         .environmentObject(pdfDrawer)
         .task {
             fetchFile()
+            preventDeviceLock()
         }
-        .onChange(of: pdfDrawer.drawingTool) { _ in
-
-                   print("Current Drawing Tool: \(pdfDrawer.drawingTool)")
-               }
+    }
+    func takeScreenshot() {
+        DispatchQueue.main.async {
+            if let view = UIApplication.shared.windows.first?.rootViewController?.view {
+                self.screenshot = view.snapshot()
+                routerView.path.removeLast()
+            }
+        }
+    }
+    func preventDeviceLock() {
+        UIApplication.shared.isIdleTimerDisabled = true
+        DispatchQueue.main.asyncAfter(deadline: .now() + 30 * 60) { // 30 minutes
+            UIApplication.shared.isIdleTimerDisabled = false
+        }
     }
     
     private func fetchFile() {
@@ -53,7 +66,6 @@ struct StudentExamView: View {
             print("Error: userID or examID is nil")
             return
         }
-        
         apiManager.fetchPDF(userID: userID, examID: examID) { result in
             switch result {
             case .success(let examFile):
@@ -65,5 +77,14 @@ struct StudentExamView: View {
             }
         }
     }
-    
+}
+
+extension UIView {
+    func snapshot() -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(bounds.size, false, UIScreen.main.scale)
+        drawHierarchy(in: bounds, afterScreenUpdates: true)
+        let image = UIGraphicsGetImageFromCurrentImageContext()!
+        UIGraphicsEndImageContext()
+        return image
+    }
 }

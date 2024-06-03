@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Combine
 
 struct NewTeacherView: View {
     @EnvironmentObject var routerView: ServiceRoute
@@ -15,9 +16,16 @@ struct NewTeacherView: View {
     @State var passwordFieldTeacher : String = ""
     @State var checkPasswordTeacher : Bool = false
     
+    @Binding var isPresented: Bool
+    var refreshSubject: PassthroughSubject<Void, Never>
+    
     let apiManager = APIManager()
     var body: some View {
         VStack{
+            Spacer()
+            Text("Add New Teacher")
+                .font(Font.custom("", size: 50))
+            Spacer()
             HStack{
                 Image(systemName: "pencil.tip")
                 TextField("Teacher Name",text: $nameFieldTeacher)
@@ -26,6 +34,7 @@ struct NewTeacherView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "mail.fill")
                 TextField("Teacher Email",text: $emailFieldTeacher)
@@ -34,6 +43,7 @@ struct NewTeacherView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "lock.fill")
                 if checkPasswordTeacher {
@@ -41,7 +51,7 @@ struct NewTeacherView: View {
                 } else {
                     SecureField("Insert your Password",text: $passwordFieldTeacher)
                 }
-                Spacer()
+//                Spacer()
                 Image(systemName: checkPasswordTeacher ? "eye.slash" : "eye")
                     .foregroundColor(checkPasswordTeacher ?  Color.gray : Color.black)
                     .onTapGesture {
@@ -52,6 +62,7 @@ struct NewTeacherView: View {
             .padding()
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
+//            Spacer()
             HStack{
                 Image(systemName: "person.fill")
                 TextField("No Induk",text: $idFieldTeacher)
@@ -61,6 +72,7 @@ struct NewTeacherView: View {
             .background(Color.black.opacity(0.3).cornerRadius(10))
             .font(.headline)
             .padding(.bottom)
+            Spacer()
             Button(action:{
                 apiManager.addTeacher(
                     userEmail: emailFieldTeacher,
@@ -71,7 +83,8 @@ struct NewTeacherView: View {
                     switch result {
                     case .success:
                         DispatchQueue.main.async {
-                            routerView.path.removeLast()
+                            self.isPresented = false
+                            self.refreshSubject.send()
                         }
                     case .failure(let error):
                         print("Failed to add teacher: \(error.localizedDescription)")
@@ -79,17 +92,18 @@ struct NewTeacherView: View {
                 }
             }, label:{
                 Text("Input")
-                    .padding(.vertical,5)
+                    .padding(.vertical, 5)
                     .padding(.horizontal)
                     .foregroundColor(Color.white)
+                    .frame(width: UIScreen.main.bounds.width/3,height: 50)
+                    .background(Color.accentColor)
+                    .cornerRadius(15)
             })
-            .frame(width: UIScreen.main.bounds.width/3)
-            .background(Color.accentColor)
-            .cornerRadius(15)
+            Spacer()
         }
     }
 }
-
-#Preview {
-    NewTeacherView()
-}
+//
+//#Preview {
+//    NewTeacherView()
+//}

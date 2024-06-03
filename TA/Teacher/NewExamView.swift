@@ -2,6 +2,29 @@ import SwiftUI
 import UniformTypeIdentifiers
 import Combine
 
+struct NumericTextFieldModifier: ViewModifier {
+    @Binding var value: String
+    
+    func body(content: Content) -> some View {
+        content
+            .keyboardType(.numberPad)
+            .onReceive(Just(value)) { newValue in
+                let filtered = newValue.filter { "0123456789".contains($0) }
+                if filtered != newValue {
+                    self.value = filtered
+                }
+                if value.hasPrefix("0") && value != "0" {
+                    self.value = String(value.dropFirst())
+                }
+            }
+    }
+}
+
+extension View {
+    func numericTextField(value: Binding<String>) -> some View {
+        self.modifier(NumericTextFieldModifier(value: value))
+    }
+}
 struct NewExamView: View {
     @EnvironmentObject var routerView: ServiceRoute
     
@@ -90,7 +113,7 @@ struct NewExamView: View {
                 Text("Total Score: \(totalScore)")
                 Image(systemName: "percent")
             }
-            .padding(.horizontal)
+            .padding()
             .frame(width: UIScreen.main.bounds.width / 4)
             .border(Color.black)
             
@@ -116,6 +139,7 @@ struct NewExamView: View {
                         }
                     }
                 }
+        
                 self.isPresented = false
             }) {
                 Text("Submit")
@@ -124,6 +148,7 @@ struct NewExamView: View {
                     .foregroundColor(Color.white)
                     .font(.title)
             }
+            .padding()
             .frame(width: UIScreen.main.bounds.width / 3, height: 50)
             .background(Color.accentColor)
             .cornerRadius(15)
@@ -159,9 +184,10 @@ struct SectionView: View {
                 
                 HStack {
                     TextField("Score", text: $score)
+                        .numericTextField(value: $score)
                     Image(systemName: "percent")
                 }
-                .padding(.horizontal)
+                .padding()
                 .frame(width: UIScreen.main.bounds.width / 8)
                 .border(Color.black)
             }
@@ -177,6 +203,7 @@ struct SectionView: View {
         }
     }
 }
+
 
 struct DocumentPicker: UIViewControllerRepresentable {
     @Binding var documentData: Data?

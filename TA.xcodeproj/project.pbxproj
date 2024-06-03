@@ -32,7 +32,7 @@
 		219E81572BAD37D2002DC459 /* StudentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81562BAD37D2002DC459 /* StudentView.swift */; };
 		219E81592BAD56F1002DC459 /* FixAdminView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81582BAD56F1002DC459 /* FixAdminView.swift */; };
 		219E81622BAD871A002DC459 /* NewClassView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81612BAD871A002DC459 /* NewClassView.swift */; };
-		219E81662BAE95FB002DC459 /* TabBarTeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81652BAE95FB002DC459 /* TabBarTeacherView.swift */; };
+		219E81662BAE95FB002DC459 /* SideBarTeacherView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81652BAE95FB002DC459 /* SideBarTeacherView.swift */; };
 		219E81692BAE9647002DC459 /* ScheduleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81682BAE9647002DC459 /* ScheduleView.swift */; };
 		219E81722BB3360B002DC459 /* ApiManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81712BB3360B002DC459 /* ApiManager.swift */; };
 		219E81792BBBE454002DC459 /* YourTakenExamView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219E81782BBBE454002DC459 /* YourTakenExamView.swift */; };
@@ -77,7 +77,7 @@
 		219E81562BAD37D2002DC459 /* StudentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StudentView.swift; sourceTree = "<group>"; };
 		219E81582BAD56F1002DC459 /* FixAdminView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FixAdminView.swift; sourceTree = "<group>"; };
 		219E81612BAD871A002DC459 /* NewClassView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewClassView.swift; sourceTree = "<group>"; };
-		219E81652BAE95FB002DC459 /* TabBarTeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarTeacherView.swift; sourceTree = "<group>"; };
+		219E81652BAE95FB002DC459 /* SideBarTeacherView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideBarTeacherView.swift; sourceTree = "<group>"; };
 		219E81682BAE9647002DC459 /* ScheduleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScheduleView.swift; sourceTree = "<group>"; };
 		219E81712BB3360B002DC459 /* ApiManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiManager.swift; sourceTree = "<group>"; };
 		219E81782BBBE454002DC459 /* YourTakenExamView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = YourTakenExamView.swift; sourceTree = "<group>"; };
@@ -205,9 +205,9 @@
 			children = (
 				219E81582BAD56F1002DC459 /* FixAdminView.swift */,
 				21FCED262B8DBA320049C6D3 /* ClassAdmissionView.swift */,
-				219E81612BAD871A002DC459 /* NewClassView.swift */,
 				219E814F2BA9481C002DC459 /* AddTeacherClass.swift */,
 				219E81512BA9482B002DC459 /* AddStudentClass.swift */,
+				219E81612BAD871A002DC459 /* NewClassView.swift */,
 				21FCED1E2B8D84880049C6D3 /* NewTeacherView.swift */,
 				21FCED202B8D8C220049C6D3 /* NewStudentView.swift */,
 			);
@@ -217,7 +217,7 @@
 		21FCED252B8D9A860049C6D3 /* Teacher */ = {
 			isa = PBXGroup;
 			children = (
-				219E81652BAE95FB002DC459 /* TabBarTeacherView.swift */,
+				219E81652BAE95FB002DC459 /* SideBarTeacherView.swift */,
 				21FCED232B8D91450049C6D3 /* TeacherView.swift */,
 				21FCED2A2B915CB00049C6D3 /* NewExamView.swift */,
 				219E81682BAE9647002DC459 /* ScheduleView.swift */,
@@ -341,7 +341,7 @@
 				218F7E632BD9F97400ADA49C /* Testing.swift in Sources */,
 				21FCED2F2B916BB50049C6D3 /* ResultExamView.swift in Sources */,
 				21FCED242B8D91450049C6D3 /* TeacherView.swift in Sources */,
-				219E81662BAE95FB002DC459 /* TabBarTeacherView.swift in Sources */,
+				219E81662BAE95FB002DC459 /* SideBarTeacherView.swift in Sources */,
 				212274082BC5A0C8006C4040 /* DrawingCanvasViewController.swift in Sources */,
 				21FCED212B8D8C220049C6D3 /* NewStudentView.swift in Sources */,
 				219E81552BA95969002DC459 /* ScheduleExamView.swift in Sources */,

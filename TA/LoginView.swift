@@ -39,7 +39,9 @@ struct LoginView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width / 7 * 3)
                 .padding()
-                .background(Color.black.opacity(0.3).cornerRadius(10))
+                .background(Color.white)
+                .border(Color.black)
+//                .cornerRadius(10)
                 .font(.headline)
                 
                 HStack {
@@ -58,7 +60,9 @@ struct LoginView: View {
                 }
                 .frame(width: UIScreen.main.bounds.width / 7 * 3)
                 .padding()
-                .background(Color.black.opacity(0.3).cornerRadius(10))
+                .background(Color.white)
+                .border(Color.black)
+//                .cornerRadius(10)
                 .font(.headline)
                 .padding(.bottom)
                 
@@ -82,14 +86,10 @@ struct LoginView: View {
             .navigationDestination(for: String.self) { val in
                 if val == "admin"{
                     FixAdminView().environmentObject(routerView)
-                }else if val == "newTeacher"{
-                    NewTeacherView().environmentObject(routerView)
                 }else if val == "classAdmission"{
                     ClassAdmissionView(classID: routerView.classID!).environmentObject(routerView)
-                }else if val == "newStudent"{
-                    NewStudentView().environmentObject(routerView)
                 }else if val == "teacher"{
-                    TabBarTeacherView(userName: $userFullName, userID: $userID).environmentObject(routerView)
+                    SidebarTeacherView(userName: $userFullName, userID: $userID).environmentObject(routerView)
                 } else if val.hasPrefix("resultExam/") {
                     let components = val.components(separatedBy: "/")
                     if components.count > 1 {
@@ -124,17 +124,17 @@ struct LoginView: View {
                 //                        CanvasSaving().environmentObject(routerView)
                 //                    }
                 //                }
-                else if val.hasPrefix("startExam/"){
+                else if val.hasPrefix("yourTakenExam/"){
                     let components = val.components(separatedBy: "/")
                     if components.count > 1 {
                         let examInfo = components[1]
                         let examInfoComponents = examInfo.components(separatedBy: "-")
                         if examInfoComponents.count == 1 {
                             let examIDs = examInfoComponents[0]
-                            StudentExamView(examID: examIDs, userID:userID).environmentObject(routerView)
+                            YourTakenExamView(examID: examIDs, userID:userID).environmentObject(routerView)
                         }
                     } else {
-                        StudentExamView().environmentObject(routerView)
+                        YourTakenExamView().environmentObject(routerView)
                     }
                 }
                 else if val.hasPrefix("startExam/"){

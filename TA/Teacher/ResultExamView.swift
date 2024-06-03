@@ -56,7 +56,7 @@ struct ResultExamView: View {
                         }
                         Text(studentStatusExam[index])
                         
-                        if (studentStatusExam[index] == "Wait") {
+                        if (studentStatusExam[index] == "Not Graded") {
                             Button(action: {
                                 print("Selected userID:", selectedUserID)
                                 self.selectedID = listStudentID[index]
